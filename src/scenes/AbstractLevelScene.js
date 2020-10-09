@@ -7,6 +7,8 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
+        this.cheatMode = true;
+
         this.backgroundimage = bgimage;
 
         this.levelWidth = 15000;
@@ -31,9 +33,11 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.collectedSausages = 0;
         this.collectedBeers = 0;
+        this.collectedCoins = 0;
 
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
+        this.collectedCoinScoreText = "";
 
         this.doubleJumpAllowed = false;
 
@@ -86,12 +90,15 @@ export class AbstractLevelScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.collectedBeersScoreText = this.add.text(50, 19, '0', { fontSize: '32px', fill: '#000' });
-        this.collectedSausagesScoreText = this.add.text(50, 57, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedBeersScoreText = this.add.text(75, 20, '0', { fontSize: '32px', fill: '#000' });
         this.collectedBeersScoreText.setScrollFactor(0);
+        this.collectedSausagesScoreText = this.add.text(75, 90, '0', { fontSize: '32px', fill: '#000' });
         this.collectedSausagesScoreText.setScrollFactor(0);
-        this.add.image(32, 32, 'beer').setScrollFactor(0);
-        this.add.image(32, 70, 'sausage').setScrollFactor(0);
+        this.collectedCoinScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedCoinScoreText.setScrollFactor(0);
+        this.add.image(35, 35, 'beer').setScrollFactor(0);
+        this.add.image(35, 105, 'sausage').setScrollFactor(0);
+        this.add.image(35, 175, 'coin').setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -121,6 +128,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     update() {
         if (this.escKey.isDown) {
+            this.cheatMode = false;
             this.gameIsOver();
         }
         if (this.gameOver) {
@@ -240,13 +248,15 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     gameIsOver() {
-        this.gameOverIcon.setVisible(true);
+        if (!this.cheatMode) {
+            this.gameOverIcon.setVisible(true);
 
-        this.physics.pause();
-        this.player.setTint(0xff0000);
-        this.player.anims.play('turn');
+            this.physics.pause();
+            this.player.setTint(0xff0000);
+            this.player.anims.play('turn');
 
-        this.gameOver = true;
+            this.gameOver = true;
+        }
     }
 
 }
