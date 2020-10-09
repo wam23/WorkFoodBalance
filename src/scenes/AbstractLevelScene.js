@@ -7,7 +7,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
-        this.levelWidth = 4;
+        this.levelWidth = 15000;
 
         this.gameOver = false;
         this.gameOverIcon;
@@ -21,6 +21,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.bombs;
         this.platforms;
         this.cursors;
+
+        this.map;
         
         this.lastInput = 0;
         this.waitForInputRelease = false;
@@ -32,6 +34,9 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedSausagesScoreText = "";
 
         this.doubleJumpAllowed = false;
+
+        this.speedX = 250;
+        this.speedY = 330;
     }
 
     preload () {
@@ -39,19 +44,16 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     create () {
-        /* for(var i = 0; i < this.levelWidth; i++) {
-            this.add.image(640 + (1280 * i), 360,"sky");
-        } */
-        this.add.image(2500, 360,"sky");
+        this.add.image(this.levelWidth / 2, 360,"sky");
         
-        this.cameras.main.setBounds(0, 0, 5000, 720);
-        this.physics.world.setBounds(0, 0, 5000 * this.levelWidth, 720);
+        this.cameras.main.setBounds(0, 0, this.levelWidth, 720);
+        this.physics.world.setBounds(0, 0, this.levelWidth, 720);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
-        for(var i = 0; i < this.levelWidth; i++) {
-            this.platforms.create(640 + (1280 * i), 704, "ground");
+        for (var i = 0; i < (this.levelWidth / 100); i++) {
+            this.platforms.create(50 + (i * 100), 704, "ground");
         }
         
         // The player and its settings
@@ -99,17 +101,15 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     afterCreate() {
-        //  Collide the player and the stars with the platforms
+        var tileset = this.map.addTilesetImage('tiles_spritesheet', 'tiles');
+        this.layer = this.map.createStaticLayer('Tile Layer 1', tileset);
+        this.layer.setCollisionByExclusion(-1, true);
+        this.physics.add.collider(this.player, this.layer);
+
+        this.collectibleLayer = this.map.createDynamicLayer('collectables', tileset);
+        this.physics.add.overlap(this.player, this.collectibleLayer, this.collectItem, null, this);
+
         this.physics.add.collider(this.player, this.platforms);
-        this.physics.add.collider(this.beers, this.platforms);
-        this.physics.add.collider(this.sausages, this.platforms);
-        //this.physics.add.collider(this.bombs, this.platforms);
-
-        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.player, this.beers, this.collectBeer, null, this);
-        this.physics.add.overlap(this.player, this.sausages, this.collectSausage, null, this);
-
-        //this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
     }
 
     update () {
@@ -129,13 +129,16 @@ export class AbstractLevelScene extends Phaser.Scene {
         var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100)) || this.cursors.left.isDown;
         var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
         
+        //var playerOnGround = this.player.body.touching.down;
+        var playerOnGround = (this.player.body.velocity.y == 0);
+
         if (leftClick && (!this.waitForInputRelease)) {
-            this.player.setVelocityX(-160);
+            this.player.setVelocityX(-this.speedX);
             this.player.anims.play('left', true);
             if (this.lastInput == 1) {
-                if (this.player.body.touching.down || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-330);
-                    if (!this.player.body.touching.down) {
+                if (playerOnGround || this.doubleJumpAllowed) {
+                    this.player.setVelocityY(-this.speedY);
+                    if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
                     }
                 }
@@ -144,12 +147,12 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.waitForInputRelease = true;
             
         } else if (rightClick && (!this.waitForInputRelease)) {
-            this.player.setVelocityX(160);
+            this.player.setVelocityX(this.speedX);
             this.player.anims.play('right', true);
             if (this.lastInput == 2) {
-                if (this.player.body.touching.down || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-330);
-                    if (!this.player.body.touching.down) {
+                if (playerOnGround || this.doubleJumpAllowed) {
+                    this.player.setVelocityY(-this.speedY);
+                    if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
                     }
                 }
@@ -161,7 +164,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             //this.player.anims.play('turn');
         }
 
-        if (this.player.body.touching.down) {
+        if (playerOnGround) {
             this.doubleJumpAllowed = true;
         }
 
@@ -174,20 +177,22 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
     }
 
-    collectBeer(player, beer) {
-        beer.disableBody(true, true);
-        this.collectedBeers++;
-        this.collectedBeersScoreText.setText(this.collectedBeers);
-    }
-
-    collectSausage(player, sausage) {
-        sausage.disableBody(true, true);
-        this.collectedSausages++;
-        this.collectedSausagesScoreText.setText(this.collectedSausages);
-    }
-
-    hitBomb(player, bomb) {
-        this.gameIsOver();
+    collectItem(player, item) {
+        
+        if (item.alpha == 0) {
+            return;
+        }
+        if (item.index == 14) { // corona
+            this.gameIsOver();
+        } else if (item.index == 26) { // beer
+            item.alpha = 0;
+            this.collectedBeers++;
+            this.collectedBeersScoreText.setText(this.collectedBeers);
+        } else if (item.index == 38) { // sausage
+            item.alpha = 0;
+            this.collectedSausages++;
+            this.collectedSausagesScoreText.setText(this.collectedSausages);
+        }
     }
 
     gameIsOver() {

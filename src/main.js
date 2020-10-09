@@ -3,6 +3,7 @@
 import {LoadScene} from "./scenes/LoadScene.js";
 import {MenuScene} from "./scenes/MenuScene.js";
 import {Level1Scene} from "./scenes/Level1Scene.js";
+import {Level2Scene} from "./scenes/Level2Scene.js";
 
 const roundHalf = num => Math.round(num * 2) / 2;
 
@@ -38,7 +39,7 @@ let config = {
         }
     },
     scene: [
-        LoadScene, MenuScene, Level1Scene
+        LoadScene, MenuScene, Level1Scene, Level2Scene
     ]
 };
 

@@ -24,8 +24,8 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('play_icon', './assets/play_icon.png');
         this.load.image('game_over', './assets/game_over.png');
 
-        //this.load.tilemapCSV('Level2', './assets/Level2.csv');
         this.load.image('tiles', './assets/tiles_spritesheet.png');
+        this.load.tilemapTiledJSON('Level1', './assets/level1.json');
         this.load.tilemapTiledJSON('Level2', './assets/Level2.json');
 
         this.load.spritesheet('dude', '../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
@@ -35,11 +35,6 @@ export class LoadScene extends Phaser.Scene {
                 color: 0xffffff // white
             }
         });
-
-        // simulate large load: TODO: remove
-        //for(let i = 0; i < 100; i++) {
-        //    this.load.image('star' + i, './src/assets/star.png');
-        //}
         
         this.load.on("progress", (percent) => {
             loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
