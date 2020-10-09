@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="80" height="10" tilewidth="72" tileheight="72" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="Downloads/tiles_spritesheet.tsx"/>
+ <tileset firstgid="1" source="tiles_spritesheet.tsx"/>
  <imagelayer id="2" name="Image Layer 1">
-  <image source="Downloads/sky.png" width="5000" height="720"/>
+  <image source="../../dist/assets/sky.png" width="5000" height="720"/>
  </imagelayer>
  <layer id="1" name="Tile Layer 1" width="80" height="10">
   <data encoding="csv">
