@@ -147,7 +147,7 @@ export class Level1Scene extends Phaser.Scene {
             this.player.anims.play('turn');
         } */
         
-        if (this.input.activePointer.isDown && (this.input.activePointer.position.x < 50) && (!this.waitForInputRelease)) {
+        if (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100) && (!this.waitForInputRelease)) {
             if (this.lastInput != 1) {
                 this.player.setVelocityX(-160);
                 this.player.anims.play('left', true);
@@ -159,7 +159,7 @@ export class Level1Scene extends Phaser.Scene {
             this.lastInput = 1;
             this.waitForInputRelease = true;
             
-        } else if (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1230) && (!this.waitForInputRelease)) {
+        } else if (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180) && (!this.waitForInputRelease)) {
             if (this.lastInput != 2) {
                 this.player.setVelocityX(160);
                 this.player.anims.play('right', true);
