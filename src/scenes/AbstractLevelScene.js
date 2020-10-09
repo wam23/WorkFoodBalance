@@ -2,7 +2,7 @@ import { CST } from "../CST.js"
 
 export class AbstractLevelScene extends Phaser.Scene {
 
-    constructor(levelname, bgimage) {
+    constructor(levelname, nextlevel, bgimage) {
         super({
             key: levelname
         });
@@ -11,6 +11,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.fastMode = true;
 
         this.backgroundimage = bgimage;
+        this.nextlevel = nextlevel;
 
         this.levelWidth = 15000;
 
@@ -156,7 +157,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE);
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU});
             }
             return;
         } else {
@@ -166,7 +167,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.levelHasEnded) {
             this.levelEndedTimer++;
             if (this.levelEndedTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE);
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel});
             }
             return;
         } else {
