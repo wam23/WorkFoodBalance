@@ -14,9 +14,19 @@ export class Level1Scene extends AbstractLevelScene {
     create () {
         super.create();
 
-        this.platforms.create(600, 520, 'platform');
-        this.platforms.create(50, 670, 'platform');
-        this.platforms.create(750, 620, 'platform');
+        // this.platforms.create(600, 520, 'platform');
+        // this.platforms.create(50, 670, 'platform');
+        // this.platforms.create(750, 620, 'platform');
+
+        var map = this.make.tilemap({
+            key: 'Level2',
+            tileWidth: 72,
+            tileHeight: 72
+        });
+        map.setCollision([3, 9, 44, 81, 69]);
+        var tileset = map.addTilesetImage('tiles');
+        this.layer = map.createStaticLayer('layer', tileset);
+        this.physics.add.collider(this.player, this.layer);
 
         this.beers = this.physics.add.group({
             key: 'beer',
