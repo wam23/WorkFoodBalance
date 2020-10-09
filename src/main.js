@@ -5,6 +5,7 @@ import {MenuScene} from "./scenes/MenuScene.js";
 import {ScoreScreen} from "./scenes/ScoreScene.js";
 import {Level1Scene} from "./scenes/Level1Scene.js";
 import {Level2Scene} from "./scenes/Level2Scene.js";
+import {Level3Scene} from "./scenes/Level3Scene.js";
 
 const roundHalf = num => Math.round(num * 2) / 2;
 
@@ -40,7 +41,7 @@ let config = {
         }
     },
     scene: [
-        LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene
+        LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene
     ]
 };
 

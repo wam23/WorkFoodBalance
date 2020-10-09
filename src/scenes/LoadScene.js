@@ -28,6 +28,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('tiles', './assets/tiles_spritesheet.png');
         this.load.tilemapTiledJSON('Level1', './assets/level1.json');
         this.load.tilemapTiledJSON('Level2', './assets/Level2.json');
+        this.load.tilemapTiledJSON('Level2', './assets/level3.json');
 
         this.load.spritesheet('dude', '../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 
