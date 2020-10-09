@@ -16,7 +16,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.levelWidth = 15000;
 
         this.gameOver = false;
-        this.gameOverIcon;
         this.gameOverTimer = 0;
 
         this.levelHasEnded = false;
@@ -121,8 +120,6 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.gameOverIcon = this.physics.add.sprite(300, 300, 'game_over');
-        this.gameOverIcon.setVisible(false);
         this.gameOver = false;
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -335,8 +332,6 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     gameIsOver() {
         if (!this.cheatMode) {
-            this.gameOverIcon.setVisible(true);
-
             this.physics.pause();
             this.player.setTint(0xff0000);
             this.player.anims.play('turn');
