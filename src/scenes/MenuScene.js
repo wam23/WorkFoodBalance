@@ -14,9 +14,7 @@ export class MenuScene extends Phaser.Scene {
 
     create () {
         //  A simple background for our game
-        this.add.image(640, 360, 'sky');
-        this.add.image(32, 32, 'star'); // logo
-        this.add.image(64, 32, 'star'); // logo
+        this.add.image(2500, 360,"sky");
 
         let playIcon = this.add.sprite(300, 400, 'play_icon');
         playIcon.setVisible(false);
