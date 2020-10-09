@@ -150,6 +150,8 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     update() {
+        var score = this.collectedCoins + this.collectedBeers + this.collectedSausages + this.collectedVuvuzelas + this.collectedBalls;
+
         if (this.escKey.isDown) {
             this.cheatMode = false;
             this.gameIsOver();
@@ -157,7 +159,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU});
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, score: score});
             }
             return;
         } else {
@@ -167,7 +169,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.levelHasEnded) {
             this.levelEndedTimer++;
             if (this.levelEndedTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel});
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, score: score});
             }
             return;
         } else {
