@@ -146,8 +146,11 @@ export class Level1Scene extends Phaser.Scene {
             this.player.setVelocityX(0);
             this.player.anims.play('turn');
         } */
+
+        var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100)) || this.cursors.left.isDown;
+        var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
         
-        if (this.input.activePointer.isDown && (this.input.activePointer.position.x < 50) && (!this.waitForInputRelease)) {
+        if (leftClick && (!this.waitForInputRelease)) {
             if (this.lastInput != 1) {
                 this.player.setVelocityX(-160);
                 this.player.anims.play('left', true);
@@ -159,7 +162,7 @@ export class Level1Scene extends Phaser.Scene {
             this.lastInput = 1;
             this.waitForInputRelease = true;
             
-        } else if (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1230) && (!this.waitForInputRelease)) {
+        } else if (rightClick && (!this.waitForInputRelease)) {
             if (this.lastInput != 2) {
                 this.player.setVelocityX(160);
                 this.player.anims.play('right', true);
@@ -175,7 +178,7 @@ export class Level1Scene extends Phaser.Scene {
             //this.player.anims.play('turn');
         }
 
-        if (!this.input.activePointer.isDown) {
+        if (!(leftClick || rightClick)) {
             this.waitForInputRelease = false;
         }
     }
