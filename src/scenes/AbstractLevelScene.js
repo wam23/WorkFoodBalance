@@ -72,7 +72,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.platforms = this.physics.add.staticGroup();
 
         for (var i = 0; i < (this.levelWidth / 100); i++) {
-            this.platforms.create(50 + (i * 100), 704, "ground");
+            this.platforms.create(50 + (i * 100), 715, "ground");
         }
 
         // The player and its settings
@@ -132,6 +132,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectCoinSound = this.sound.add('collect_coin');
         this.collectVuvuzelaSound = this.sound.add('collect_vuvuzela');
         this.collectBallSound = this.sound.add('collect_ball');
+        this.collectLetterSound = this.sound.add('collect_letter');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
@@ -272,30 +273,37 @@ export class AbstractLevelScene extends Phaser.Scene {
             case 63: // F
                 item.alpha = 0;
                 this.game.forever[0] = 'F';
+                this.collectLetterSound.play();
                 break;
             case 64: // O
                 item.alpha = 0;
                 this.game.forever[1] = 'O';
+                this.collectLetterSound.play();
                 break;
             case 65: // R
                 item.alpha = 0;
                 this.game.forever[2] = 'R';
+                this.collectLetterSound.play();
                 break;
             case 66: // E
                 item.alpha = 0;
                 this.game.forever[3] = 'E';
+                this.collectLetterSound.play();
                 break;
             case 67: // V
                 item.alpha = 0;
                 this.game.forever[4] = 'V';
+                this.collectLetterSound.play();
                 break;
             case 75: // E
                 item.alpha = 0;
                 this.game.forever[5] = 'E';
+                this.collectLetterSound.play();
                 break;
             case 76: // R
                 item.alpha = 0;
                 this.game.forever[6] = 'R';
+                this.collectLetterSound.play();
                 break;
             case 70: // level end
                 this.levelEnded();
