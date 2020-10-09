@@ -21,6 +21,8 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('bomb', './assets/bomb.png');
         this.load.image('beer', './assets/beer.png');
         this.load.image('sausage', './assets/sausage.png');
+        this.load.image('vuvuzela', './assets/vuvuzela.png');
+        this.load.image('ball', './assets/ball.png');
 
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');
@@ -36,6 +38,8 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('collect_beer', './assets/sounds/collect_beer.mp3');
         this.load.audio('collect_sausage', './assets/sounds/collect_sausage.mp3');
         this.load.audio('collect_coin', './assets/sounds/collect_coin.mp3');
+        this.load.audio('collect_vuvuzela', './assets/sounds/collect_vuvuzela.mp3');
+        this.load.audio('collect_ball', './assets/sounds/collect_ball.mp3');
         this.load.audio('jump', './assets/sounds/jump.mp3');
         this.load.audio('gameover', './assets/sounds/gameover.mp3');
         this.load.audio('levelend', './assets/sounds/win.mp3');
