@@ -135,7 +135,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.scene.start(CST.SCENES.MENU);
+                this.scene.start(CST.SCENES.SCORE);
             }
             return;
         } else {
