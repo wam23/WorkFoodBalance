@@ -34,11 +34,17 @@ export class Level1Scene extends AbstractLevelScene {
         this.physics.add.collider(this.player, this.collectibleLayer);
 
         this.beers = new Phaser.Physics.Arcade.Group();
-        this.collectibleLayer.tileset.forEach(tile => {
-            if (tile.containsTileIndex(54)) {
-                //console.log("jippie");
+        
+        this.collectibleLayer.tileset.forEach(tileset => {
+            if (tileset.containsTileIndex(37)) {
+                //console.log("37 jaaaa");
             }
+            var cg = tileset.getTileCollisionGroup(37);
+            //console.log(cg);
         });
+
+        /* var tmp = map.filterTiles(tile => tile.index == 13);
+        console.log(tmp); */
         
         this.beers = this.physics.add.group({
             key: 'beer',
