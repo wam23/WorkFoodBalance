@@ -23,11 +23,23 @@ export class Level1Scene extends AbstractLevelScene {
             tileWidth: 72,
             tileHeight: 72
         });
-        map.setCollision([3, 9, 44, 81, 69]);
-        var tileset = map.addTilesetImage('tiles');
-        this.layer = map.createStaticLayer('layer', tileset);
+        
+        var tileset = map.addTilesetImage('tiles_spritesheet', 'tiles');
+        this.layer = map.createStaticLayer('Tile Layer 1', tileset);
+        this.layer.setCollisionByExclusion(-1, true);
         this.physics.add.collider(this.player, this.layer);
 
+        this.collectibleLayer = map.createDynamicLayer('Collectibles', tileset);
+        this.collectibleLayer.setCollisionByExclusion(-1, true);
+        this.physics.add.collider(this.player, this.collectibleLayer);
+
+        this.beers = new Phaser.Physics.Arcade.Group();
+        this.collectibleLayer.tileset.forEach(tile => {
+            if (tile.containsTileIndex(54)) {
+                //console.log("jippie");
+            }
+        });
+        
         this.beers = this.physics.add.group({
             key: 'beer',
             repeat: 11,
@@ -45,6 +57,9 @@ export class Level1Scene extends AbstractLevelScene {
         this.sausages.children.iterate(function (child) {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
+
+        this.physics.add.collider(this.beers, this.layer);
+        this.physics.add.collider(this.sausages, this.layer);
 
         this.afterCreate();
     }
