@@ -7,6 +7,8 @@ export class Level1Scene extends Phaser.Scene {
             key: CST.SCENES.LEVEL1
         });
 
+        this.levelWidth = 10;
+
         this.player;
         this.stars;
         this.bombs;
@@ -26,14 +28,34 @@ export class Level1Scene extends Phaser.Scene {
 
     create () {
         //  A simple background for our game
-        this.add.image(400, 300, 'sky');
+        //this.add.image(640, 360, 'sky');
+        //this.add.image(1920, 360, 'sky');
 
+        //this.background = this.add.image(this.width / 2, this.height / 2,"sky");
+        //this.background = this.add.image(640, 360,"sky");
+        //this.add.image(1920, 360,"sky");
+        for(var i = 0; i < this.levelWidth; i++) {
+            this.add.image(640 + (1280 * i), 360,"sky");
+        }
+        
+        this.cameras.main.setBounds(0, 0, this.width, this.height);
+        this.physics.world.setBounds(0, 0, this.width, this.height);
+
+        //  Mash 4 images together to create our background
+        //this.add.image(0, 0, 'sky').setOrigin(0);
+        //this.add.image(this.width, 0, 'sky').setOrigin(0).setFlipX(true);
+        
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        //this.ground = this.platforms.create(400, 568, "ground").setScale(5).refreshBody();
+        //this.ground = this.platforms.create(400, 568, "ground").setScale(5).refreshBody();
+        for(var i = 0; i < this.levelWidth; i++) {
+            this.platforms.create(640 + (1280 * i), 568, "ground");
+        }
+        
 
         //  Now let's create some ledges
         this.platforms.create(600, 400, 'ground');
@@ -46,6 +68,9 @@ export class Level1Scene extends Phaser.Scene {
         //  Player physics properties. Give the little guy a slight bounce.
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+
+        //this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+        this.cameras.main.startFollow(this.player, false, 1, 0);
 
         //  Our player animations, turning, walking left and walking right.
         this.anims.create({
