@@ -44,3 +44,4 @@ let config = {
 };
 
 let game = new Phaser.Game(config);
+game.forever = [];
