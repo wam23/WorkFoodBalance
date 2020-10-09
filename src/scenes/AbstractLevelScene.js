@@ -8,6 +8,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         });
 
         this.cheatMode = true;
+        this.fastMode = true;
 
         this.backgroundimage = bgimage;
 
@@ -16,6 +17,9 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.gameOver = false;
         this.gameOverIcon;
         this.gameOverTimer = 0;
+
+        this.levelHasEnded = false;
+        this.levelEndedTimer = 0;
 
         this.escKey;
 
@@ -41,8 +45,12 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.doubleJumpAllowed = false;
 
-        this.speedX = 250 // 250;
+        this.speedX = 250;
         this.speedY = 330;
+
+        if (this.fastMode) {
+            this.speedX = 600;
+        }
     }
 
     preload() {
@@ -142,6 +150,16 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.gameOverTimer = 0;
         }
 
+        if (this.levelHasEnded) {
+            this.levelEndedTimer++;
+            if (this.levelEndedTimer > 150) {
+                this.scene.start(CST.SCENES.SCORE);
+            }
+            return;
+        } else {
+            this.levelEndedTimer = 0;
+        }
+
         var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100)) || this.cursors.left.isDown;
         var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
 
@@ -209,7 +227,7 @@ export class AbstractLevelScene extends Phaser.Scene {
                 break;
             case 14: // Corona
                 this.gameoverSound.play();
-                this.gameIsOver()
+                this.gameIsOver();
                 break;
             case 26: // Beer
                 item.alpha = 0;
@@ -252,10 +270,10 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.game.forever[6] = 'R';
                 break;
             case 70: // level end
-                
+                this.levelEnded();
                 break;
             case 82: // level end
-                
+                this.levelEnded();
                 break;
         }
     }
@@ -270,6 +288,14 @@ export class AbstractLevelScene extends Phaser.Scene {
 
             this.gameOver = true;
         }
+    }
+
+    levelEnded() {
+        this.physics.pause();
+        this.player.setTint(0x00ff00);
+        this.player.anims.play('turn');
+
+        this.levelHasEnded = true;
     }
 
 }
