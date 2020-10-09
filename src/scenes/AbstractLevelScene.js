@@ -7,8 +7,8 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
-        this.cheatMode = true;
-        this.fastMode = true;
+        this.cheatMode = false;
+        this.fastMode = false;
 
         this.backgroundimage = bgimage;
 
@@ -121,6 +121,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectCoinSound = this.sound.add('collect_coin');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
+        this.levelEndSound = this.sound.add('levelend');
     }
 
     afterCreate() {
@@ -294,6 +295,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0x00ff00);
         this.player.anims.play('turn');
+        this.levelEndSound.play();
 
         this.levelHasEnded = true;
     }
