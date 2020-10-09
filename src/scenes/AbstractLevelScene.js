@@ -30,6 +30,8 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
+
+        this.doubleJumpAllowed = false;
     }
 
     preload () {
@@ -55,9 +57,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
         
-        //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounceX(0);
-        this.player.setBounceY(0.2);
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.startFollow(this.player, false, 1, 0);
@@ -131,24 +130,28 @@ export class AbstractLevelScene extends Phaser.Scene {
         var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
         
         if (leftClick && (!this.waitForInputRelease)) {
-            if (this.lastInput != 1) {
-                this.player.setVelocityX(-160);
-                this.player.anims.play('left', true);
-            } else if (this.lastInput == 1) {
-                if (this.player.body.touching.down) {
+            this.player.setVelocityX(-160);
+            this.player.anims.play('left', true);
+            if (this.lastInput == 1) {
+                if (this.player.body.touching.down || this.doubleJumpAllowed) {
                     this.player.setVelocityY(-330);
+                    if (!this.player.body.touching.down) {
+                        this.doubleJumpAllowed = false;
+                    }
                 }
             }
             this.lastInput = 1;
             this.waitForInputRelease = true;
             
         } else if (rightClick && (!this.waitForInputRelease)) {
-            if (this.lastInput != 2) {
-                this.player.setVelocityX(160);
-                this.player.anims.play('right', true);
-            } else if (this.lastInput == 2) {
-                if (this.player.body.touching.down) {
+            this.player.setVelocityX(160);
+            this.player.anims.play('right', true);
+            if (this.lastInput == 2) {
+                if (this.player.body.touching.down || this.doubleJumpAllowed) {
                     this.player.setVelocityY(-330);
+                    if (!this.player.body.touching.down) {
+                        this.doubleJumpAllowed = false;
+                    }
                 }
             }
             this.lastInput = 2;
@@ -158,8 +161,16 @@ export class AbstractLevelScene extends Phaser.Scene {
             //this.player.anims.play('turn');
         }
 
+        if (this.player.body.touching.down) {
+            this.doubleJumpAllowed = true;
+        }
+
         if (!(leftClick || rightClick)) {
             this.waitForInputRelease = false;
+        }
+
+        if (this.player.body.velocity.x == 0) {
+            this.player.anims.play('turn');
         }
     }
 
