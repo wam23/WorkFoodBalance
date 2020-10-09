@@ -8,6 +8,10 @@ export class ScoreScreen extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.nextlevel = data.nextlevel;
+    }
+
     create () {
         this.add.image(2500, 360,"sky_level1");
 
@@ -18,7 +22,7 @@ export class ScoreScreen extends Phaser.Scene {
         nextButton.setInteractive();
 
         nextButton.on("pointerup", () => {
-            this.scene.start(CST.SCENES.LEVEL2);
+            this.scene.start(this.nextlevel);
         });
     }
 
