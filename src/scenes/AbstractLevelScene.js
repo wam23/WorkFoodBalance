@@ -77,6 +77,11 @@ export class AbstractLevelScene extends Phaser.Scene {
         // The player and its settings
         this.player = this.physics.add.sprite(100, 100, 'dude');
 
+        this.player.body.offset.x = 5;
+        this.player.body.offset.y = 5;
+        this.player.body.width = 62;
+        this.player.body.height = 62;
+
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.startFollow(this.player, false, 1, 0);
