@@ -136,6 +136,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
+        this.sorrySound = this.sound.add('sorry');
     }
 
     afterCreate() {
@@ -308,6 +309,16 @@ export class AbstractLevelScene extends Phaser.Scene {
                 break;
             case 82: // level end
                 this.levelEnded();
+                break;
+            case 143: // hooligan
+                this.player.setVelocityX(-this.player.body.velocity.x);
+                this.player.setVelocityY(-this.player.body.velocity.y);
+                this.sorrySound.play();
+                break;
+            case 155: // hooligan
+                this.player.setVelocityX(-this.player.body.velocity.x);
+                this.player.setVelocityY(-this.player.body.velocity.y);
+                this.sorrySound.play();
                 break;
         }
     }
