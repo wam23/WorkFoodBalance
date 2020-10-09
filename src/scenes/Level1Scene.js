@@ -27,40 +27,24 @@ export class Level1Scene extends Phaser.Scene {
     }
 
     create () {
-        //  A simple background for our game
-        //this.add.image(640, 360, 'sky');
-        //this.add.image(1920, 360, 'sky');
-
-        //this.background = this.add.image(this.width / 2, this.height / 2,"sky");
-        //this.background = this.add.image(640, 360,"sky");
-        //this.add.image(1920, 360,"sky");
         for(var i = 0; i < this.levelWidth; i++) {
             this.add.image(640 + (1280 * i), 360,"sky");
         }
         
-        this.cameras.main.setBounds(0, 0, this.width, this.height);
-        this.physics.world.setBounds(0, 0, this.width, this.height);
+        this.cameras.main.setBounds(0, 0, 1280 * this.levelWidth, 720);
+        this.physics.world.setBounds(0, 0, 1280 * this.levelWidth, 720);
 
-        //  Mash 4 images together to create our background
-        //this.add.image(0, 0, 'sky').setOrigin(0);
-        //this.add.image(this.width, 0, 'sky').setOrigin(0).setFlipX(true);
-        
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        //this.ground = this.platforms.create(400, 568, "ground").setScale(5).refreshBody();
-        //this.ground = this.platforms.create(400, 568, "ground").setScale(5).refreshBody();
         for(var i = 0; i < this.levelWidth; i++) {
-            this.platforms.create(640 + (1280 * i), 568, "ground");
+            this.platforms.create(640 + (1280 * i), 704, "ground");
         }
         
-
         //  Now let's create some ledges
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');
+        this.platforms.create(600, 400, 'platform');
+        this.platforms.create(50, 250, 'platform');
+        this.platforms.create(750, 220, 'platform');
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
