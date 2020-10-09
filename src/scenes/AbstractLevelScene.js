@@ -1,7 +1,7 @@
 import { CST } from "../CST.js"
 
 export class AbstractLevelScene extends Phaser.Scene {
-    
+
     constructor(levelname) {
         super({
             key: levelname
@@ -23,7 +23,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.cursors;
 
         this.map;
-        
+
         this.lastInput = 0;
         this.waitForInputRelease = false;
 
@@ -39,13 +39,13 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.speedY = 330;
     }
 
-    preload () {
-        
+    preload() {
+
     }
 
-    create () {
-        this.add.image(this.levelWidth / 2, 360,"sky");
-        
+    create() {
+        this.add.image(this.levelWidth / 2, 360, "sky");
+
         this.cameras.main.setBounds(0, 0, this.levelWidth, 720);
         this.physics.world.setBounds(0, 0, this.levelWidth, 720);
 
@@ -55,10 +55,10 @@ export class AbstractLevelScene extends Phaser.Scene {
         for (var i = 0; i < (this.levelWidth / 100); i++) {
             this.platforms.create(50 + (i * 100), 704, "ground");
         }
-        
+
         // The player and its settings
         this.player = this.physics.add.sprite(100, 100, 'dude');
-        
+
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.startFollow(this.player, false, 1, 0);
@@ -73,7 +73,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
+            frames: [{ key: 'dude', frame: 4 }],
             frameRate: 20
         });
 
@@ -117,7 +117,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.platforms);
     }
 
-    update () {
+    update() {
         if (this.escKey.isDown) {
             this.gameIsOver();
         }
@@ -133,7 +133,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100)) || this.cursors.left.isDown;
         var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
-        
+
         //var playerOnGround = this.player.body.touching.down;
         var playerOnGround = (this.player.body.velocity.y == 0);
 
@@ -151,7 +151,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             }
             this.lastInput = 1;
             this.waitForInputRelease = true;
-            
+
         } else if (rightClick && (!this.waitForInputRelease)) {
             this.player.setVelocityX(this.speedX);
             this.player.anims.play('right', true);
@@ -185,23 +185,55 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     collectItem(player, item) {
-        
         if (item.alpha == 0) {
             return;
         }
-        if (item.index == 14) { // corona
-            this.gameoverSound.play();
-            this.gameIsOver();
-        } else if (item.index == 26) { // beer
-            item.alpha = 0;
-            this.collectedBeers++;
-            this.collectedBeersScoreText.setText(this.collectedBeers);
-            this.collectBeerSound.play();
-        } else if (item.index == 38) { // sausage
-            item.alpha = 0;
-            this.collectedSausages++;
-            this.collectedSausagesScoreText.setText(this.collectedSausages);
-            this.collectSausageSound.play();
+
+        switch (item.index) {
+            case 14: // Corona
+                this.gameoverSound.play();
+                this.gameIsOver()
+                break;
+            case 26: // Beer
+                item.alpha = 0;
+                this.collectedBeers++;
+                this.collectedBeersScoreText.setText(this.collectedBeers);
+                this.collectBeerSound.play();
+                break;
+            case 38: // Wurscht
+                item.alpha = 0;
+                this.collectedSausages++;
+                this.collectedSausagesScoreText.setText(this.collectedSausages);
+                this.collectSausageSound.play();
+                break;
+            case 63: // F
+                item.alpha = 0;
+                this.game.forever[0] = 'F';
+                break;
+            case 64: // O
+                item.alpha = 0;
+                this.game.forever[1] = 'O';
+                break;
+            case 65: // R
+                item.alpha = 0;
+                this.game.forever[2] = 'R';
+                break;
+            case 66: // E
+                item.alpha = 0;
+                this.game.forever[3] = 'E';
+                break;
+            case 67: // V
+                item.alpha = 0;
+                this.game.forever[4] = 'V';
+                break;
+            case 75: // E
+                item.alpha = 0;
+                this.game.forever[5] = 'E';
+                break;
+            case 76: // R
+                item.alpha = 0;
+                this.game.forever[6] = 'R';
+                break;
         }
     }
 
