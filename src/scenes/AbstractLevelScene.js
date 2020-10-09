@@ -39,10 +39,14 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedSausages = 0;
         this.collectedBeers = 0;
         this.collectedCoins = 0;
+        this.collectedVuvuzelas = 0;
+        this.collectedBalls = 0;
 
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
         this.collectedCoinsScoreText = "";
+        this.collectedVuvuzelasScoreText = "";
+        this.collectedBallsScoreText = "";
 
         this.doubleJumpAllowed = false;
 
@@ -105,9 +109,15 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedSausagesScoreText.setScrollFactor(0);
         this.collectedCoinsScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000' });
         this.collectedCoinsScoreText.setScrollFactor(0);
+        this.collectedVuvuzelasScoreText = this.add.text(75, 230, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedVuvuzelasScoreText.setScrollFactor(0);
+        this.collectedBallsScoreText = this.add.text(75, 300, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedBallsScoreText.setScrollFactor(0);
         this.add.image(35, 35, 'beer').setScrollFactor(0);
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
         this.add.image(35, 175, 'coin').setScrollFactor(0);
+        this.add.image(35, 245, 'vuvuzela').setScrollFactor(0);
+        this.add.image(35, 315, 'ball').setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -120,6 +130,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectBeerSound = this.sound.add('collect_beer');
         this.collectSausageSound = this.sound.add('collect_sausage');
         this.collectCoinSound = this.sound.add('collect_coin');
+        this.collectVuvuzelaSound = this.sound.add('collect_vuvuzela');
+        this.collectBallSound = this.sound.add('collect_ball');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
@@ -231,11 +243,23 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.gameoverSound.play();
                 this.gameIsOver();
                 break;
+            case 25: // Ball
+                item.alpha = 0;
+                this.collectedBalls++;
+                this.collectedBallsScoreText.setText(this.collectedBalls);
+                this.collectBallSound.play();
+                break;
             case 26: // Beer
                 item.alpha = 0;
                 this.collectedBeers++;
                 this.collectedBeersScoreText.setText(this.collectedBeers);
                 this.collectBeerSound.play();
+                break;
+            case 37: // Ball
+                item.alpha = 0;
+                this.collectedVuvuzelas++;
+                this.collectedVuvuzelasScoreText.setText(this.collectedVuvuzelas);
+                this.collectVuvuzelaSound.play();
                 break;
             case 38: // Wurscht
                 item.alpha = 0;
