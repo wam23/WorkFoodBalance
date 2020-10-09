@@ -20,6 +20,9 @@ export class Level1Scene extends Phaser.Scene {
         this.gameOverIcon;
         this.gameOverTimer = 0;
         this.escKey;
+
+        this.lastInput = 0;
+        this.waitForInputRelease = false;
     }
 
     preload () {
@@ -48,9 +51,10 @@ export class Level1Scene extends Phaser.Scene {
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
-
+        
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.2);
+        this.player.setBounceX(0);
+        this.player.setBounceY(0.2);
         this.player.setCollideWorldBounds(true);
 
         //this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
@@ -130,24 +134,49 @@ export class Level1Scene extends Phaser.Scene {
             this.gameOverTimer = 0;
         }
 
-        if (this.cursors.left.isDown) {
+        /* if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
-
             this.player.anims.play('left', true);
         }
         else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
-
             this.player.anims.play('right', true);
         }
         else {
             this.player.setVelocityX(0);
-
             this.player.anims.play('turn');
+        } */
+        
+        if (this.input.activePointer.isDown && (this.input.activePointer.position.x < 50) && (!this.waitForInputRelease)) {
+            if (this.lastInput != 1) {
+                this.player.setVelocityX(-160);
+                this.player.anims.play('left', true);
+            } else if (this.lastInput == 1) {
+                if (this.player.body.touching.down) {
+                    this.player.setVelocityY(-330);
+                }
+            }
+            this.lastInput = 1;
+            this.waitForInputRelease = true;
+            
+        } else if (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1230) && (!this.waitForInputRelease)) {
+            if (this.lastInput != 2) {
+                this.player.setVelocityX(160);
+                this.player.anims.play('right', true);
+            } else if (this.lastInput == 2) {
+                if (this.player.body.touching.down) {
+                    this.player.setVelocityY(-330);
+                }
+            }
+            this.lastInput = 2;
+            this.waitForInputRelease = true;
+        } else {
+            //this.player.setVelocityX(0);
+            //this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
+        if (!this.input.activePointer.isDown) {
+            this.waitForInputRelease = false;
         }
     }
 
