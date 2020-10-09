@@ -107,15 +107,15 @@ export class AbstractLevelScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.collectedBeersScoreText = this.add.text(75, 20, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedBeersScoreText = this.add.text(75, 20, '0', { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 3 });
         this.collectedBeersScoreText.setScrollFactor(0);
-        this.collectedSausagesScoreText = this.add.text(75, 90, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedSausagesScoreText = this.add.text(75, 90, '0', { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 3 });
         this.collectedSausagesScoreText.setScrollFactor(0);
-        this.collectedCoinsScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedCoinsScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 3 });
         this.collectedCoinsScoreText.setScrollFactor(0);
-        this.collectedVuvuzelasScoreText = this.add.text(75, 230, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedVuvuzelasScoreText = this.add.text(75, 230, '0', { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 3 });
         this.collectedVuvuzelasScoreText.setScrollFactor(0);
-        this.collectedBallsScoreText = this.add.text(75, 300, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedBallsScoreText = this.add.text(75, 300, '0', { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 3 });
         this.collectedBallsScoreText.setScrollFactor(0);
         this.add.image(35, 35, 'beer').setScrollFactor(0);
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
