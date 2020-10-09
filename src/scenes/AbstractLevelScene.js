@@ -55,7 +55,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
         
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.player = this.physics.add.sprite(100, 100, 'dude');
         
         this.player.setCollideWorldBounds(true);
 
