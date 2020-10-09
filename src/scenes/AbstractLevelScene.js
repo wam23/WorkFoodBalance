@@ -136,6 +136,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
+        this.sorrySound = this.sound.add('sorry');
     }
 
     afterCreate() {
@@ -151,6 +152,8 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     update() {
+        var score = this.collectedCoins + this.collectedBeers + this.collectedSausages + this.collectedVuvuzelas + this.collectedBalls;
+
         if (this.escKey.isDown) {
             this.cheatMode = false;
             this.gameIsOver();
@@ -158,7 +161,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU});
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, score: score});
             }
             return;
         } else {
@@ -168,7 +171,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.levelHasEnded) {
             this.levelEndedTimer++;
             if (this.levelEndedTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel});
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, score: score});
             }
             return;
         } else {
@@ -308,6 +311,16 @@ export class AbstractLevelScene extends Phaser.Scene {
                 break;
             case 82: // level end
                 this.levelEnded();
+                break;
+            case 143: // hooligan
+                this.player.setVelocityX(-this.player.body.velocity.x);
+                this.player.setVelocityY(-this.player.body.velocity.y);
+                this.sorrySound.play();
+                break;
+            case 155: // hooligan
+                this.player.setVelocityX(-this.player.body.velocity.x);
+                this.player.setVelocityY(-this.player.body.velocity.y);
+                this.sorrySound.play();
                 break;
         }
     }
