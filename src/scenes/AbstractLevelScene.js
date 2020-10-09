@@ -7,7 +7,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
-        this.levelWidth = 10;
+        this.levelWidth = 4;
 
         this.gameOver = false;
         this.gameOverIcon;
@@ -37,12 +37,13 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     create () {
-        for(var i = 0; i < this.levelWidth; i++) {
+        /* for(var i = 0; i < this.levelWidth; i++) {
             this.add.image(640 + (1280 * i), 360,"sky");
-        }
+        } */
+        this.add.image(2500, 360,"sky");
         
-        this.cameras.main.setBounds(0, 0, 1280 * this.levelWidth, 720);
-        this.physics.world.setBounds(0, 0, 1280 * this.levelWidth, 720);
+        this.cameras.main.setBounds(0, 0, 5000, 720);
+        this.physics.world.setBounds(0, 0, 5000 * this.levelWidth, 720);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
@@ -82,8 +83,12 @@ export class AbstractLevelScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.collectedBeersScoreText = this.add.text(16, 16, 'Beers: 0', { fontSize: '32px', fill: '#000' });
-        this.collectedSausagesScoreText = this.add.text(16, 48, 'Sausages: 0', { fontSize: '32px', fill: '#000' });
+        this.collectedBeersScoreText = this.add.text(50, 19, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedSausagesScoreText = this.add.text(50, 57, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedBeersScoreText.setScrollFactor(0);
+        this.collectedSausagesScoreText.setScrollFactor(0);
+        this.add.image(32, 32, 'beer').setScrollFactor(0);
+        this.add.image(32, 70, 'sausage').setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -161,13 +166,13 @@ export class AbstractLevelScene extends Phaser.Scene {
     collectBeer(player, beer) {
         beer.disableBody(true, true);
         this.collectedBeers++;
-        this.collectedBeersScoreText.setText('Beers: ' + this.collectedBeers);
+        this.collectedBeersScoreText.setText(this.collectedBeers);
     }
 
     collectSausage(player, sausage) {
         sausage.disableBody(true, true);
         this.collectedSausages++;
-        this.collectedSausagesScoreText.setText('Sausages: ' + this.collectedSausages);
+        this.collectedSausagesScoreText.setText(this.collectedSausages);
     }
 
     hitBomb(player, bomb) {
