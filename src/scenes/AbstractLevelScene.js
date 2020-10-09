@@ -37,11 +37,11 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
-        this.collectedCoinScoreText = "";
+        this.collectedCoinsScoreText = "";
 
         this.doubleJumpAllowed = false;
 
-        this.speedX = 250;
+        this.speedX = 250 // 250;
         this.speedY = 330;
     }
 
@@ -94,8 +94,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedBeersScoreText.setScrollFactor(0);
         this.collectedSausagesScoreText = this.add.text(75, 90, '0', { fontSize: '32px', fill: '#000' });
         this.collectedSausagesScoreText.setScrollFactor(0);
-        this.collectedCoinScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000' });
-        this.collectedCoinScoreText.setScrollFactor(0);
+        this.collectedCoinsScoreText = this.add.text(75, 160, '0', { fontSize: '32px', fill: '#000' });
+        this.collectedCoinsScoreText.setScrollFactor(0);
         this.add.image(35, 35, 'beer').setScrollFactor(0);
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
         this.add.image(35, 175, 'coin').setScrollFactor(0);
@@ -110,6 +110,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.collectBeerSound = this.sound.add('collect_beer');
         this.collectSausageSound = this.sound.add('collect_sausage');
+        this.collectCoinSound = this.sound.add('collect_coin');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
     }
@@ -200,6 +201,12 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
 
         switch (item.index) {
+            case 2: // Coin
+                item.alpha = 0;
+                this.collectedCoins++;
+                this.collectedCoinsScoreText.setText(this.collectedCoins);
+                this.collectCoinSound.play();
+                break;
             case 14: // Corona
                 this.gameoverSound.play();
                 this.gameIsOver()
@@ -243,6 +250,12 @@ export class AbstractLevelScene extends Phaser.Scene {
             case 76: // R
                 item.alpha = 0;
                 this.game.forever[6] = 'R';
+                break;
+            case 70: // level end
+                
+                break;
+            case 82: // level end
+                
                 break;
         }
     }
