@@ -137,6 +137,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
         this.sorrySound = this.sound.add('sorry');
+        this.winSound = this.sound.add('win');
+        this.finalwinSound = this.sound.add('final_win');
     }
 
     afterCreate() {
@@ -322,6 +324,12 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.player.setVelocityY(-this.player.body.velocity.y);
                 this.sorrySound.play();
                 break;
+            case 133: // end game
+                this.levelEnded();
+                break;
+            case 145: // end game
+                this.levelEnded();
+                break;
         }
     }
 
@@ -341,8 +349,12 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0x00ff00);
         this.player.anims.play('turn');
-        this.levelEndSound.play();
-
+        if (this.nextlevel == CST.SCENES.MENU) {
+            this.finalwinSound.play();
+        } else {
+            this.levelEndSound.play();
+        }
+        
         this.levelHasEnded = true;
     }
 
