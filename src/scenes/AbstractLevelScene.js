@@ -2,10 +2,12 @@ import { CST } from "../CST.js"
 
 export class AbstractLevelScene extends Phaser.Scene {
 
-    constructor(levelname) {
+    constructor(levelname, bgimage) {
         super({
             key: levelname
         });
+
+        this.backgroundimage = bgimage;
 
         this.levelWidth = 15000;
 
@@ -44,7 +46,7 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(this.levelWidth / 2, 360, "sky");
+        this.add.image(this.levelWidth / 2, 360, this.backgroundimage);
 
         this.cameras.main.setBounds(0, 0, this.levelWidth, 720);
         this.physics.world.setBounds(0, 0, this.levelWidth, 720);

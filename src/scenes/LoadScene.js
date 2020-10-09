@@ -12,7 +12,8 @@ export class LoadScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', './assets/sky.png');
+        this.load.image('sky_level1', './assets/sky_level1.png');
+        this.load.image('sky_level2', './assets/sky_level2.png');
         this.load.image('ground', './assets/ground.png');
         this.load.image('platform', './assets/platform.png');
         this.load.image('star', './assets/star.png');

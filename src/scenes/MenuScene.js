@@ -13,7 +13,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     create () {
-        this.add.image(2500, 360,"sky");
+        this.add.image(2500, 360,"sky_level1"); // TODO
 
         let playButton = this.add.image(400, 400, 'play_button');
         playButton.setInteractive();
