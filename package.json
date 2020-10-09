@@ -1,0 +1,30 @@
+{
+  "name": "workfoodbalance",
+  "version": "1.0.0",
+  "description": "YB Hackathon 2020",
+  "main": "index.html",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {   
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist/*.js",
+    "build": "parcel build index.html --no-source-maps",
+    "start": "parcel index.html  --no-source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wam23/WorkFoodBalance.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wam23/WorkFoodBalance/issues"
+  },
+  "homepage": "https://github.com/wam23/WorkFoodBalance#readme"
+}
