@@ -24,6 +24,9 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('play_icon', './assets/play_icon.png');
         this.load.image('game_over', './assets/game_over.png');
 
+        this.load.tilemapCSV('Level2', './assets/Level2.csv');
+        this.load.image('tiles', './assets/tiles_spritesheet.png');
+
         this.load.spritesheet('dude', '../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         
         let loadingBar = this.add.graphics({
