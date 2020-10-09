@@ -16,7 +16,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.levelWidth = 15000;
 
         this.gameOver = false;
-        this.gameOverIcon;
         this.gameOverTimer = 0;
 
         this.levelHasEnded = false;
@@ -121,8 +120,6 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.gameOverIcon = this.physics.add.sprite(300, 300, 'game_over');
-        this.gameOverIcon.setVisible(false);
         this.gameOver = false;
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -137,6 +134,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
         this.sorrySound = this.sound.add('sorry');
+        this.winSound = this.sound.add('win');
+        this.finalwinSound = this.sound.add('final_win');
     }
 
     afterCreate() {
@@ -322,13 +321,17 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.player.setVelocityY(-this.player.body.velocity.y);
                 this.sorrySound.play();
                 break;
+            case 133: // end game
+                this.levelEnded();
+                break;
+            case 145: // end game
+                this.levelEnded();
+                break;
         }
     }
 
     gameIsOver() {
         if (!this.cheatMode) {
-            this.gameOverIcon.setVisible(true);
-
             this.physics.pause();
             this.player.setTint(0xff0000);
             this.player.anims.play('turn');
@@ -341,8 +344,12 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0x00ff00);
         this.player.anims.play('turn');
-        this.levelEndSound.play();
-
+        if (this.nextlevel == CST.SCENES.MENU) {
+            this.finalwinSound.play();
+        } else {
+            this.levelEndSound.play();
+        }
+        
         this.levelHasEnded = true;
     }
 
