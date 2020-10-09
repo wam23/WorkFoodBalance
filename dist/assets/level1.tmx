@@ -5,7 +5,7 @@
  </editorsettings>
  <tileset firstgid="1" source="tiles_spritesheet.tsx"/>
  <imagelayer id="3" name="sky 1" offsetx="-2" offsety="-0.989899">
-  <image source="sky_level1-1.png" width="15000" height="720"/>
+  <image source="sky_level1.png" width="15000" height="720"/>
  </imagelayer>
  <layer id="5" name="collectables" width="208" height="10">
   <data encoding="csv">
