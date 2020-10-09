@@ -12,7 +12,7 @@
  "layers":[
         {
          "id":2,
-         "image":"sky.png",
+         "image":"sky_level2.png",
          "name":"Image Layer 1",
          "opacity":1,
          "type":"imagelayer",
