@@ -98,6 +98,11 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.gameOver = false;
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.collectBeerSound = this.sound.add('collect_beer');
+        this.collectSausageSound = this.sound.add('collect_sausage');
+        this.jumpSound = this.sound.add('jump');
+        this.gameoverSound = this.sound.add('gameover');
     }
 
     afterCreate() {
@@ -138,6 +143,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             if (this.lastInput == 1) {
                 if (playerOnGround || this.doubleJumpAllowed) {
                     this.player.setVelocityY(-this.speedY);
+                    this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
                     }
@@ -152,6 +158,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             if (this.lastInput == 2) {
                 if (playerOnGround || this.doubleJumpAllowed) {
                     this.player.setVelocityY(-this.speedY);
+                    this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
                     }
@@ -183,15 +190,18 @@ export class AbstractLevelScene extends Phaser.Scene {
             return;
         }
         if (item.index == 14) { // corona
+            this.gameoverSound.play();
             this.gameIsOver();
         } else if (item.index == 26) { // beer
             item.alpha = 0;
             this.collectedBeers++;
             this.collectedBeersScoreText.setText(this.collectedBeers);
+            this.collectBeerSound.play();
         } else if (item.index == 38) { // sausage
             item.alpha = 0;
             this.collectedSausages++;
             this.collectedSausagesScoreText.setText(this.collectedSausages);
+            this.collectSausageSound.play();
         }
     }
 
