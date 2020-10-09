@@ -14,6 +14,7 @@ export class LoadScene extends Phaser.Scene {
     preload() {
         this.load.image('sky_level1', './assets/sky_level1.png');
         this.load.image('sky_level2', './assets/sky_level2.png');
+        this.load.image('sky_level3', './assets/sky_level3.png');
         this.load.image('ground', './assets/ground.png');
         this.load.image('platform', './assets/platform.png');
         this.load.image('coin', './assets/coin.png');
@@ -28,7 +29,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('tiles', './assets/tiles_spritesheet.png');
         this.load.tilemapTiledJSON('Level1', './assets/level1.json');
         this.load.tilemapTiledJSON('Level2', './assets/Level2.json');
-        this.load.tilemapTiledJSON('Level2', './assets/level3.json');
+        this.load.tilemapTiledJSON('Level3', './assets/level3.json');
 
         this.load.spritesheet('dude', '../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 
