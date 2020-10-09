@@ -7,6 +7,8 @@ export class Level1Scene extends Phaser.Scene {
             key: CST.SCENES.LEVEL1
         });
 
+        this.levelWidth = 10;
+
         this.player;
         this.stars;
         this.bombs;
@@ -18,6 +20,9 @@ export class Level1Scene extends Phaser.Scene {
         this.gameOverIcon;
         this.gameOverTimer = 0;
         this.escKey;
+
+        this.lastInput = 0;
+        this.waitForInputRelease = false;
     }
 
     preload () {
@@ -25,27 +30,35 @@ export class Level1Scene extends Phaser.Scene {
     }
 
     create () {
-        //  A simple background for our game
-        this.add.image(400, 300, 'sky');
+        for(var i = 0; i < this.levelWidth; i++) {
+            this.add.image(640 + (1280 * i), 360,"sky");
+        }
+        
+        this.cameras.main.setBounds(0, 0, 1280 * this.levelWidth, 720);
+        this.physics.world.setBounds(0, 0, 1280 * this.levelWidth, 720);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
+        for(var i = 0; i < this.levelWidth; i++) {
+            this.platforms.create(640 + (1280 * i), 704, "ground");
+        }
+        
         //  Now let's create some ledges
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');
+        this.platforms.create(600, 400, 'platform');
+        this.platforms.create(50, 250, 'platform');
+        this.platforms.create(750, 220, 'platform');
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
-
+        
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.2);
+        this.player.setBounceX(0);
+        this.player.setBounceY(0.2);
         this.player.setCollideWorldBounds(true);
+
+        //this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+        this.cameras.main.startFollow(this.player, false, 1, 0);
 
         //  Our player animations, turning, walking left and walking right.
         this.anims.create({
@@ -121,24 +134,49 @@ export class Level1Scene extends Phaser.Scene {
             this.gameOverTimer = 0;
         }
 
-        if (this.cursors.left.isDown) {
+        /* if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
-
             this.player.anims.play('left', true);
         }
         else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
-
             this.player.anims.play('right', true);
         }
         else {
             this.player.setVelocityX(0);
-
             this.player.anims.play('turn');
+        } */
+        
+        if (this.input.activePointer.isDown && (this.input.activePointer.position.x < 50) && (!this.waitForInputRelease)) {
+            if (this.lastInput != 1) {
+                this.player.setVelocityX(-160);
+                this.player.anims.play('left', true);
+            } else if (this.lastInput == 1) {
+                if (this.player.body.touching.down) {
+                    this.player.setVelocityY(-330);
+                }
+            }
+            this.lastInput = 1;
+            this.waitForInputRelease = true;
+            
+        } else if (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1230) && (!this.waitForInputRelease)) {
+            if (this.lastInput != 2) {
+                this.player.setVelocityX(160);
+                this.player.anims.play('right', true);
+            } else if (this.lastInput == 2) {
+                if (this.player.body.touching.down) {
+                    this.player.setVelocityY(-330);
+                }
+            }
+            this.lastInput = 2;
+            this.waitForInputRelease = true;
+        } else {
+            //this.player.setVelocityX(0);
+            //this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
+        if (!this.input.activePointer.isDown) {
+            this.waitForInputRelease = false;
         }
     }
 

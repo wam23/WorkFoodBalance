@@ -14,7 +14,7 @@ export class MenuScene extends Phaser.Scene {
 
     create () {
         //  A simple background for our game
-        this.add.image(400, 300, 'sky');
+        this.add.image(640, 360, 'sky');
         this.add.image(32, 32, 'star'); // logo
         this.add.image(64, 32, 'star'); // logo
 
