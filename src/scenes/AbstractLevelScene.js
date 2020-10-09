@@ -109,7 +109,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     afterCreate() {
         var tileset = this.map.addTilesetImage('tiles_spritesheet', 'tiles');
-        this.layer = this.map.createStaticLayer('Tile Layer 1', tileset);
+        this.layer = this.map.createStaticLayer('tile layer 1', tileset);
         this.layer.setCollisionByExclusion(-1, true);
         this.physics.add.collider(this.player, this.layer);
 
