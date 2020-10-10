@@ -12,9 +12,9 @@ export class LoadScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky_level1', './assets/sky_level1.png');
-        this.load.image('sky_level2', './assets/sky_level2.png');
-        this.load.image('sky_level3', './assets/sky_level3.png');
+        this.load.image('sky_level1', './assets/sky_level1.jpg');
+        this.load.image('sky_level2', './assets/sky_level2.jpg');
+        this.load.image('sky_level3', './assets/sky_level3.jpg');
         this.load.image('startscreen', './assets/startscreen2.png');
         this.load.image('scorescreen', './assets/scorescreen.png');
         this.load.image('ground', './assets/ground.png');
@@ -25,6 +25,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('sausage', './assets/sausage.png');
         this.load.image('vuvuzela', './assets/vuvuzela.png');
         this.load.image('ball', './assets/ball.png');
+        this.load.image('heart', './assets/heart.png');
         this.load.image('level1_button', './assets/level1_button.png');
         this.load.image('level2_button', './assets/level2_button.png');
         this.load.image('level3_button', './assets/level3_button.png');
@@ -53,6 +54,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('sorry', './assets/sounds/tschuldigung.mp3');
         this.load.audio('win', './assets/sounds/win.mp3');
         this.load.audio('final_win', './assets/sounds/final_win.mp3');
+        this.load.audio('background', './assets/sounds/background.mp3');
         
         let loadingBar = this.add.graphics({
             fillStyle: {
@@ -69,7 +71,7 @@ export class LoadScene extends Phaser.Scene {
 
     complete() {
         console.log("COMPLETE!");
-		this.scene.start(CST.SCENES.MENU);        
+        this.scene.start(CST.SCENES.MENU);        
     }
 
     create() {
