@@ -126,7 +126,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.add.image(35, 245, 'vuvuzela').setScrollFactor(0);
         this.add.image(35, 315, 'ball').setScrollFactor(0);
 
-        this.livesText = this.add.text(1250, 20, this.numberOfLives, fontStyle);
+        this.livesText = this.add.text(1240, 20, this.numberOfLives, fontStyle);
         this.livesText.setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
