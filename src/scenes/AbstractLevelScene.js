@@ -57,6 +57,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.fastMode) {
             this.speedX = 600;
         }
+
+        this.counterUntilClearTint = 0;
     }
 
     preload() {
@@ -189,8 +191,15 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.levelEndedTimer = 0;
         }
 
-        var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 100)) || this.cursors.left.isDown;
-        var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 1180)) || this.cursors.right.isDown;
+        if ((this.counterUntilClearTint > 0) && !this.gameOver && !this.levelHasEnded) {
+            this.counterUntilClearTint--;
+            if (this.counterUntilClearTint <= 0) {
+                this.player.clearTint();
+            }
+        }
+
+        var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 500)) || this.cursors.left.isDown;
+        var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 780)) || this.cursors.right.isDown;
 
         //var playerOnGround = this.player.body.touching.down;
         var playerOnGround = (this.player.body.velocity.y == 0);
@@ -262,6 +271,8 @@ export class AbstractLevelScene extends Phaser.Scene {
                     this.gameIsOver();
                 } else {
                     item.alpha = 0;
+                    this.player.setTint(0xff0000);
+                    this.counterUntilClearTint = 50;
                 }
                 break;
             case 25: // Ball

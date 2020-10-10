@@ -8,7 +8,7 @@ import {Level2Scene} from "./scenes/Level2Scene.js";
 import {Level3Scene} from "./scenes/Level3Scene.js";
 
 let config = {
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     scale: {
         parent: 'Hackathon - Work Food Balance',
         mode: Phaser.Scale.FIT,
