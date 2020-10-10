@@ -16,6 +16,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('sky_level2', './assets/sky_level2.png');
         this.load.image('sky_level3', './assets/sky_level3.png');
         this.load.image('startscreen', './assets/startscreen2.png');
+        this.load.image('scorescreen', './assets/scorescreen.png');
         this.load.image('ground', './assets/ground.png');
         this.load.image('platform', './assets/platform.png');
         this.load.image('coin', './assets/coin.png');
@@ -62,10 +63,17 @@ export class LoadScene extends Phaser.Scene {
         this.load.on("progress", (percent) => {
             loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
         });
+
+        this.load.on('complete', this.complete, {scene:this.scene});
+    }
+
+    complete() {
+        console.log("COMPLETE!");
+		this.scene.start(CST.SCENES.MENU);        
     }
 
     create() {
-        this.scene.start(CST.SCENES.MENU);
+        console.log("create");
     }
 
 }
