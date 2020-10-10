@@ -7,8 +7,8 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
-        this.cheatMode = true;
-        this.fastMode = true;
+        this.cheatMode = false;
+        this.fastMode = false;
 
         this.backgroundimage = bgimage;
         this.nextlevel = nextlevel;
