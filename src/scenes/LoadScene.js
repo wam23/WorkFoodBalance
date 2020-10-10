@@ -53,6 +53,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('sorry', './assets/sounds/tschuldigung.mp3');
         this.load.audio('win', './assets/sounds/win.mp3');
         this.load.audio('final_win', './assets/sounds/final_win.mp3');
+        this.load.audio('background', './assets/sounds/background.mp3');
         
         let loadingBar = this.add.graphics({
             fillStyle: {

@@ -359,4 +359,13 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.levelHasEnded = true;
     }
 
+    start() {
+        this.collectedSausages = 0;
+        this.collectedBeers = 0;
+        this.collectedCoins = 0;
+        this.collectedVuvuzelas = 0;
+        this.collectedBalls = 0;
+        super.start();
+    }
+
 }
