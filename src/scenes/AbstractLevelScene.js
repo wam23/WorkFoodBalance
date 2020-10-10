@@ -49,7 +49,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.doubleJumpAllowed = false;
 
-        this.speedX = 250;
+        this.speedX = 350;
         this.speedY = 330;
 
         if (this.fastMode) {
