@@ -153,6 +153,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.winSound = this.sound.add('win');
         this.finalwinSound = this.sound.add('final_win');
         this.fanSound = this.sound.add('fans');
+        this.drehkreuzSound = this.sound.add('drehkreuz');
     }
 
     afterCreate() {
@@ -211,6 +212,13 @@ export class AbstractLevelScene extends Phaser.Scene {
             if (!this.ybViertuStungStarted && (this.player.body.position.x > 8600)) {
                 this.ybViertuStungStarted = true;
                 this.speedX = this.SPEED_X * 1.5;
+            }
+        }
+
+        if (this.scene.key == CST.SCENES.LEVEL1) {
+            if (!this.drehkreuzSoundPlayed && (this.player.body.position.x > 8500)) {
+                this.drehkreuzSoundPlayed = true;
+                this.drehkreuzSound.play();
             }
         }
 
@@ -406,6 +414,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.speedX = this.SPEED_X;
         this.fanSoundPlayed = false;
         this.ybViertuStungStarted = false;
+        this.drehkreuzSoundPlayed = false;
         super.start();
     }
 
