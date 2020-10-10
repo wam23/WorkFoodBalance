@@ -70,7 +70,7 @@ export class LoadScene extends Phaser.Scene {
 
     complete() {
         console.log("COMPLETE!");
-		this.scene.start(CST.SCENES.MENU);        
+        this.scene.start(CST.SCENES.MENU);        
     }
 
     create() {

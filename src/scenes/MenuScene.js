@@ -36,6 +36,10 @@ export class MenuScene extends Phaser.Scene {
             this.scene.start(CST.SCENES.LEVEL3);
         });
 
+        var music = this.sound.add('background');
+        music.loop = true;
+        music.play();
+
     }
 
     update () {
