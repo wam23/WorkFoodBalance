@@ -174,6 +174,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
+                this.numberOfLives = 3;
                 this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, score: score});
             }
             return;
