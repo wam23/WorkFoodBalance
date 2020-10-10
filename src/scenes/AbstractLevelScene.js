@@ -7,6 +7,8 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
+        this.numberOfLives = 3;
+
         this.cheatMode = false;
         this.fastMode = false;
 
@@ -123,6 +125,9 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.add.image(35, 175, 'coin').setScrollFactor(0);
         this.add.image(35, 245, 'vuvuzela').setScrollFactor(0);
         this.add.image(35, 315, 'ball').setScrollFactor(0);
+
+        this.livesText = this.add.text(1250, 20, this.numberOfLives, fontStyle);
+        this.livesText.setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -249,8 +254,14 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.collectCoinSound.play();
                 break;
             case 14: // Corona
-                this.gameoverSound.play();
-                this.gameIsOver();
+                this.numberOfLives--;
+                this.livesText.setText(this.numberOfLives);
+                if (this.numberOfLives <= 0) {
+                    this.gameoverSound.play();
+                    this.gameIsOver();
+                } else {
+                    item.alpha = 0;
+                }
                 break;
             case 25: // Ball
                 item.alpha = 0;
