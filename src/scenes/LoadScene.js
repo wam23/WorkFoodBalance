@@ -15,6 +15,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('sky_level1', './assets/sky_level1.png');
         this.load.image('sky_level2', './assets/sky_level2.png');
         this.load.image('sky_level3', './assets/sky_level3.png');
+        this.load.image('startscreen', './assets/startscreen2.png');
         this.load.image('ground', './assets/ground.png');
         this.load.image('platform', './assets/platform.png');
         this.load.image('coin', './assets/coin.png');
@@ -23,6 +24,9 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('sausage', './assets/sausage.png');
         this.load.image('vuvuzela', './assets/vuvuzela.png');
         this.load.image('ball', './assets/ball.png');
+        this.load.image('level1_button', './assets/level1_button.png');
+        this.load.image('level2_button', './assets/level2_button.png');
+        this.load.image('level3_button', './assets/level3_button.png');
 
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');
