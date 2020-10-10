@@ -338,10 +338,7 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.player.setVelocityY(-this.player.body.velocity.y);
                 this.sorrySound.play();
                 break;
-            case 133: // end game
-                this.levelEnded();
-                break;
-            case 145: // end game
+            case 49: // end game
                 this.levelEnded();
                 break;
         }
