@@ -51,7 +51,9 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.doubleJumpAllowed = false;
 
-        this.speedX = 350;
+        this.SPEED_X = 350;
+
+        this.speedX = this.SPEED_X;
         this.speedY = 330;
 
         if (this.fastMode) {
@@ -150,6 +152,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.sorrySound = this.sound.add('sorry');
         this.winSound = this.sound.add('win');
         this.finalwinSound = this.sound.add('final_win');
+        this.fanSound = this.sound.add('fans');
     }
 
     afterCreate() {
@@ -196,6 +199,18 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.counterUntilClearTint--;
             if (this.counterUntilClearTint <= 0) {
                 this.player.clearTint();
+            }
+        }
+
+        if (this.scene.key == CST.SCENES.LEVEL3) {
+            if (!this.fanSoundPlayed && (this.player.body.position.x > 7300)) {
+                this.fanSoundPlayed = true;
+                this.fanSound.play();
+            }
+
+            if (!this.ybViertuStungStarted && (this.player.body.position.x > 8600)) {
+                this.ybViertuStungStarted = true;
+                this.speedX = this.SPEED_X * 1.5;
             }
         }
 
@@ -250,6 +265,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.player.body.velocity.x == 0) {
             this.player.anims.play('turn');
         }
+
+        //console.log('player x:' + this.player.body.position.x);
     }
 
     collectItem(player, item) {
@@ -386,6 +403,9 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedCoins = 0;
         this.collectedVuvuzelas = 0;
         this.collectedBalls = 0;
+        this.speedX = this.SPEED_X;
+        this.fanSoundPlayed = false;
+        this.ybViertuStungStarted = false;
         super.start();
     }
 
