@@ -54,3 +54,6 @@ if (game.fastMode) {
 game.gameOver = false;
 
 game.developmentMode = true;
+
+game.enableLongJump = false;
+game.LONG_JUMP_FACTOR = 0.7;

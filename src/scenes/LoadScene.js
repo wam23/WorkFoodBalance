@@ -67,6 +67,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('speed2_button', './assets/speed2_button.png');
         this.load.image('speed3_button', './assets/speed3_button.png');
         this.load.image('speed4_button', './assets/speed4_button.png');
+        this.load.image('longjump_button', './assets/longjump_button.png');
         // end only for developping
         
         let loadingBar = this.add.graphics({

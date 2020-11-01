@@ -70,6 +70,18 @@ export class MenuScene extends Phaser.Scene {
                 this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
             });
 
+            this.longjumpText = this.add.text(1190, 22, "0", fontStyle);
+            this.longjumpText.setScrollFactor(0);
+
+            var longjumpButton = this.add.image(1130, 30, 'longjump_button');
+            longjumpButton.setInteractive();
+
+            longjumpButton.on("pointerup", () => {
+                this.game.enableLongJump = !this.game.enableLongJump;
+                var tempText = this.game.enableLongJump ? "1" : "0";
+                this.longjumpText.setText(tempText);
+            });
+
             this.gravityText = this.add.text(915, 150, "Gravity: " + this.game.gravity, fontStyle);
             this.gravityText.setScrollFactor(0);
 

@@ -42,6 +42,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.counterUntilClearTint = 0;
 
         this.isAvailable = false;
+
+        this.jumpTimer = 0;
     }
 
     init(data) {
@@ -225,13 +227,33 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         //var playerOnGround = this.player.body.touching.down;
         var playerOnGround = (this.player.body.velocity.y == 0);
+        
+        if ((leftClick || rightClick) && this.waitForInputRelease && (this.jumpTimer > 0)) {
+            if (this.jumpTimer < 40) {
+                this.jumpTimer += 1;
+                if (this.game.enableLongJump) {
+                    this.player.setVelocityY(-this.game.speedY * this.game.LONG_JUMP_FACTOR);
+                }
+                if (this.jumpTimer == 40) {
+                    //console.log('speed y:' + this.player.body.velocity.y);
+                }
+            }
+        }
+        
+        var oldXSpeed = this.player.body.velocity.x;
 
         if (leftClick && (!this.waitForInputRelease)) {
             this.player.setVelocityX(-this.game.speedX);
             this.player.anims.play('left', true);
-            if (this.lastInput == 1) {
+            if ((this.lastInput == 1) && ((oldXSpeed != 0) || playerOnGround)) {
                 if (playerOnGround || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-this.game.speedY);
+                    this.jumpTimer = 1;
+                    if (this.game.enableLongJump) {
+                        this.jumpTimer = 1;
+                        this.player.setVelocityY(-this.game.speedY * this.game.LONG_JUMP_FACTOR);
+                    } else {
+                        this.player.setVelocityY(-this.game.speedY);
+                    }
                     this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
@@ -244,9 +266,14 @@ export class AbstractLevelScene extends Phaser.Scene {
         } else if (rightClick && (!this.waitForInputRelease)) {
             this.player.setVelocityX(this.game.speedX);
             this.player.anims.play('right', true);
-            if (this.lastInput == 2) {
+            if ((this.lastInput == 2) && ((oldXSpeed != 0) || playerOnGround)) {
                 if (playerOnGround || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-this.game.speedY);
+                    if (this.game.enableLongJump) {
+                        this.jumpTimer = 1;
+                        this.player.setVelocityY(-this.game.speedY * this.game.LONG_JUMP_FACTOR);
+                    } else {
+                        this.player.setVelocityY(-this.game.speedY);
+                    }
                     this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
@@ -266,6 +293,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         if (!(leftClick || rightClick)) {
             this.waitForInputRelease = false;
+            this.jumpTimer = 0;
         }
 
         if (this.player.body.velocity.x == 0) {
@@ -273,6 +301,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
 
         //console.log('player x:' + this.player.body.position.x);
+        //console.log('speed x:' + this.player.body.velocity.x);
+        //console.log("jumptimer: " + this.jumpTimer);
     }
 
     collectItem(player, item) {
