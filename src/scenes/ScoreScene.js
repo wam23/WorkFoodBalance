@@ -32,6 +32,10 @@ export class ScoreScreen extends Phaser.Scene {
         nextButton.setInteractive();
 
         nextButton.on("pointerup", () => {
+            if (this.nextlevel != CST.SCENES.MENU) {
+                var tempScene = this.scene.get(this.nextlevel);
+                tempScene.setAsAvailable();
+            }
             this.scene.start(this.nextlevel);
         });
     }

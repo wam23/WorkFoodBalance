@@ -40,6 +40,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.doubleJumpAllowed = false;
 
         this.counterUntilClearTint = 0;
+
+        this.isAvailable = false;
     }
 
     init(data) {
@@ -397,6 +399,14 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
         
         this.levelHasEnded = true;
+    }
+
+    setAsAvailable() {
+        this.isAvailable = true;
+    }
+
+    setAsUnavailable() {
+        this.isAvailable = false;
     }
 
 }
