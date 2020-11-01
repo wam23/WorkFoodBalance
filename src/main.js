@@ -34,7 +34,7 @@ game.numberOfLives = 3;
 game.collectedSausages = 0;
 game.collectedBeers = 0;
 game.collectedCoins = 0;
-game.collectedVuvuzelas = 0;
+game.collectedFlags = 0;
 game.collectedBalls = 0;
 
 game.cheatMode = false;

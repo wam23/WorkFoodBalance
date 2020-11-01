@@ -29,7 +29,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
         this.collectedCoinsScoreText = "";
-        this.collectedVuvuzelasScoreText = "";
+        this.collectedFlagsScoreText = "";
         this.collectedBallsScoreText = "";
 
         this.map;
@@ -52,7 +52,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.game.collectedSausages = 0;
             this.game.collectedBeers = 0;
             this.game.collectedCoins = 0;
-            this.game.collectedVuvuzelas = 0;
+            this.game.collectedFlags = 0;
             this.game.collectedBalls = 0;
         }
         
@@ -119,14 +119,14 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectedSausagesScoreText.setScrollFactor(0);
         this.collectedCoinsScoreText = this.add.text(75, 160, this.game.collectedCoins, fontStyle);
         this.collectedCoinsScoreText.setScrollFactor(0);
-        this.collectedVuvuzelasScoreText = this.add.text(75, 230, this.game.collectedVuvuzelas, fontStyle);
-        this.collectedVuvuzelasScoreText.setScrollFactor(0);
+        this.collectedFlagsScoreText = this.add.text(75, 230, this.game.collectedFlags, fontStyle);
+        this.collectedFlagsScoreText.setScrollFactor(0);
         this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
         this.collectedBallsScoreText.setScrollFactor(0);
         this.add.image(35, 35, 'beer').setScrollFactor(0);
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
         this.add.image(35, 175, 'coin').setScrollFactor(0);
-        this.add.image(35, 245, 'vuvuzela').setScrollFactor(0);
+        this.add.image(35, 245, 'flag').setScrollFactor(0);
         this.add.image(35, 315, 'ball').setScrollFactor(0);
 
         this.livesText = this.add.text(1240, 20, this.game.numberOfLives, fontStyle);
@@ -140,7 +140,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectBeerSound = this.sound.add('collect_beer');
         this.collectSausageSound = this.sound.add('collect_sausage');
         this.collectCoinSound = this.sound.add('collect_coin');
-        this.collectVuvuzelaSound = this.sound.add('collect_vuvuzela');
+        this.collectFlagSound = this.sound.add('collect_flag');
         this.collectBallSound = this.sound.add('collect_ball');
         this.collectLetterSound = this.sound.add('collect_letter');
         this.jumpSound = this.sound.add('jump');
@@ -166,7 +166,7 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     update() {
-        var score = this.game.collectedCoins + this.game.collectedBeers + this.game.collectedSausages + this.game.collectedVuvuzelas + this.game.collectedBalls;
+        var score = this.game.collectedCoins + this.game.collectedBeers + this.game.collectedSausages + this.game.collectedFlags + this.game.collectedBalls;
 
         if (this.escKey.isDown) {
             this.game.cheatMode = false;
@@ -309,11 +309,11 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.collectedBeersScoreText.setText(this.game.collectedBeers);
                 this.collectBeerSound.play();
                 break;
-            case 37: // Ball
+            case 37: // Fähnli
                 item.alpha = 0;
-                this.game.collectedVuvuzelas++;
-                this.collectedVuvuzelasScoreText.setText(this.game.collectedVuvuzelas);
-                this.collectVuvuzelaSound.play();
+                this.game.collectedFlags++;
+                this.collectedFlagsScoreText.setText(this.game.collectedFlags);
+                this.collectFlagSound.play();
                 break;
             case 38: // Wurscht
                 item.alpha = 0;

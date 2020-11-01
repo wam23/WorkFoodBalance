@@ -6,6 +6,8 @@ export class ScoreScreen extends Phaser.Scene {
         super({
             key: CST.SCENES.SCORE
         });
+
+        this.cheatModeText = "";
     }
 
     init(data) {

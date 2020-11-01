@@ -29,27 +29,46 @@ export class MenuScene extends Phaser.Scene {
             this.scene.start(CST.SCENES.LEVEL1); // level 1 is always available
         });
 
-        if (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode) {
-            let playButton2 = this.add.image(1020, 450, 'level2_button');
-            playButton2.setInteractive();
+        this.playButton2 = this.add.image(1020, 450, 'level2_button');
+        this.playButton2.setInteractive();
 
-            playButton2.on("pointerup", () => {
+        this.playButton2.on("pointerup", () => {
+            if (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode) {
                 this.scene.start(CST.SCENES.LEVEL2);
-            });
-        }
+            }
+        });
+        this.playButton2.alpha = 0;
 
-        if (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode) {
-            let playButton3 = this.add.image(1020, 550, 'level3_button');
-            playButton3.setInteractive();
+        this.playButton3 = this.add.image(1020, 550, 'level3_button');
+        this.playButton3.setInteractive();
 
-            playButton3.on("pointerup", () => {
+        this.playButton3.on("pointerup", () => {
+            if (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode) {
                 this.scene.start(CST.SCENES.LEVEL3);
-            });
-        }
+            }
+        });
+        this.playButton3.alpha = 0;
 
         var music = this.sound.add('background');
         music.loop = true;
         music.play();
+
+        // TODO: remove later
+        var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
+        this.cheatModeText = this.add.text(930, 662, "0", fontStyle);
+        this.cheatModeText.setScrollFactor(0);
+
+        let cheatModeButton = this.add.image(870, 670, 'cheatmode_button');
+        cheatModeButton.setInteractive();
+
+        cheatModeButton.on("pointerup", () => {
+            this.game.cheatMode = !this.game.cheatMode;
+            var tempText = this.game.cheatMode ? "1" : "0";
+            this.cheatModeText.setText(tempText);
+
+            this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
+            this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
+        });
 
     }
 
