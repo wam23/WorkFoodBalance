@@ -25,6 +25,7 @@ export class ScoreScreen extends Phaser.Scene {
         if (this.nextlevel == CST.SCENES.MENU) {
             this.scoreText = this.add.text(950, 100, '0', { fontSize: '40px', fill: '#000' });
             this.scoreText.setText("GAME OVER");
+            this.game.gameOver = true;
         }
 
         let nextButton = this.add.image(1020, 450, 'play_button');

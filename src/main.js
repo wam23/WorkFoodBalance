@@ -30,3 +30,23 @@ let config = {
 
 let game = new Phaser.Game(config);
 game.forever = [' ',' ',' ', ' ', ' ', ' ', ' ']; // filled with FOREVER
+game.numberOfLives = 3;
+game.collectedSausages = 0;
+game.collectedBeers = 0;
+game.collectedCoins = 0;
+game.collectedVuvuzelas = 0;
+game.collectedBalls = 0;
+
+game.cheatMode = false;
+game.fastMode = false;
+
+game.SPEED_X = 350;
+
+game.speedX = game.SPEED_X;
+game.speedY = 330;
+
+if (game.fastMode) {
+    game.speedX = 600;
+}
+
+game.gameOver = false;

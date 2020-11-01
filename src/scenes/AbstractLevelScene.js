@@ -7,17 +7,11 @@ export class AbstractLevelScene extends Phaser.Scene {
             key: levelname
         });
 
-        this.numberOfLives = 3;
-
-        this.cheatMode = false;
-        this.fastMode = false;
-
         this.backgroundimage = bgimage;
         this.nextlevel = nextlevel;
 
         this.levelWidth = 15000;
 
-        this.gameOver = false;
         this.gameOverTimer = 0;
 
         this.levelHasEnded = false;
@@ -32,35 +26,38 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.platforms;
         this.cursors;
 
-        this.map;
-
-        this.lastInput = 0;
-        this.waitForInputRelease = false;
-
-        this.collectedSausages = 0;
-        this.collectedBeers = 0;
-        this.collectedCoins = 0;
-        this.collectedVuvuzelas = 0;
-        this.collectedBalls = 0;
-
         this.collectedBeersScoreText = "";
         this.collectedSausagesScoreText = "";
         this.collectedCoinsScoreText = "";
         this.collectedVuvuzelasScoreText = "";
         this.collectedBallsScoreText = "";
 
+        this.map;
+
+        this.lastInput = 0;
+        this.waitForInputRelease = false;
+
         this.doubleJumpAllowed = false;
 
-        this.SPEED_X = 350;
-
-        this.speedX = this.SPEED_X;
-        this.speedY = 330;
-
-        if (this.fastMode) {
-            this.speedX = 600;
-        }
-
         this.counterUntilClearTint = 0;
+    }
+
+    init(data) {
+        if (this.game.gameOver) {
+            this.game.gameOver = false;
+            this.game.forever = [' ',' ',' ', ' ', ' ', ' ', ' ']; // filled with FOREVER
+            this.game.numberOfLives = 3;
+            this.game.collectedSausages = 0;
+            this.game.collectedBeers = 0;
+            this.game.collectedCoins = 0;
+            this.game.collectedVuvuzelas = 0;
+            this.game.collectedBalls = 0;
+        }
+        
+        this.game.speedX = this.game.SPEED_X;
+        this.fanSoundPlayed = false;
+        this.ybViertuStungStarted = false;
+        this.drehkreuzSoundPlayed = false;
     }
 
     preload() {
@@ -114,15 +111,15 @@ export class AbstractLevelScene extends Phaser.Scene {
         });
 
         var fontStyle = { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
-        this.collectedBeersScoreText = this.add.text(75, 20, '0', fontStyle);
+        this.collectedBeersScoreText = this.add.text(75, 20, this.game.collectedBeers, fontStyle);
         this.collectedBeersScoreText.setScrollFactor(0);
-        this.collectedSausagesScoreText = this.add.text(75, 90, '0', fontStyle);
+        this.collectedSausagesScoreText = this.add.text(75, 90, this.game.collectedSausages, fontStyle);
         this.collectedSausagesScoreText.setScrollFactor(0);
-        this.collectedCoinsScoreText = this.add.text(75, 160, '0', fontStyle);
+        this.collectedCoinsScoreText = this.add.text(75, 160, this.game.collectedCoins, fontStyle);
         this.collectedCoinsScoreText.setScrollFactor(0);
-        this.collectedVuvuzelasScoreText = this.add.text(75, 230, '0', fontStyle);
+        this.collectedVuvuzelasScoreText = this.add.text(75, 230, this.game.collectedVuvuzelas, fontStyle);
         this.collectedVuvuzelasScoreText.setScrollFactor(0);
-        this.collectedBallsScoreText = this.add.text(75, 300, '0', fontStyle);
+        this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
         this.collectedBallsScoreText.setScrollFactor(0);
         this.add.image(35, 35, 'beer').setScrollFactor(0);
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
@@ -130,13 +127,11 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.add.image(35, 245, 'vuvuzela').setScrollFactor(0);
         this.add.image(35, 315, 'ball').setScrollFactor(0);
 
-        this.livesText = this.add.text(1240, 20, this.numberOfLives, fontStyle);
+        this.livesText = this.add.text(1240, 20, this.game.numberOfLives, fontStyle);
         this.livesText.setScrollFactor(0);
         this.add.image(1200, 35, 'heart').setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.gameOver = false;
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
@@ -169,16 +164,15 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     update() {
-        var score = this.collectedCoins + this.collectedBeers + this.collectedSausages + this.collectedVuvuzelas + this.collectedBalls;
+        var score = this.game.collectedCoins + this.game.collectedBeers + this.game.collectedSausages + this.game.collectedVuvuzelas + this.game.collectedBalls;
 
         if (this.escKey.isDown) {
-            this.cheatMode = false;
+            this.game.cheatMode = false;
             this.gameIsOver();
         }
-        if (this.gameOver) {
+        if (this.game.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.numberOfLives = 3;
                 this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, score: score});
             }
             return;
@@ -211,7 +205,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
             if (!this.ybViertuStungStarted && (this.player.body.position.x > 8600)) {
                 this.ybViertuStungStarted = true;
-                this.speedX = this.SPEED_X * 1.5;
+                this.game.speedX = this.game.SPEED_X * 1.5;
             }
         }
 
@@ -229,11 +223,11 @@ export class AbstractLevelScene extends Phaser.Scene {
         var playerOnGround = (this.player.body.velocity.y == 0);
 
         if (leftClick && (!this.waitForInputRelease)) {
-            this.player.setVelocityX(-this.speedX);
+            this.player.setVelocityX(-this.game.speedX);
             this.player.anims.play('left', true);
             if (this.lastInput == 1) {
                 if (playerOnGround || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-this.speedY);
+                    this.player.setVelocityY(-this.game.speedY);
                     this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
@@ -244,11 +238,11 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.waitForInputRelease = true;
 
         } else if (rightClick && (!this.waitForInputRelease)) {
-            this.player.setVelocityX(this.speedX);
+            this.player.setVelocityX(this.game.speedX);
             this.player.anims.play('right', true);
             if (this.lastInput == 2) {
                 if (playerOnGround || this.doubleJumpAllowed) {
-                    this.player.setVelocityY(-this.speedY);
+                    this.player.setVelocityY(-this.game.speedY);
                     this.jumpSound.play();
                     if (!playerOnGround) {
                         this.doubleJumpAllowed = false;
@@ -285,14 +279,14 @@ export class AbstractLevelScene extends Phaser.Scene {
         switch (item.index) {
             case 2: // Coin
                 item.alpha = 0;
-                this.collectedCoins++;
-                this.collectedCoinsScoreText.setText(this.collectedCoins);
+                this.game.collectedCoins++;
+                this.collectedCoinsScoreText.setText(this.game.collectedCoins);
                 this.collectCoinSound.play();
                 break;
             case 14: // Corona
-                this.numberOfLives--;
-                this.livesText.setText(this.numberOfLives);
-                if (this.numberOfLives <= 0) {
+                this.game.numberOfLives--;
+                this.livesText.setText(this.game.numberOfLives);
+                if (this.game.numberOfLives <= 0) {
                     this.gameoverSound.play();
                     this.gameIsOver();
                 } else {
@@ -303,26 +297,26 @@ export class AbstractLevelScene extends Phaser.Scene {
                 break;
             case 25: // Ball
                 item.alpha = 0;
-                this.collectedBalls++;
-                this.collectedBallsScoreText.setText(this.collectedBalls);
+                this.game.collectedBalls++;
+                this.collectedBallsScoreText.setText(this.game.collectedBalls);
                 this.collectBallSound.play();
                 break;
             case 26: // Beer
                 item.alpha = 0;
-                this.collectedBeers++;
-                this.collectedBeersScoreText.setText(this.collectedBeers);
+                this.game.collectedBeers++;
+                this.collectedBeersScoreText.setText(this.game.collectedBeers);
                 this.collectBeerSound.play();
                 break;
             case 37: // Ball
                 item.alpha = 0;
-                this.collectedVuvuzelas++;
-                this.collectedVuvuzelasScoreText.setText(this.collectedVuvuzelas);
+                this.game.collectedVuvuzelas++;
+                this.collectedVuvuzelasScoreText.setText(this.game.collectedVuvuzelas);
                 this.collectVuvuzelaSound.play();
                 break;
             case 38: // Wurscht
                 item.alpha = 0;
-                this.collectedSausages++;
-                this.collectedSausagesScoreText.setText(this.collectedSausages);
+                this.game.collectedSausages++;
+                this.collectedSausagesScoreText.setText(this.game.collectedSausages);
                 this.collectSausageSound.play();
                 break;
             case 63: // F
@@ -383,12 +377,12 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     gameIsOver() {
-        if (!this.cheatMode) {
+        if (!this.game.cheatMode) {
             this.physics.pause();
             this.player.setTint(0xff0000);
             this.player.anims.play('turn');
 
-            this.gameOver = true;
+            this.game.gameOver = true;
         }
     }
 
@@ -403,19 +397,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
         
         this.levelHasEnded = true;
-    }
-
-    start() {
-        this.collectedSausages = 0;
-        this.collectedBeers = 0;
-        this.collectedCoins = 0;
-        this.collectedVuvuzelas = 0;
-        this.collectedBalls = 0;
-        this.speedX = this.SPEED_X;
-        this.fanSoundPlayed = false;
-        this.ybViertuStungStarted = false;
-        this.drehkreuzSoundPlayed = false;
-        super.start();
     }
 
 }
