@@ -87,6 +87,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.player.body.width = 62;
         this.player.body.height = 62;
 
+        this.player.setGravityY(this.game.gravity);
+
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.startFollow(this.player, false, 1, 0);

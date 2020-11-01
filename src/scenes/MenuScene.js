@@ -53,23 +53,77 @@ export class MenuScene extends Phaser.Scene {
         music.loop = true;
         music.play();
 
-        // TODO: remove later
-        var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
-        this.cheatModeText = this.add.text(930, 662, "0", fontStyle);
-        this.cheatModeText.setScrollFactor(0);
+        if (this.game.developmentMode) {
+            var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
+            this.cheatModeText = this.add.text(1030, 22, "0", fontStyle);
+            this.cheatModeText.setScrollFactor(0);
 
-        let cheatModeButton = this.add.image(870, 670, 'cheatmode_button');
-        cheatModeButton.setInteractive();
+            var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
+            cheatModeButton.setInteractive();
 
-        cheatModeButton.on("pointerup", () => {
-            this.game.cheatMode = !this.game.cheatMode;
-            var tempText = this.game.cheatMode ? "1" : "0";
-            this.cheatModeText.setText(tempText);
+            cheatModeButton.on("pointerup", () => {
+                this.game.cheatMode = !this.game.cheatMode;
+                var tempText = this.game.cheatMode ? "1" : "0";
+                this.cheatModeText.setText(tempText);
 
-            this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
-            this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
-        });
+                this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
+                this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
+            });
 
+            this.gravityText = this.add.text(915, 150, "Gravity: " + this.game.gravity, fontStyle);
+            this.gravityText.setScrollFactor(0);
+
+            var gravity1Button = this.add.image(970, 70, 'gravity1_button');
+            gravity1Button.setInteractive();
+
+            gravity1Button.on("pointerup", () => {
+                this.game.gravity = 250;
+                this.gravityText.setText("Gravity: " + this.game.gravity);
+            });
+
+            var gravity2Button = this.add.image(970, 100, 'gravity2_button');
+            gravity2Button.setInteractive();
+
+            gravity2Button.on("pointerup", () => {
+                this.game.gravity = 350;
+                this.gravityText.setText("Gravity: " + this.game.gravity);
+            });
+
+            var gravity3Button = this.add.image(970, 130, 'gravity3_button');
+            gravity3Button.setInteractive();
+
+            gravity3Button.on("pointerup", () => {
+                this.game.gravity = 450;
+                this.gravityText.setText("Gravity: " + this.game.gravity);
+            });
+
+            this.speedText = this.add.text(1075, 150, "Speed: " + this.game.speedY, fontStyle);
+            this.speedText.setScrollFactor(0);
+
+            var speed1Button = this.add.image(1130, 70, 'speed1_button');
+            speed1Button.setInteractive();
+
+            speed1Button.on("pointerup", () => {
+                this.game.speedY = 330;
+                this.speedText.setText("Speed: " + this.game.speedY);
+            });
+
+            var speed2Button = this.add.image(1130, 100, 'speed2_button');
+            speed2Button.setInteractive();
+
+            speed2Button.on("pointerup", () => {
+                this.game.speedY = 430;
+                this.speedText.setText("Speed: " + this.game.speedY);
+            });
+
+            var speed3Button = this.add.image(1130, 130, 'speed3_button');
+            speed3Button.setInteractive();
+
+            speed3Button.on("pointerup", () => {
+                this.game.speedY = 530;
+                this.speedText.setText("Speed: " + this.game.speedY);
+            });
+        }
     }
 
     update () {

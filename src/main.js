@@ -19,7 +19,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 250 },
+            gravity: { y: 0 },
             debug: false
         }
     },
@@ -45,8 +45,12 @@ game.SPEED_X = 350;
 game.speedX = game.SPEED_X;
 game.speedY = 330;
 
+game.gravity = 250;
+
 if (game.fastMode) {
     game.speedX = 600;
 }
 
 game.gameOver = false;
+
+game.developmentMode = true;

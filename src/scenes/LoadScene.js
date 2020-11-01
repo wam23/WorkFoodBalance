@@ -39,8 +39,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('Level2', './assets/Level2.json');
         this.load.tilemapTiledJSON('Level3', './assets/level3.json');
 
-        this.load.image('cheatmode_button', './assets/cheatmode_button.png');
-
         this.load.spritesheet('dude', '../assets/dude2.png', { frameWidth: 72, frameHeight: 72 });
         
         this.load.audio('collect_beer', './assets/sounds/collect_beer.mp3');
@@ -58,6 +56,18 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('background', './assets/sounds/background.mp3');
         this.load.audio('fans', './assets/sounds/baenkli.mp3');
         this.load.audio('drehkreuz', './assets/sounds/drehkreuz.mp3');
+
+        // only for developping
+        this.load.image('cheatmode_button', './assets/cheatmode_button.png');
+        this.load.image('gravity1_button', './assets/gravity1_button.png');
+        this.load.image('gravity2_button', './assets/gravity2_button.png');
+        this.load.image('gravity3_button', './assets/gravity3_button.png');
+        this.load.image('gravity4_button', './assets/gravity4_button.png');
+        this.load.image('speed1_button', './assets/speed1_button.png');
+        this.load.image('speed2_button', './assets/speed2_button.png');
+        this.load.image('speed3_button', './assets/speed3_button.png');
+        this.load.image('speed4_button', './assets/speed4_button.png');
+        // end only for developping
         
         let loadingBar = this.add.graphics({
             fillStyle: {
