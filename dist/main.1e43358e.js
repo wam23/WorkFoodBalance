@@ -370,28 +370,26 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
           strokeThickness: 1,
           fontWeight: 'bold'
         };
-        this.cheatModeText = this.add.text(1030, 22, "0", fontStyle);
+        this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
         this.cheatModeText.setScrollFactor(0);
         var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
         cheatModeButton.setInteractive();
         cheatModeButton.on("pointerup", function () {
           _this.game.cheatMode = !_this.game.cheatMode;
-          var tempText = _this.game.cheatMode ? "1" : "0";
 
-          _this.cheatModeText.setText(tempText);
+          _this.cheatModeText.setText(_this.game.cheatMode ? "1" : "0");
 
           _this.playButton2.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL2).isAvailable || _this.game.cheatMode);
           _this.playButton3.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL3).isAvailable || _this.game.cheatMode);
         });
-        this.longjumpText = this.add.text(1190, 22, "0", fontStyle);
+        this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
         this.longjumpText.setScrollFactor(0);
         var longjumpButton = this.add.image(1130, 30, 'longjump_button');
         longjumpButton.setInteractive();
         longjumpButton.on("pointerup", function () {
           _this.game.enableLongJump = !_this.game.enableLongJump;
-          var tempText = _this.game.enableLongJump ? "1" : "0";
 
-          _this.longjumpText.setText(tempText);
+          _this.longjumpText.setText(_this.game.enableLongJump ? "1" : "0");
         });
         this.gravityText = this.add.text(915, 150, "Gravity: " + this.game.gravity, fontStyle);
         this.gravityText.setScrollFactor(0);
@@ -1375,7 +1373,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58977" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59090" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
