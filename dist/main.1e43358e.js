@@ -126,6 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.CST = void 0;
 var CST = {
   SCENES: {
+    BOOT: "BOOT",
     LOAD: "LOAD",
     MENU: "MENU",
     SCORE: "SCORE",
@@ -135,7 +136,78 @@ var CST = {
   }
 };
 exports.CST = CST;
-},{}],"src/scenes/LoadScene.js":[function(require,module,exports) {
+},{}],"src/scenes/BootScene.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BootScene = void 0;
+
+var _CST = require("../CST.js");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var BootScene = /*#__PURE__*/function (_Phaser$Scene) {
+  _inherits(BootScene, _Phaser$Scene);
+
+  var _super = _createSuper(BootScene);
+
+  function BootScene() {
+    _classCallCheck(this, BootScene);
+
+    return _super.call(this, {
+      key: _CST.CST.SCENES.BOOT
+    });
+  }
+
+  _createClass(BootScene, [{
+    key: "init",
+    value: function init() {}
+  }, {
+    key: "preload",
+    value: function preload() {
+      this.load.image('splashscreen', './assets/splashscreen.png');
+      this.load.on('complete', this.complete, {
+        scene: this.scene
+      });
+    }
+  }, {
+    key: "complete",
+    value: function complete() {
+      this.scene.start(_CST.CST.SCENES.LOAD);
+    }
+  }, {
+    key: "create",
+    value: function create() {//this.add.image(640, 360,'splashscreen');
+    }
+  }]);
+
+  return BootScene;
+}(Phaser.Scene);
+
+exports.BootScene = BootScene;
+},{"../CST.js":"src/CST.js"}],"src/scenes/LoadScene.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -188,6 +260,7 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
     value: function preload() {
       var _this = this;
 
+      this.add.image(640, 360, 'splashscreen');
       this.load.image('sky_level1', './assets/sky_level1.jpg');
       this.load.image('sky_level2', './assets/sky_level2.jpg');
       this.load.image('sky_level3', './assets/sky_level3.jpg');
@@ -245,12 +318,12 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
 
       var loadingBar = this.add.graphics({
         fillStyle: {
-          color: 0xffffff // white
+          color: 0xffcf00 // white
 
         }
       });
       this.load.on("progress", function (percent) {
-        loadingBar.fillRect(0, _this.game.renderer.height / 2, _this.game.renderer.width * percent, 50);
+        loadingBar.fillRect(0, 500, _this.game.renderer.width * percent, 50);
       });
       this.load.on('complete', this.complete, {
         scene: this.scene
@@ -259,13 +332,12 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
   }, {
     key: "complete",
     value: function complete() {
-      console.log("COMPLETE!");
+      //console.log("COMPLETE!");
       this.scene.start(_CST.CST.SCENES.MENU);
     }
   }, {
     key: "create",
-    value: function create() {
-      console.log("create");
+    value: function create() {//console.log("create");
     }
   }]);
 
@@ -335,7 +407,7 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
     value: function create() {
       var _this = this;
 
-      this.add.image(640, 360, "startscreen");
+      this.add.image(640, 360, 'startscreen');
       var playButton = this.add.image(1020, 350, 'level1_button');
       playButton.setInteractive();
       playButton.on("pointerup", function () {
@@ -806,7 +878,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       }
 
       if (this.scene.key == _CST.CST.SCENES.LEVEL1) {
-        if (!this.drehkreuzSoundPlayed && this.player.body.position.x > 8500) {
+        if (!this.drehkreuzSoundPlayed && this.player.body.position.x > 8300) {
           this.drehkreuzSoundPlayed = true;
           this.drehkreuzSound.play();
         }
@@ -1059,6 +1131,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.physics.pause();
       this.player.setTint(0x00ff00);
       this.player.anims.play('turn');
+      this.fanSound.stop();
 
       if (this.nextlevel == _CST.CST.SCENES.MENU) {
         this.finalwinSound.play();
@@ -1288,6 +1361,8 @@ exports.Level3Scene = Level3Scene;
 },{"../CST.js":"src/CST.js","./AbstractLevelScene.js":"src/scenes/AbstractLevelScene.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
+var _BootScene = require("./scenes/BootScene.js");
+
 var _LoadScene = require("./scenes/LoadScene.js");
 
 var _MenuScene = require("./scenes/MenuScene.js");
@@ -1319,7 +1394,7 @@ var config = {
       debug: false
     }
   },
-  scene: [_LoadScene.LoadScene, _MenuScene.MenuScene, _ScoreScene.ScoreScreen, _Level1Scene.Level1Scene, _Level2Scene.Level2Scene, _Level3Scene.Level3Scene]
+  scene: [_BootScene.BootScene, _LoadScene.LoadScene, _MenuScene.MenuScene, _ScoreScene.ScoreScreen, _Level1Scene.Level1Scene, _Level2Scene.Level2Scene, _Level3Scene.Level3Scene]
 };
 var game = new Phaser.Game(config);
 game.forever = [' ', ' ', ' ', ' ', ' ', ' ', ' ']; // filled with FOREVER
@@ -1345,7 +1420,7 @@ game.gameOver = false;
 game.developmentMode = true;
 game.enableLongJump = false;
 game.LONG_JUMP_FACTOR = 0.7;
-},{"./scenes/LoadScene.js":"src/scenes/LoadScene.js","./scenes/MenuScene.js":"src/scenes/MenuScene.js","./scenes/ScoreScene.js":"src/scenes/ScoreScene.js","./scenes/Level1Scene.js":"src/scenes/Level1Scene.js","./scenes/Level2Scene.js":"src/scenes/Level2Scene.js","./scenes/Level3Scene.js":"src/scenes/Level3Scene.js"}],"C:/Users/hawki/AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./scenes/BootScene.js":"src/scenes/BootScene.js","./scenes/LoadScene.js":"src/scenes/LoadScene.js","./scenes/MenuScene.js":"src/scenes/MenuScene.js","./scenes/ScoreScene.js":"src/scenes/ScoreScene.js","./scenes/Level1Scene.js":"src/scenes/Level1Scene.js","./scenes/Level2Scene.js":"src/scenes/Level2Scene.js","./scenes/Level3Scene.js":"src/scenes/Level3Scene.js"}],"C:/Users/hawki/AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1373,7 +1448,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59090" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59815" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

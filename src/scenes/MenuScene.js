@@ -20,7 +20,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     create () {
-        this.add.image(640, 360,"startscreen");
+        this.add.image(640, 360,'startscreen');
 
         let playButton = this.add.image(1020, 350, 'level1_button');
         playButton.setInteractive();

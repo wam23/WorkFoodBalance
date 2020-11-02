@@ -1,5 +1,6 @@
 /** @type {import("../typings/phaser")} */
 
+import {BootScene} from "./scenes/BootScene.js";
 import {LoadScene} from "./scenes/LoadScene.js";
 import {MenuScene} from "./scenes/MenuScene.js";
 import {ScoreScreen} from "./scenes/ScoreScene.js";
@@ -15,7 +16,7 @@ let config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 1280,
         height: 720,
-      },
+    },
     physics: {
         default: 'arcade',
         arcade: {
@@ -24,7 +25,7 @@ let config = {
         }
     },
     scene: [
-        LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene
+        BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene
     ]
 };
 

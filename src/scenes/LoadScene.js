@@ -12,6 +12,8 @@ export class LoadScene extends Phaser.Scene {
     }
 
     preload() {
+        this.add.image(640, 360,'splashscreen');
+        
         this.load.image('sky_level1', './assets/sky_level1.jpg');
         this.load.image('sky_level2', './assets/sky_level2.jpg');
         this.load.image('sky_level3', './assets/sky_level3.jpg');
@@ -70,26 +72,26 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('longjump_button', './assets/longjump_button.png');
         // end only for developping
         
-        let loadingBar = this.add.graphics({
+        var loadingBar = this.add.graphics({
             fillStyle: {
-                color: 0xffffff // white
+                color: 0xffcf00 // white
             }
         });
         
         this.load.on("progress", (percent) => {
-            loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
+            loadingBar.fillRect(0, 500, this.game.renderer.width * percent, 50);
         });
 
         this.load.on('complete', this.complete, {scene:this.scene});
     }
 
     complete() {
-        console.log("COMPLETE!");
-        this.scene.start(CST.SCENES.MENU);        
+        //console.log("COMPLETE!");
+        this.scene.start(CST.SCENES.MENU);
     }
 
     create() {
-        console.log("create");
+        //console.log("create");
     }
 
 }
