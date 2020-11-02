@@ -216,7 +216,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
 
         if (this.scene.key == CST.SCENES.LEVEL1) {
-            if (!this.drehkreuzSoundPlayed && (this.player.body.position.x > 8500)) {
+            if (!this.drehkreuzSoundPlayed && (this.player.body.position.x > 8300)) {
                 this.drehkreuzSoundPlayed = true;
                 this.drehkreuzSound.play();
             }
@@ -424,6 +424,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0x00ff00);
         this.player.anims.play('turn');
+        this.fanSound.stop();
         if (this.nextlevel == CST.SCENES.MENU) {
             this.finalwinSound.play();
         } else {
