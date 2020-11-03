@@ -22,6 +22,14 @@ export class MenuScene extends Phaser.Scene {
     create () {
         this.add.image(640, 360,'startscreen');
 
+        this.rotateText = this.add.text(100, 100, 'Bitte Bildschirm drehen', { fontSize: '50px', fill: '#ffcf00' });
+        this.rotateText.visible = window.innerHeight > window.innerWidth;
+
+        window.addEventListener('orientationchange', () => {
+            console.log('orientationchange', window.screen)
+            this.rotateText.visible = window.innerHeight < window.innerWidth;
+        }, true);
+
         let playButton = this.add.image(1020, 350, 'level1_button');
         playButton.setInteractive();
 
