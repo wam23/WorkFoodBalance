@@ -699,6 +699,11 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     _this.counterUntilClearTint = 0;
     _this.isAvailable = false;
     _this.jumpTimer = 0;
+    _this.playerBlockedToLeft = false;
+    _this.playerBlockedToRight = false;
+    _this.lastBlockedYPosition = 0;
+    _this.bouncingDisabled = false;
+    _this.bouncingDisabledCounter = 0;
     return _this;
   }
 
@@ -896,9 +901,23 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       }
 
       var leftClick = this.input.activePointer.isDown && this.input.activePointer.position.x < 500 || this.cursors.left.isDown;
-      var rightClick = this.input.activePointer.isDown && this.input.activePointer.position.x > 780 || this.cursors.right.isDown; //var playerOnGround = this.player.body.touching.down;
+      var rightClick = this.input.activePointer.isDown && this.input.activePointer.position.x > 780 || this.cursors.right.isDown;
+      var playerOnGround = this.player.body.blocked.down; //var playerOnGround = (this.player.body.velocity.y == 0);
 
-      var playerOnGround = this.player.body.velocity.y == 0;
+      if (this.player.body.blocked.left) {
+        this.playerBlockedToLeft = true;
+        this.lastBlockedYPosition = this.player.body.position.y;
+      }
+
+      if (this.player.body.blocked.right) {
+        this.playerBlockedToRight = true;
+        this.lastBlockedYPosition = this.player.body.position.y;
+      }
+
+      if (this.player.body.velocity.x != 0 || Math.abs(this.lastBlockedYPosition - this.player.body.position.y) > 50) {
+        this.playerBlockedToLeft = false;
+        this.playerBlockedToRight = false;
+      }
 
       if ((leftClick || rightClick) && this.waitForInputRelease && this.jumpTimer > 0) {
         if (this.jumpTimer < 40) {
@@ -919,7 +938,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         this.player.setVelocityX(-this.game.speedX);
         this.player.anims.play('left', true);
 
-        if (this.lastInput == 1 && (oldXSpeed != 0 || playerOnGround)) {
+        if (this.lastInput == 1 && (oldXSpeed != 0 || playerOnGround && this.playerBlockedToLeft)) {
           if (playerOnGround || this.doubleJumpAllowed) {
             this.jumpTimer = 1;
 
@@ -944,7 +963,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         this.player.setVelocityX(this.game.speedX);
         this.player.anims.play('right', true);
 
-        if (this.lastInput == 2 && (oldXSpeed != 0 || playerOnGround)) {
+        if (this.lastInput == 2 && (oldXSpeed != 0 || playerOnGround && this.playerBlockedToRight)) {
           if (playerOnGround || this.doubleJumpAllowed) {
             if (this.game.enableLongJump) {
               this.jumpTimer = 1;
@@ -978,6 +997,14 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
 
       if (this.player.body.velocity.x == 0) {
         this.player.anims.play('turn');
+      }
+
+      if (this.bouncingDisabledCounter > 0) {
+        this.bouncingDisabledCounter--;
+
+        if (this.bouncingDisabledCounter <= 0) {
+          this.bouncingDisabled = false;
+        }
       } //console.log('player x:' + this.player.body.position.x);
       //console.log('speed x:' + this.player.body.velocity.x);
       //console.log("jumptimer: " + this.jumpTimer);
@@ -1109,22 +1136,29 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
 
         case 143:
           // hooligan
-          this.player.setVelocityX(-this.player.body.velocity.x);
-          this.player.setVelocityY(-this.player.body.velocity.y);
-          this.sorrySound.play();
+          this.collidedWithHooligan();
           break;
 
         case 155:
           // hooligan
-          this.player.setVelocityX(-this.player.body.velocity.x);
-          this.player.setVelocityY(-this.player.body.velocity.y);
-          this.sorrySound.play();
+          this.collidedWithHooligan();
           break;
 
         case 49:
           // end game
           this.levelEnded();
           break;
+      }
+    }
+  }, {
+    key: "collidedWithHooligan",
+    value: function collidedWithHooligan() {
+      if (!this.bouncingDisabled) {
+        this.player.setVelocityX(-this.player.body.velocity.x);
+        this.player.setVelocityY(-this.player.body.velocity.y);
+        this.sorrySound.play();
+        this.bouncingDisabled = true;
+        this.bouncingDisabledCounter = 30;
       }
     }
   }, {
