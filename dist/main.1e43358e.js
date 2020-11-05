@@ -292,9 +292,10 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.audio('collect_beer', './assets/sounds/collect_beer.mp3');
       this.load.audio('collect_sausage', './assets/sounds/collect_sausage.mp3');
       this.load.audio('collect_coin', './assets/sounds/collect_coin.mp3');
-      this.load.audio('collect_flag', './assets/sounds/vuvuzela.mp3');
+      this.load.audio('collect_flag', './assets/sounds/collect_flag.mp3');
       this.load.audio('collect_ball', './assets/sounds/collect_ball.mp3');
       this.load.audio('collect_letter', './assets/sounds/collect_letter.mp3');
+      this.load.audio('collect_corona', './assets/sounds/collect_virus.mp3');
       this.load.audio('jump', './assets/sounds/jump.mp3');
       this.load.audio('gameover', './assets/sounds/gameover.mp3');
       this.load.audio('levelend', './assets/sounds/win.mp3');
@@ -408,6 +409,15 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
       var _this = this;
 
       this.add.image(640, 360, 'startscreen');
+      this.rotateText = this.add.text(100, 100, 'Bitte Bildschirm drehen', {
+        fontSize: '50px',
+        fill: '#ffcf00'
+      });
+      this.rotateText.visible = window.innerHeight > window.innerWidth;
+      window.addEventListener('orientationchange', function () {
+        console.log('orientationchange', window.screen);
+        _this.rotateText.visible = window.innerHeight < window.innerWidth;
+      }, true);
       var playButton = this.add.image(1020, 350, 'level1_button');
       playButton.setInteractive();
       playButton.on("pointerup", function () {
@@ -797,6 +807,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.collectFlagSound = this.sound.add('collect_flag');
       this.collectBallSound = this.sound.add('collect_ball');
       this.collectLetterSound = this.sound.add('collect_letter');
+      this.collectCoronaSound = this.sound.add('collect_corona');
       this.jumpSound = this.sound.add('jump');
       this.gameoverSound = this.sound.add('gameover');
       this.levelEndSound = this.sound.add('levelend');
@@ -1000,6 +1011,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
             item.alpha = 0;
             this.player.setTint(0xff0000);
             this.counterUntilClearTint = 50;
+            this.collectCoronaSound.play();
           }
 
           break;
@@ -1448,7 +1460,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59815" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63686" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -147,6 +147,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectFlagSound = this.sound.add('collect_flag');
         this.collectBallSound = this.sound.add('collect_ball');
         this.collectLetterSound = this.sound.add('collect_letter');
+        this.collectCoronaSound = this.sound.add('collect_corona');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
@@ -327,6 +328,7 @@ export class AbstractLevelScene extends Phaser.Scene {
                     item.alpha = 0;
                     this.player.setTint(0xff0000);
                     this.counterUntilClearTint = 50;
+                    this.collectCoronaSound.play();
                 }
                 break;
             case 25: // Ball
