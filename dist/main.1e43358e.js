@@ -740,6 +740,12 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.ybViertuStungStarted = false;
       this.drehkreuzSoundPlayed = false;
       this.levelHasEnded = false;
+
+      if (this.sound.get('final_win') != null) {
+        this.sound.get('final_win').stop();
+      }
+
+      this.restoreBackgroundSoundLevel();
     }
   }, {
     key: "preload",
@@ -900,6 +906,10 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       if (this.scene.key == _CST.CST.SCENES.LEVEL3) {
         if (!this.fanSoundPlayed && this.player.body.position.x > 7300) {
           this.fanSoundPlayed = true;
+          this.sound.get('background').volume = 0;
+          this.fanSound.on('complete', this.restoreBackgroundSoundLevel, {
+            sound: this.sound
+          });
           this.fanSound.play();
         }
 
@@ -1196,6 +1206,10 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.fanSound.stop();
 
       if (this.nextlevel == _CST.CST.SCENES.MENU) {
+        this.sound.get('background').volume = 0;
+        this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {
+          sound: this.sound
+        });
         this.finalwinSound.play();
       } else {
         this.levelEndSound.play();
@@ -1212,6 +1226,13 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     key: "setAsUnavailable",
     value: function setAsUnavailable() {
       this.isAvailable = false;
+    }
+  }, {
+    key: "restoreBackgroundSoundLevel",
+    value: function restoreBackgroundSoundLevel() {
+      if (this.sound.get('background') != null) {
+        this.sound.get('background').volume = 1.0;
+      }
     }
   }]);
 
@@ -1482,6 +1503,7 @@ game.gameOver = false;
 game.developmentMode = true;
 game.enableLongJump = false;
 game.LONG_JUMP_FACTOR = 0.7;
+game.LOW_SOUND_LEVEL = 0.2;
 },{"./scenes/BootScene.js":"src/scenes/BootScene.js","./scenes/LoadScene.js":"src/scenes/LoadScene.js","./scenes/MenuScene.js":"src/scenes/MenuScene.js","./scenes/ScoreScene.js":"src/scenes/ScoreScene.js","./scenes/Level1Scene.js":"src/scenes/Level1Scene.js","./scenes/Level2Scene.js":"src/scenes/Level2Scene.js","./scenes/Level3Scene.js":"src/scenes/Level3Scene.js"}],"C:/Users/hawki/AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

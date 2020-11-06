@@ -71,6 +71,10 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.ybViertuStungStarted = false;
         this.drehkreuzSoundPlayed = false;
         this.levelHasEnded = false;
+        if (this.sound.get('final_win') != null) {
+            this.sound.get('final_win').stop();
+        }
+        this.restoreBackgroundSoundLevel();
     }
 
     preload() {
@@ -217,6 +221,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.scene.key == CST.SCENES.LEVEL3) {
             if (!this.fanSoundPlayed && (this.player.body.position.x > 7300)) {
                 this.fanSoundPlayed = true;
+                this.sound.get('background').volume = 0;
+                this.fanSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
                 this.fanSound.play();
             }
 
@@ -464,6 +470,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.player.anims.play('turn');
         this.fanSound.stop();
         if (this.nextlevel == CST.SCENES.MENU) {
+            this.sound.get('background').volume = 0;
+            this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
             this.finalwinSound.play();
         } else {
             this.levelEndSound.play();
@@ -478,6 +486,12 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     setAsUnavailable() {
         this.isAvailable = false;
+    }
+
+    restoreBackgroundSoundLevel() {
+        if (this.sound.get('background') != null) {
+            this.sound.get('background').volume = 1.0;
+        }
     }
 
 }
