@@ -42,6 +42,8 @@ export class ScoreScreen extends Phaser.Scene {
             if (this.nextlevel != CST.SCENES.MENU) {
                 var tempScene = this.scene.get(this.nextlevel);
                 tempScene.setAsAvailable();
+            } else {
+                this.game.gameOver = true;
             }
             this.scene.start(this.nextlevel);
         });

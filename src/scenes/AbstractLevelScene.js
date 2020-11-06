@@ -70,6 +70,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.fanSoundPlayed = false;
         this.ybViertuStungStarted = false;
         this.drehkreuzSoundPlayed = false;
+        this.levelHasEnded = false;
     }
 
     preload() {

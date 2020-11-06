@@ -57,10 +57,12 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton3.alpha = 0;
 
-        var music = this.sound.add('background');
-        music.loop = true;
-        music.play();
-
+        if (this.sound.get('background') == null) {
+            var music = this.sound.add('background');
+            music.loop = true;
+            music.play();
+        }
+        
         if (this.game.developmentMode) {
             var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
             this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);

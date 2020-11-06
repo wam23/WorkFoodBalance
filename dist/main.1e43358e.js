@@ -440,9 +440,12 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         }
       });
       this.playButton3.alpha = 0;
-      var music = this.sound.add('background');
-      music.loop = true;
-      music.play();
+
+      if (this.sound.get('background') == null) {
+        var music = this.sound.add('background');
+        music.loop = true;
+        music.play();
+      }
 
       if (this.game.developmentMode) {
         var fontStyle = {
@@ -625,6 +628,8 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
           var tempScene = _this2.scene.get(_this2.nextlevel);
 
           tempScene.setAsAvailable();
+        } else {
+          _this2.game.gameOver = true;
         }
 
         _this2.scene.start(_this2.nextlevel);
@@ -734,6 +739,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.fanSoundPlayed = false;
       this.ybViertuStungStarted = false;
       this.drehkreuzSoundPlayed = false;
+      this.levelHasEnded = false;
     }
   }, {
     key: "preload",
