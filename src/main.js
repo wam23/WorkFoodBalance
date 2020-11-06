@@ -58,3 +58,5 @@ game.developmentMode = true;
 
 game.enableLongJump = false;
 game.LONG_JUMP_FACTOR = 0.7;
+
+game.LOW_SOUND_LEVEL = 0.2;
