@@ -4,7 +4,7 @@ import { AbstractLevelScene } from "./AbstractLevelScene.js";
 export class Level3Scene extends AbstractLevelScene {
     
     constructor() {
-        super(CST.SCENES.LEVEL3, CST.SCENES.MENU, 'sky_level3');
+        super(CST.SCENES.LEVEL3, CST.SCENES.MENU, 0, 'sky_level3');
     }
 
     create () {

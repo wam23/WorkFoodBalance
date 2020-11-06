@@ -583,6 +583,7 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
     key: "init",
     value: function init(data) {
       this.nextlevel = data.nextlevel;
+      this.nextlevelNumber = data.nextlevelNumber;
       this.score = data.score;
     }
   }, {
@@ -611,7 +612,13 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
         this.game.gameOver = true;
       }
 
-      var nextButton = this.add.image(1020, 450, 'play_button');
+      var nextButtonString = 'play_button';
+
+      if (this.nextlevel != _CST.CST.SCENES.MENU) {
+        nextButtonString = 'level' + this.nextlevelNumber + '_button';
+      }
+
+      var nextButton = this.add.image(1020, 450, nextButtonString);
       nextButton.setInteractive();
       nextButton.on("pointerup", function () {
         if (_this2.nextlevel != _CST.CST.SCENES.MENU) {
@@ -666,7 +673,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
 
   var _super = _createSuper(AbstractLevelScene);
 
-  function AbstractLevelScene(levelname, nextlevel, bgimage) {
+  function AbstractLevelScene(levelname, nextlevel, nextlevelNumber, bgimage) {
     var _this;
 
     _classCallCheck(this, AbstractLevelScene);
@@ -676,6 +683,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     });
     _this.backgroundimage = bgimage;
     _this.nextlevel = nextlevel;
+    _this.nextlevelNumber = nextlevelNumber;
     _this.levelWidth = 15000;
     _this.gameOverTimer = 0;
     _this.levelHasEnded = false;
@@ -849,6 +857,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         if (this.gameOverTimer > 150) {
           this.scene.start(_CST.CST.SCENES.SCORE, {
             nextlevel: _CST.CST.SCENES.MENU,
+            nextlevelNumber: 0,
             score: score
           });
         }
@@ -864,6 +873,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         if (this.levelEndedTimer > 150) {
           this.scene.start(_CST.CST.SCENES.SCORE, {
             nextlevel: this.nextlevel,
+            nextlevelNumber: this.nextlevelNumber,
             score: score
           });
         }
@@ -1249,7 +1259,7 @@ var Level1Scene = /*#__PURE__*/function (_AbstractLevelScene) {
   function Level1Scene() {
     _classCallCheck(this, Level1Scene);
 
-    return _super.call(this, _CST.CST.SCENES.LEVEL1, _CST.CST.SCENES.LEVEL2, 'sky_level1');
+    return _super.call(this, _CST.CST.SCENES.LEVEL1, _CST.CST.SCENES.LEVEL2, 2, 'sky_level1');
   }
 
   _createClass(Level1Scene, [{
@@ -1316,7 +1326,7 @@ var Level2Scene = /*#__PURE__*/function (_AbstractLevelScene) {
   function Level2Scene() {
     _classCallCheck(this, Level2Scene);
 
-    return _super.call(this, _CST.CST.SCENES.LEVEL2, _CST.CST.SCENES.LEVEL3, 'sky_level2');
+    return _super.call(this, _CST.CST.SCENES.LEVEL2, _CST.CST.SCENES.LEVEL3, 3, 'sky_level2');
   }
 
   _createClass(Level2Scene, [{
@@ -1383,7 +1393,7 @@ var Level3Scene = /*#__PURE__*/function (_AbstractLevelScene) {
   function Level3Scene() {
     _classCallCheck(this, Level3Scene);
 
-    return _super.call(this, _CST.CST.SCENES.LEVEL3, _CST.CST.SCENES.MENU, 'sky_level3');
+    return _super.call(this, _CST.CST.SCENES.LEVEL3, _CST.CST.SCENES.MENU, 0, 'sky_level3');
   }
 
   _createClass(Level3Scene, [{
@@ -1494,7 +1504,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63686" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62893" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

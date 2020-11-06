@@ -12,6 +12,7 @@ export class ScoreScreen extends Phaser.Scene {
 
     init(data) {
         this.nextlevel = data.nextlevel;
+        this.nextlevelNumber = data.nextlevelNumber;
         this.score = data.score;
     }
 
@@ -30,7 +31,11 @@ export class ScoreScreen extends Phaser.Scene {
             this.game.gameOver = true;
         }
 
-        let nextButton = this.add.image(1020, 450, 'play_button');
+        var nextButtonString = 'play_button';
+        if (this.nextlevel != CST.SCENES.MENU) {
+            nextButtonString = 'level' + this.nextlevelNumber + '_button';
+        }
+        let nextButton = this.add.image(1020, 450, nextButtonString);
         nextButton.setInteractive();
 
         nextButton.on("pointerup", () => {
