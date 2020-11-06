@@ -740,6 +740,12 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.ybViertuStungStarted = false;
       this.drehkreuzSoundPlayed = false;
       this.levelHasEnded = false;
+
+      if (this.sound.get('final_win') != null) {
+        this.sound.get('final_win').stop();
+      }
+
+      this.restoreBackgroundSoundLevel();
     }
   }, {
     key: "preload",
@@ -1224,7 +1230,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
   }, {
     key: "restoreBackgroundSoundLevel",
     value: function restoreBackgroundSoundLevel() {
-      this.sound.get('background').volume = 1.0;
+      if (this.sound.get('background') != null) {
+        this.sound.get('background').volume = 1.0;
+      }
     }
   }]);
 

@@ -71,6 +71,10 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.ybViertuStungStarted = false;
         this.drehkreuzSoundPlayed = false;
         this.levelHasEnded = false;
+        if (this.sound.get('final_win') != null) {
+            this.sound.get('final_win').stop();
+        }
+        this.restoreBackgroundSoundLevel();
     }
 
     preload() {
@@ -485,7 +489,9 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     restoreBackgroundSoundLevel() {
-        this.sound.get('background').volume = 1.0;
+        if (this.sound.get('background') != null) {
+            this.sound.get('background').volume = 1.0;
+        }
     }
 
 }
