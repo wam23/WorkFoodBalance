@@ -7,6 +7,7 @@ export const CST = {
         LEVEL1: "LEVEL1",
         LEVEL2: "LEVEL2",
         LEVEL3: "LEVEL3",
+        ANLEITUNG: "ANLEITUNG",
         IMPRESSUM: "IMPRESSUM"
     }
 }

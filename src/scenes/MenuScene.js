@@ -57,7 +57,14 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton3.alpha = 0;
 
-        this.impressumButton = this.add.text(800, 600, 'Anleitung, Impressum', { fontSize: '35px', fill: '#ffcf00' });
+        this.anleitungButton = this.add.text(800, 600, 'Anleitung', { fontSize: '35px', fill: '#ffcf00' });
+        this.anleitungButton.setInteractive();
+
+        this.anleitungButton.on("pointerup", () => {
+            this.scene.start(CST.SCENES.ANLEITUNG);
+        });
+
+        this.impressumButton = this.add.text(800, 650, 'Impressum', { fontSize: '35px', fill: '#ffcf00' });
         this.impressumButton.setInteractive();
 
         this.impressumButton.on("pointerup", () => {
