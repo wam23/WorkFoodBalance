@@ -45,6 +45,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('Level3', './assets/level3.json');
 
         this.load.spritesheet('dude', '../assets/dude2.png', { frameWidth: 72, frameHeight: 72 });
+        this.load.spritesheet('dudeFast', '../assets/dude3.png', { frameWidth: 72, frameHeight: 72 });
         
         this.load.audio('collect_beer', './assets/sounds/collect_beer.mp3');
         this.load.audio('collect_sausage', './assets/sounds/collect_sausage.mp3');

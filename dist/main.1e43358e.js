@@ -294,6 +294,10 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
         frameWidth: 72,
         frameHeight: 72
       });
+      this.load.spritesheet('dudeFast', '../assets/dude3.png', {
+        frameWidth: 72,
+        frameHeight: 72
+      });
       this.load.audio('collect_beer', './assets/sounds/collect_beer.mp3');
       this.load.audio('collect_sausage', './assets/sounds/collect_sausage.mp3');
       this.load.audio('collect_coin', './assets/sounds/collect_coin.mp3');
@@ -739,6 +743,8 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     _this.lastBlockedYPosition = 0;
     _this.bouncingDisabled = false;
     _this.bouncingDisabledCounter = 0;
+    _this.fastPlay = false;
+    _this.lastPlayedAnim = null;
     return _this;
   }
 
@@ -758,6 +764,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       }
 
       this.game.speedX = this.game.SPEED_X;
+      this.fastPlay = false;
       this.fanSoundPlayed = false;
       this.ybViertuStungStarted = false;
       this.drehkreuzSoundPlayed = false;
@@ -793,34 +800,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.player.body.height = 62;
       this.player.setGravityY(this.game.gravity);
       this.player.setCollideWorldBounds(true);
-      this.cameras.main.startFollow(this.player, false, 1, 0); //  Our player animations, turning, walking left and walking right.
-
-      this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', {
-          start: 0,
-          end: 3
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
-      this.anims.create({
-        key: 'turn',
-        frames: [{
-          key: 'dude',
-          frame: 4
-        }],
-        frameRate: 20
-      });
-      this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', {
-          start: 5,
-          end: 8
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
+      this.cameras.main.startFollow(this.player, false, 1, 0);
+      this.createDudeAnimations('dude', 'left', 'turn', 'right');
+      this.createDudeAnimations('dudeFast', 'leftFast', 'turnFast', 'rightFast');
       var fontStyle = {
         fontSize: '32px',
         fill: '#000',
@@ -945,6 +927,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         if (!this.ybViertuStungStarted && this.player.body.position.x > 8600) {
           this.ybViertuStungStarted = true;
           this.game.speedX = this.game.SPEED_X * 1.5;
+          this.player.setVelocityX(this.player.body.velocity.x * 1.5);
+          this.fastPlay = true;
+          this.updateAnim();
         }
       }
 
@@ -990,8 +975,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       var oldXSpeed = this.player.body.velocity.x;
 
       if (leftClick && !this.waitForInputRelease) {
-        this.player.setVelocityX(-this.game.speedX);
-        this.player.anims.play('left', true);
+        this.player.setVelocityX(-this.game.speedX); //this.player.anims.play('left', true);
+
+        this.playAnim('left');
 
         if (this.lastInput == 1 && (oldXSpeed != 0 || playerOnGround && this.playerBlockedToLeft)) {
           if (playerOnGround || this.doubleJumpAllowed) {
@@ -1015,8 +1001,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         this.lastInput = 1;
         this.waitForInputRelease = true;
       } else if (rightClick && !this.waitForInputRelease) {
-        this.player.setVelocityX(this.game.speedX);
-        this.player.anims.play('right', true);
+        this.player.setVelocityX(this.game.speedX); //this.player.anims.play('right', true);
+
+        this.playAnim('right');
 
         if (this.lastInput == 2 && (oldXSpeed != 0 || playerOnGround && this.playerBlockedToRight)) {
           if (playerOnGround || this.doubleJumpAllowed) {
@@ -1051,7 +1038,8 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       }
 
       if (this.player.body.velocity.x == 0) {
-        this.player.anims.play('turn');
+        //this.player.anims.play('turn');
+        this.playAnim('turn');
       }
 
       if (this.bouncingDisabledCounter > 0) {
@@ -1221,8 +1209,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     value: function gameIsOver() {
       if (!this.game.cheatMode) {
         this.physics.pause();
-        this.player.setTint(0xff0000);
-        this.player.anims.play('turn');
+        this.player.setTint(0xff0000); //this.player.anims.play('turn');
+
+        this.playAnim('turn');
         this.game.gameOver = true;
       }
     }
@@ -1230,8 +1219,9 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     key: "levelEnded",
     value: function levelEnded() {
       this.player.body.moves = false;
-      this.player.setTint(0x00ff00);
-      this.player.anims.play('turn');
+      this.player.setTint(0x00ff00); //this.player.anims.play('turn');
+
+      this.playAnim('turn');
       this.fanSound.stop();
 
       if (this.nextlevel == _CST.CST.SCENES.MENU) {
@@ -1265,6 +1255,49 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
       if (this.sound.get('background') != null) {
         this.sound.get('background').volume = 1.0;
       }
+    }
+  }, {
+    key: "createDudeAnimations",
+    value: function createDudeAnimations(key, keyLeft, keyTurn, keyRight) {
+      //  Our player animations, turning, walking left and walking right.
+      this.anims.create({
+        key: keyLeft,
+        frames: this.anims.generateFrameNumbers(key, {
+          start: 0,
+          end: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.anims.create({
+        key: keyTurn,
+        frames: [{
+          key: key,
+          frame: 4
+        }],
+        frameRate: 20
+      });
+      this.anims.create({
+        key: keyRight,
+        frames: this.anims.generateFrameNumbers(key, {
+          start: 5,
+          end: 8
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+    }
+  }, {
+    key: "playAnim",
+    value: function playAnim(key) {
+      var keyToUse = this.fastPlay ? key + 'Fast' : key;
+      this.player.anims.play(keyToUse, true);
+      this.lastPlayedAnim = key;
+    }
+  }, {
+    key: "updateAnim",
+    value: function updateAnim() {
+      this.playAnim(this.lastPlayedAnim);
     }
   }]);
 
@@ -1694,7 +1727,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64959" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50453" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
