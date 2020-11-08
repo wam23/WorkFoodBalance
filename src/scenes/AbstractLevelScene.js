@@ -17,6 +17,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.levelHasEnded = false;
         this.levelEndedTimer = 0;
+        this.finalImageShown = false;
 
         this.escKey;
 
@@ -203,8 +204,14 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         if (this.levelHasEnded) {
             this.levelEndedTimer++;
-            if (this.levelEndedTimer > 150) {
+            if ((this.levelEndedTimer > 150) && this.finalImageShown) {
                 this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, nextlevelNumber: this.nextlevelNumber, score: score});
+            }
+            if ((this.finalImage != null) && (this.finalImage.body.y > 0)) {
+                this.finalImage.body.velocity.y = 0;
+                this.finalImage.body.moves = false;
+                this.finalImageShown = true;
+                this.levelEndedTimer = -150;
             }
             return;
         } else {
@@ -465,7 +472,7 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     levelEnded() {
-        this.physics.pause();
+        this.player.body.moves = false;
         this.player.setTint(0x00ff00);
         this.player.anims.play('turn');
         this.fanSound.stop();
@@ -473,8 +480,12 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.sound.get('background').volume = 0;
             this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
             this.finalwinSound.play();
+            
+            this.finalImage = this.physics.add.sprite(13840, -300, 'wolf');
+            this.finalImage.body.velocity.y = 80;
         } else {
             this.levelEndSound.play();
+            this.finalImageShown = true;
         }
         
         this.levelHasEnded = true;
