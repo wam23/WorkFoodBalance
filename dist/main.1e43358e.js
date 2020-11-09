@@ -282,7 +282,7 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.image('level1_button', './assets/level1_button.png');
       this.load.image('level2_button', './assets/level2_button.png');
       this.load.image('level3_button', './assets/level3_button.png');
-      this.load.image('wolf', './assets/wolf.png');
+      this.load.image('wolf', './assets/wolf.jpg');
       this.load.image('play_button', './assets/play_button.png');
       this.load.image('play_icon', './assets/play_icon.png');
       this.load.image('game_over', './assets/game_over.png');
