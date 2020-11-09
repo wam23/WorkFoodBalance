@@ -76,6 +76,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.ybViertuStungStarted = false;
         this.drehkreuzSoundPlayed = false;
         this.levelHasEnded = false;
+        this.finalImageShown = false;
         if (this.sound.get('final_win') != null) {
             this.sound.get('final_win').stop();
         }
@@ -476,7 +477,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.finalwinSound.play();
             
             this.finalImage = this.physics.add.sprite(13840, -300, 'wolf');
-            this.finalImage.body.velocity.y = 80;
+            this.finalImage.body.velocity.y = 150;
         } else {
             this.levelEndSound.play();
             this.finalImageShown = true;
