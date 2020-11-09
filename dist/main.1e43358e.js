@@ -470,28 +470,41 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         var music = this.sound.add('background');
         music.loop = true;
         music.play();
-      }
+      } // TODO:
+
+
+      var fontStyle = {
+        fontSize: '16px',
+        fill: '#000',
+        stroke: '#fff',
+        strokeThickness: 1,
+        fontWeight: 'bold'
+      };
+      this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
+      this.cheatModeText.setScrollFactor(0);
+      var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
+      cheatModeButton.setInteractive();
+      cheatModeButton.on("pointerup", function () {
+        _this.game.cheatMode = !_this.game.cheatMode;
+
+        _this.cheatModeText.setText(_this.game.cheatMode ? "1" : "0");
+
+        _this.playButton2.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL2).isAvailable || _this.game.cheatMode);
+        _this.playButton3.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL3).isAvailable || _this.game.cheatMode);
+      });
 
       if (this.game.developmentMode) {
-        var fontStyle = {
-          fontSize: '16px',
-          fill: '#000',
-          stroke: '#fff',
-          strokeThickness: 1,
-          fontWeight: 'bold'
-        };
+        /*var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
         this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
         this.cheatModeText.setScrollFactor(0);
-        var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
+          var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
         cheatModeButton.setInteractive();
-        cheatModeButton.on("pointerup", function () {
-          _this.game.cheatMode = !_this.game.cheatMode;
-
-          _this.cheatModeText.setText(_this.game.cheatMode ? "1" : "0");
-
-          _this.playButton2.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL2).isAvailable || _this.game.cheatMode);
-          _this.playButton3.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL3).isAvailable || _this.game.cheatMode);
-        });
+          cheatModeButton.on("pointerup", () => {
+            this.game.cheatMode = !this.game.cheatMode;
+            this.cheatModeText.setText(this.game.cheatMode ? "1" : "0");
+              this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
+            this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
+        });*/
         this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
         this.longjumpText.setScrollFactor(0);
         var longjumpButton = this.add.image(1130, 30, 'longjump_button');
@@ -1687,16 +1700,16 @@ game.cheatMode = false;
 game.fastMode = false;
 game.SPEED_X = 350;
 game.speedX = game.SPEED_X;
-game.speedY = 330;
-game.gravity = 250;
+game.speedY = 430;
+game.gravity = 450;
 
 if (game.fastMode) {
   game.speedX = 600;
 }
 
 game.gameOver = false;
-game.developmentMode = true;
-game.enableLongJump = false;
+game.developmentMode = false;
+game.enableLongJump = true;
 game.LONG_JUMP_FACTOR = 0.7;
 game.LOW_SOUND_LEVEL = 0.2;
 },{"./scenes/BootScene.js":"src/scenes/BootScene.js","./scenes/LoadScene.js":"src/scenes/LoadScene.js","./scenes/MenuScene.js":"src/scenes/MenuScene.js","./scenes/ScoreScene.js":"src/scenes/ScoreScene.js","./scenes/Level1Scene.js":"src/scenes/Level1Scene.js","./scenes/Level2Scene.js":"src/scenes/Level2Scene.js","./scenes/Level3Scene.js":"src/scenes/Level3Scene.js","./scenes/ImpressumScene.js":"src/scenes/ImpressumScene.js","./scenes/AnleitungScene.js":"src/scenes/AnleitungScene.js"}],"C:/Users/hawki/AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -1727,7 +1740,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50453" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53077" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

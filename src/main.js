@@ -46,9 +46,9 @@ game.fastMode = false;
 game.SPEED_X = 350;
 
 game.speedX = game.SPEED_X;
-game.speedY = 330;
+game.speedY = 430;
 
-game.gravity = 250;
+game.gravity = 450;
 
 if (game.fastMode) {
     game.speedX = 600;
@@ -56,9 +56,9 @@ if (game.fastMode) {
 
 game.gameOver = false;
 
-game.developmentMode = true;
+game.developmentMode = false;
 
-game.enableLongJump = false;
+game.enableLongJump = true;
 game.LONG_JUMP_FACTOR = 0.7;
 
 game.LOW_SOUND_LEVEL = 0.2;
