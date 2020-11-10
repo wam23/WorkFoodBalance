@@ -11,7 +11,7 @@ export class ImpressumScene extends Phaser.Scene {
     create() {
         this.add.image(640, 360, 'impressum');
 
-        let backButton = this.add.image(950, 570, 'play_button');
+        let backButton = this.add.image(1200, 680, 'back_button');
         backButton.setInteractive();
 
         backButton.on("pointerup", () => {

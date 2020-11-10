@@ -30,14 +30,14 @@ export class MenuScene extends Phaser.Scene {
             this.rotateText.visible = window.innerHeight < window.innerWidth;
         }, true);
 
-        let playButton = this.add.image(1020, 350, 'level1_button');
+        let playButton = this.add.image(1020, 250, 'level1_button');
         playButton.setInteractive();
 
         playButton.on("pointerup", () => {
             this.scene.start(CST.SCENES.LEVEL1); // level 1 is always available
         });
 
-        this.playButton2 = this.add.image(1020, 450, 'level2_button');
+        this.playButton2 = this.add.image(1020, 350, 'level2_button');
         this.playButton2.setInteractive();
 
         this.playButton2.on("pointerup", () => {
@@ -47,7 +47,7 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton2.alpha = 0;
 
-        this.playButton3 = this.add.image(1020, 550, 'level3_button');
+        this.playButton3 = this.add.image(1020, 450, 'level3_button');
         this.playButton3.setInteractive();
 
         this.playButton3.on("pointerup", () => {
@@ -57,14 +57,14 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton3.alpha = 0;
 
-        this.anleitungButton = this.add.text(800, 600, 'Anleitung', { fontSize: '35px', fill: '#ffcf00' });
+        this.anleitungButton = this.add.image(1020, 550, 'anleitung_button');
         this.anleitungButton.setInteractive();
 
         this.anleitungButton.on("pointerup", () => {
             this.scene.start(CST.SCENES.ANLEITUNG);
         });
 
-        this.impressumButton = this.add.text(800, 650, 'Impressum', { fontSize: '35px', fill: '#ffcf00' });
+        this.impressumButton = this.add.image(1020, 620, 'impressum_button');
         this.impressumButton.setInteractive();
 
         this.impressumButton.on("pointerup", () => {

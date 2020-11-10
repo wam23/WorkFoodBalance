@@ -11,7 +11,7 @@ export class AnleitungScene extends Phaser.Scene {
     create() {
         this.add.image(640, 360, 'anleitung');
 
-        let backButton = this.add.image(1150, 650, 'play_button');
+        let backButton = this.add.image(1200, 680, 'back_button');
         backButton.setInteractive();
 
         backButton.on("pointerup", () => {
