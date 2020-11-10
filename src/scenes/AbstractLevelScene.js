@@ -468,23 +468,24 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     levelEnded() {
-        this.player.body.moves = false;
-        this.player.setTint(0x00ff00);
-        //this.player.anims.play('turn');
-        this.playAnim('turn');
-        this.fanSound.stop();
-        if (this.nextlevel == CST.SCENES.MENU) {
-            this.sound.get('background').volume = 0;
-            this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
-            this.finalwinSound.play();
-            
-            this.finalImage = this.physics.add.sprite(this.player.body.position.x, -300, 'wolf');
-            this.finalImage.body.velocity.y = 150;
-        } else {
-            this.levelEndSound.play();
-            this.finalImageShown = true;
+        if (!this.levelHasEnded) {
+            this.player.body.moves = false;
+            this.player.setTint(0x00ff00);
+            //this.player.anims.play('turn');
+            this.playAnim('turn');
+            this.fanSound.stop();
+            if (this.nextlevel == CST.SCENES.MENU) {
+                this.sound.get('background').volume = 0;
+                this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
+                this.finalwinSound.play();
+                
+                this.finalImage = this.physics.add.sprite(this.player.body.position.x, -300, 'wolf');
+                this.finalImage.body.velocity.y = 150;
+            } else {
+                this.levelEndSound.play();
+                this.finalImageShown = true;
+            }
         }
-        
         this.levelHasEnded = true;
     }
 
