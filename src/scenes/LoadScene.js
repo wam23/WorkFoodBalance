@@ -34,6 +34,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('level2_button', './assets/level2_button.png');
         this.load.image('level3_button', './assets/level3_button.png');
         this.load.image('wolf', './assets/wolf.png');
+        this.load.image('geyoungboyst', './assets/geyoungboyst.png');
 
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');

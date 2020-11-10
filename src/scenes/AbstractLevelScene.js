@@ -194,11 +194,13 @@ export class AbstractLevelScene extends Phaser.Scene {
             if ((this.levelEndedTimer > 150) && this.finalImageShown) {
                 this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, nextlevelNumber: this.nextlevelNumber, score: score});
             }
-            if ((this.finalImage != null) && (this.finalImage.body.y > 0)) {
+            if ((this.finalImage != null) && (this.finalImage.body.y > 0) && !this.finalImageShown) {
                 this.finalImage.body.velocity.y = 0;
                 this.finalImage.body.moves = false;
                 this.finalImageShown = true;
-                this.levelEndedTimer = -150;
+                this.levelEndedTimer = -200;
+
+                this.physics.add.sprite(this.player.body.position.x, 150, 'geyoungboyst');
             }
             return;
         } else {
@@ -476,7 +478,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
             this.finalwinSound.play();
             
-            this.finalImage = this.physics.add.sprite(13840, -300, 'wolf');
+            this.finalImage = this.physics.add.sprite(this.player.body.position.x, -300, 'wolf');
             this.finalImage.body.velocity.y = 150;
         } else {
             this.levelEndSound.play();

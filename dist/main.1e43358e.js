@@ -283,6 +283,7 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.image('level2_button', './assets/level2_button.png');
       this.load.image('level3_button', './assets/level3_button.png');
       this.load.image('wolf', './assets/wolf.png');
+      this.load.image('geyoungboyst', './assets/geyoungboyst.png');
       this.load.image('play_button', './assets/play_button.png');
       this.load.image('play_icon', './assets/play_icon.png');
       this.load.image('game_over', './assets/game_over.png');
@@ -908,11 +909,12 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
           });
         }
 
-        if (this.finalImage != null && this.finalImage.body.y > 0) {
+        if (this.finalImage != null && this.finalImage.body.y > 0 && !this.finalImageShown) {
           this.finalImage.body.velocity.y = 0;
           this.finalImage.body.moves = false;
           this.finalImageShown = true;
-          this.levelEndedTimer = -150;
+          this.levelEndedTimer = -200;
+          this.physics.add.sprite(this.player.body.position.x, 150, 'geyoungboyst');
         }
 
         return;
@@ -1244,7 +1246,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
           sound: this.sound
         });
         this.finalwinSound.play();
-        this.finalImage = this.physics.add.sprite(13840, -300, 'wolf');
+        this.finalImage = this.physics.add.sprite(this.player.body.position.x, -300, 'wolf');
         this.finalImage.body.velocity.y = 150;
       } else {
         this.levelEndSound.play();
