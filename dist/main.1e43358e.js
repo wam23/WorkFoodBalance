@@ -270,6 +270,9 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.image('scorescreen', './assets/scorescreen.png');
       this.load.image('anleitung', './assets/anleitung.jpg');
       this.load.image('impressum', './assets/impressum.jpg');
+      this.load.image('anleitung_button', './assets/button_anleitung.jpg');
+      this.load.image('impressum_button', './assets/button_impressum.jpg');
+      this.load.image('back_button', './assets/back.jpg');
       this.load.image('ground', './assets/ground.png');
       this.load.image('platform', './assets/platform.png');
       this.load.image('coin', './assets/coin.png');
@@ -428,13 +431,13 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         console.log('orientationchange', window.screen);
         _this.rotateText.visible = window.innerHeight < window.innerWidth;
       }, true);
-      var playButton = this.add.image(1020, 350, 'level1_button');
+      var playButton = this.add.image(1020, 250, 'level1_button');
       playButton.setInteractive();
       playButton.on("pointerup", function () {
         _this.scene.start(_CST.CST.SCENES.LEVEL1); // level 1 is always available
 
       });
-      this.playButton2 = this.add.image(1020, 450, 'level2_button');
+      this.playButton2 = this.add.image(1020, 350, 'level2_button');
       this.playButton2.setInteractive();
       this.playButton2.on("pointerup", function () {
         if (_this.scene.get(_CST.CST.SCENES.LEVEL2).isAvailable || _this.game.cheatMode) {
@@ -442,7 +445,7 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         }
       });
       this.playButton2.alpha = 0;
-      this.playButton3 = this.add.image(1020, 550, 'level3_button');
+      this.playButton3 = this.add.image(1020, 450, 'level3_button');
       this.playButton3.setInteractive();
       this.playButton3.on("pointerup", function () {
         if (_this.scene.get(_CST.CST.SCENES.LEVEL3).isAvailable || _this.game.cheatMode) {
@@ -450,18 +453,12 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         }
       });
       this.playButton3.alpha = 0;
-      this.anleitungButton = this.add.text(800, 600, 'Anleitung', {
-        fontSize: '35px',
-        fill: '#ffcf00'
-      });
+      this.anleitungButton = this.add.image(1020, 550, 'anleitung_button');
       this.anleitungButton.setInteractive();
       this.anleitungButton.on("pointerup", function () {
         _this.scene.start(_CST.CST.SCENES.ANLEITUNG);
       });
-      this.impressumButton = this.add.text(800, 650, 'Impressum', {
-        fontSize: '35px',
-        fill: '#ffcf00'
-      });
+      this.impressumButton = this.add.image(1020, 620, 'impressum_button');
       this.impressumButton.setInteractive();
       this.impressumButton.on("pointerup", function () {
         _this.scene.start(_CST.CST.SCENES.IMPRESSUM);
@@ -1573,7 +1570,7 @@ var ImpressumScene = /*#__PURE__*/function (_Phaser$Scene) {
       var _this = this;
 
       this.add.image(640, 360, 'impressum');
-      var backButton = this.add.image(950, 570, 'play_button');
+      var backButton = this.add.image(1200, 680, 'back_button');
       backButton.setInteractive();
       backButton.on("pointerup", function () {
         _this.scene.start(_CST.CST.SCENES.MENU);
@@ -1636,7 +1633,7 @@ var AnleitungScene = /*#__PURE__*/function (_Phaser$Scene) {
       var _this = this;
 
       this.add.image(640, 360, 'anleitung');
-      var backButton = this.add.image(1150, 650, 'play_button');
+      var backButton = this.add.image(1200, 680, 'back_button');
       backButton.setInteractive();
       backButton.on("pointerup", function () {
         _this.scene.start(_CST.CST.SCENES.MENU);
@@ -1743,7 +1740,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54305" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54848" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -243,7 +243,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         var playerOnGround = this.player.body.blocked.down;
         //var playerOnGround = (this.player.body.velocity.y == 0);
-
+        
         if (this.player.body.blocked.left) {
             this.playerBlockedToLeft = true;
             this.lastBlockedYPosition = this.player.body.position.y;
@@ -297,7 +297,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.player.setVelocityX(this.game.speedX);
             //this.player.anims.play('right', true);
             this.playAnim('right');
-            if ((this.lastInput == 2) && ((oldXSpeed != 0) || playerOnGround && this.playerBlockedToRight)) {
+            if ((this.lastInput == 2) && ((oldXSpeed != 0) || (playerOnGround && this.playerBlockedToRight))) {
                 if (playerOnGround || this.doubleJumpAllowed) {
                     if (this.game.enableLongJump) {
                         this.jumpTimer = 1;
