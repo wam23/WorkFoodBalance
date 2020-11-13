@@ -77,24 +77,8 @@ export class MenuScene extends Phaser.Scene {
             music.play();
         }
         
-        // TODO:
-        var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
-        this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
-        this.cheatModeText.setScrollFactor(0);
-
-        var cheatModeButton = this.add.image(970, 30, 'cheatmode_button');
-        cheatModeButton.setInteractive();
-
-        cheatModeButton.on("pointerup", () => {
-            this.game.cheatMode = !this.game.cheatMode;
-            this.cheatModeText.setText(this.game.cheatMode ? "1" : "0");
-
-            this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
-            this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
-        });
-
         if (this.game.developmentMode) {
-            /*var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
+            var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
             this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
             this.cheatModeText.setScrollFactor(0);
 
@@ -107,7 +91,7 @@ export class MenuScene extends Phaser.Scene {
 
                 this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
                 this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
-            });*/
+            });
 
             this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
             this.longjumpText.setScrollFactor(0);
