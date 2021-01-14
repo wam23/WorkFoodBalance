@@ -22,14 +22,22 @@ export class MenuScene extends Phaser.Scene {
     create () {
         this.add.image(640, 360,'startscreen');
 
-        let playButton = this.add.image(1020, 350, 'level1_button');
+        this.rotateText = this.add.text(100, 100, 'Bitte Bildschirm drehen', { fontSize: '50px', fill: '#ffcf00' });
+        this.rotateText.visible = window.innerHeight > window.innerWidth;
+
+        window.addEventListener('orientationchange', () => {
+            console.log('orientationchange', window.screen)
+            this.rotateText.visible = window.innerHeight < window.innerWidth;
+        }, true);
+
+        let playButton = this.add.image(1020, 250, 'level1_button');
         playButton.setInteractive();
 
         playButton.on("pointerup", () => {
             this.scene.start(CST.SCENES.LEVEL1); // level 1 is always available
         });
 
-        this.playButton2 = this.add.image(1020, 450, 'level2_button');
+        this.playButton2 = this.add.image(1020, 350, 'level2_button');
         this.playButton2.setInteractive();
 
         this.playButton2.on("pointerup", () => {
@@ -39,7 +47,7 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton2.alpha = 0;
 
-        this.playButton3 = this.add.image(1020, 550, 'level3_button');
+        this.playButton3 = this.add.image(1020, 450, 'level3_button');
         this.playButton3.setInteractive();
 
         this.playButton3.on("pointerup", () => {
@@ -49,10 +57,26 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton3.alpha = 0;
 
-        var music = this.sound.add('background');
-        music.loop = true;
-        music.play();
+        this.anleitungButton = this.add.image(1020, 550, 'anleitung_button');
+        this.anleitungButton.setInteractive();
 
+        this.anleitungButton.on("pointerup", () => {
+            this.scene.start(CST.SCENES.ANLEITUNG);
+        });
+
+        this.impressumButton = this.add.image(1020, 620, 'impressum_button');
+        this.impressumButton.setInteractive();
+
+        this.impressumButton.on("pointerup", () => {
+            this.scene.start(CST.SCENES.IMPRESSUM);
+        });
+
+        if (this.sound.get('background') == null) {
+            var music = this.sound.add('background');
+            music.loop = true;
+            music.play();
+        }
+        
         if (this.game.developmentMode) {
             var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
             this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);

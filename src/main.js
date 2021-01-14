@@ -7,6 +7,8 @@ import {ScoreScreen} from "./scenes/ScoreScene.js";
 import {Level1Scene} from "./scenes/Level1Scene.js";
 import {Level2Scene} from "./scenes/Level2Scene.js";
 import {Level3Scene} from "./scenes/Level3Scene.js";
+import {ImpressumScene} from "./scenes/ImpressumScene.js";
+import {AnleitungScene} from "./scenes/AnleitungScene.js";
 
 let config = {
     type: Phaser.CANVAS,
@@ -25,7 +27,7 @@ let config = {
         }
     },
     scene: [
-        BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene
+        BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene, ImpressumScene, AnleitungScene
     ]
 };
 
@@ -44,9 +46,9 @@ game.fastMode = false;
 game.SPEED_X = 350;
 
 game.speedX = game.SPEED_X;
-game.speedY = 330;
+game.speedY = 430;
 
-game.gravity = 250;
+game.gravity = 450;
 
 if (game.fastMode) {
     game.speedX = 600;
@@ -54,7 +56,9 @@ if (game.fastMode) {
 
 game.gameOver = false;
 
-game.developmentMode = true;
+game.developmentMode = false;
 
-game.enableLongJump = false;
+game.enableLongJump = true;
 game.LONG_JUMP_FACTOR = 0.7;
+
+game.LOW_SOUND_LEVEL = 0.2;

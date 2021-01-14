@@ -2,13 +2,14 @@ import { CST } from "../CST.js"
 
 export class AbstractLevelScene extends Phaser.Scene {
 
-    constructor(levelname, nextlevel, bgimage) {
+    constructor(levelname, nextlevel, nextlevelNumber, bgimage) {
         super({
             key: levelname
         });
 
         this.backgroundimage = bgimage;
         this.nextlevel = nextlevel;
+        this.nextlevelNumber = nextlevelNumber;
 
         this.levelWidth = 15000;
 
@@ -16,6 +17,7 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.levelHasEnded = false;
         this.levelEndedTimer = 0;
+        this.finalImageShown = false;
 
         this.escKey;
 
@@ -44,6 +46,16 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.isAvailable = false;
 
         this.jumpTimer = 0;
+
+        this.playerBlockedToLeft = false;
+        this.playerBlockedToRight = false;
+        this.lastBlockedYPosition = 0;
+
+        this.bouncingDisabled = false;
+        this.bouncingDisabledCounter = 0;
+
+        this.fastPlay = false;
+        this.lastPlayedAnim = null;
     }
 
     init(data) {
@@ -59,9 +71,16 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
         
         this.game.speedX = this.game.SPEED_X;
+        this.fastPlay = false;
         this.fanSoundPlayed = false;
         this.ybViertuStungStarted = false;
         this.drehkreuzSoundPlayed = false;
+        this.levelHasEnded = false;
+        this.finalImageShown = false;
+        if (this.sound.get('final_win') != null) {
+            this.sound.get('final_win').stop();
+        }
+        this.restoreBackgroundSoundLevel();
     }
 
     preload() {
@@ -95,26 +114,8 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player, false, 1, 0);
 
-        //  Our player animations, turning, walking left and walking right.
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        this.createDudeAnimations('dude', 'left', 'turn', 'right');
+        this.createDudeAnimations('dudeFast', 'leftFast', 'turnFast', 'rightFast');
 
         var fontStyle = { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
         this.collectedBeersScoreText = this.add.text(75, 20, this.game.collectedBeers, fontStyle);
@@ -147,6 +148,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.collectFlagSound = this.sound.add('collect_flag');
         this.collectBallSound = this.sound.add('collect_ball');
         this.collectLetterSound = this.sound.add('collect_letter');
+        this.collectCoronaSound = this.sound.add('collect_corona');
         this.jumpSound = this.sound.add('jump');
         this.gameoverSound = this.sound.add('gameover');
         this.levelEndSound = this.sound.add('levelend');
@@ -160,6 +162,7 @@ export class AbstractLevelScene extends Phaser.Scene {
     afterCreate() {
         var tileset = this.map.addTilesetImage('tiles_spritesheet', 'tiles');
         this.layer = this.map.createStaticLayer('tile layer 1', tileset);
+        
         this.layer.setCollisionByExclusion(-1, true);
         this.physics.add.collider(this.player, this.layer);
 
@@ -179,7 +182,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.game.gameOver) {
             this.gameOverTimer++;
             if (this.gameOverTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, score: score});
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: CST.SCENES.MENU, nextlevelNumber: 0, score: score});
             }
             return;
         } else {
@@ -188,8 +191,16 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         if (this.levelHasEnded) {
             this.levelEndedTimer++;
-            if (this.levelEndedTimer > 150) {
-                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, score: score});
+            if ((this.levelEndedTimer > 150) && this.finalImageShown) {
+                this.scene.start(CST.SCENES.SCORE, {nextlevel: this.nextlevel, nextlevelNumber: this.nextlevelNumber, score: score});
+            }
+            if ((this.finalImage != null) && (this.finalImage.body.y > 0) && !this.finalImageShown) {
+                this.finalImage.body.velocity.y = 0;
+                this.finalImage.body.moves = false;
+                this.finalImageShown = true;
+                this.levelEndedTimer = -200;
+
+                this.physics.add.sprite(this.player.body.position.x, 150, 'geyoungboyst');
             }
             return;
         } else {
@@ -206,12 +217,17 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.scene.key == CST.SCENES.LEVEL3) {
             if (!this.fanSoundPlayed && (this.player.body.position.x > 7300)) {
                 this.fanSoundPlayed = true;
+                this.sound.get('background').volume = 0;
+                this.fanSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
                 this.fanSound.play();
             }
 
             if (!this.ybViertuStungStarted && (this.player.body.position.x > 8600)) {
                 this.ybViertuStungStarted = true;
                 this.game.speedX = this.game.SPEED_X * 1.5;
+                this.player.setVelocityX(this.player.body.velocity.x * 1.5);
+                this.fastPlay = true;
+                this.updateAnim();
             }
         }
 
@@ -225,8 +241,21 @@ export class AbstractLevelScene extends Phaser.Scene {
         var leftClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x < 500)) || this.cursors.left.isDown;
         var rightClick = (this.input.activePointer.isDown && (this.input.activePointer.position.x > 780)) || this.cursors.right.isDown;
 
-        //var playerOnGround = this.player.body.touching.down;
-        var playerOnGround = (this.player.body.velocity.y == 0);
+        var playerOnGround = this.player.body.blocked.down;
+        //var playerOnGround = (this.player.body.velocity.y == 0);
+        
+        if (this.player.body.blocked.left) {
+            this.playerBlockedToLeft = true;
+            this.lastBlockedYPosition = this.player.body.position.y;
+        }
+        if (this.player.body.blocked.right) {
+            this.playerBlockedToRight = true;
+            this.lastBlockedYPosition = this.player.body.position.y;
+        }
+        if ((this.player.body.velocity.x != 0) || (Math.abs(this.lastBlockedYPosition - this.player.body.position.y) > 50)) {
+            this.playerBlockedToLeft = false;
+            this.playerBlockedToRight = false;
+        }
         
         if ((leftClick || rightClick) && this.waitForInputRelease && (this.jumpTimer > 0)) {
             if (this.jumpTimer < 40) {
@@ -244,8 +273,9 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         if (leftClick && (!this.waitForInputRelease)) {
             this.player.setVelocityX(-this.game.speedX);
-            this.player.anims.play('left', true);
-            if ((this.lastInput == 1) && ((oldXSpeed != 0) || playerOnGround)) {
+            //this.player.anims.play('left', true);
+            this.playAnim('left');
+            if ((this.lastInput == 1) && ((oldXSpeed != 0) || (playerOnGround && this.playerBlockedToLeft))) {
                 if (playerOnGround || this.doubleJumpAllowed) {
                     this.jumpTimer = 1;
                     if (this.game.enableLongJump) {
@@ -265,8 +295,9 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         } else if (rightClick && (!this.waitForInputRelease)) {
             this.player.setVelocityX(this.game.speedX);
-            this.player.anims.play('right', true);
-            if ((this.lastInput == 2) && ((oldXSpeed != 0) || playerOnGround)) {
+            //this.player.anims.play('right', true);
+            this.playAnim('right');
+            if ((this.lastInput == 2) && ((oldXSpeed != 0) || (playerOnGround && this.playerBlockedToRight))) {
                 if (playerOnGround || this.doubleJumpAllowed) {
                     if (this.game.enableLongJump) {
                         this.jumpTimer = 1;
@@ -297,7 +328,15 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
 
         if (this.player.body.velocity.x == 0) {
-            this.player.anims.play('turn');
+            //this.player.anims.play('turn');
+            this.playAnim('turn');
+        }
+
+        if (this.bouncingDisabledCounter > 0) {
+            this.bouncingDisabledCounter--;
+            if (this.bouncingDisabledCounter <= 0) {
+                this.bouncingDisabled = false;
+            }
         }
 
         //console.log('player x:' + this.player.body.position.x);
@@ -327,6 +366,7 @@ export class AbstractLevelScene extends Phaser.Scene {
                     item.alpha = 0;
                     this.player.setTint(0xff0000);
                     this.counterUntilClearTint = 50;
+                    this.collectCoronaSound.play();
                 }
                 break;
             case 25: // Ball
@@ -395,14 +435,10 @@ export class AbstractLevelScene extends Phaser.Scene {
                 this.levelEnded();
                 break;
             case 143: // hooligan
-                this.player.setVelocityX(-this.player.body.velocity.x);
-                this.player.setVelocityY(-this.player.body.velocity.y);
-                this.sorrySound.play();
+                this.collidedWithHooligan();
                 break;
             case 155: // hooligan
-                this.player.setVelocityX(-this.player.body.velocity.x);
-                this.player.setVelocityY(-this.player.body.velocity.y);
-                this.sorrySound.play();
+                this.collidedWithHooligan();
                 break;
             case 49: // end game
                 this.levelEnded();
@@ -410,27 +446,46 @@ export class AbstractLevelScene extends Phaser.Scene {
         }
     }
 
+    collidedWithHooligan() {
+        if (!this.bouncingDisabled) {
+            this.player.setVelocityX(-this.player.body.velocity.x);
+            this.player.setVelocityY(-this.player.body.velocity.y);
+            this.sorrySound.play();
+            this.bouncingDisabled = true;
+            this.bouncingDisabledCounter = 30;
+        }
+    }
+
     gameIsOver() {
         if (!this.game.cheatMode) {
             this.physics.pause();
             this.player.setTint(0xff0000);
-            this.player.anims.play('turn');
+            //this.player.anims.play('turn');
+            this.playAnim('turn');
 
             this.game.gameOver = true;
         }
     }
 
     levelEnded() {
-        this.physics.pause();
-        this.player.setTint(0x00ff00);
-        this.player.anims.play('turn');
-        this.fanSound.stop();
-        if (this.nextlevel == CST.SCENES.MENU) {
-            this.finalwinSound.play();
-        } else {
-            this.levelEndSound.play();
+        if (!this.levelHasEnded) {
+            this.player.body.moves = false;
+            this.player.setTint(0x00ff00);
+            //this.player.anims.play('turn');
+            this.playAnim('turn');
+            this.fanSound.stop();
+            if (this.nextlevel == CST.SCENES.MENU) {
+                this.sound.get('background').volume = 0;
+                this.finalwinSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
+                this.finalwinSound.play();
+                
+                this.finalImage = this.physics.add.sprite(this.player.body.position.x, -300, 'wolf');
+                this.finalImage.body.velocity.y = 150;
+            } else {
+                this.levelEndSound.play();
+                this.finalImageShown = true;
+            }
         }
-        
         this.levelHasEnded = true;
     }
 
@@ -440,6 +495,45 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     setAsUnavailable() {
         this.isAvailable = false;
+    }
+
+    restoreBackgroundSoundLevel() {
+        if (this.sound.get('background') != null) {
+            this.sound.get('background').volume = 1.0;
+        }
+    }
+
+    createDudeAnimations(key, keyLeft, keyTurn, keyRight) {
+        //  Our player animations, turning, walking left and walking right.
+        this.anims.create({
+            key: keyLeft,
+            frames: this.anims.generateFrameNumbers(key, { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: keyTurn,
+            frames: [{ key: key, frame: 4 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: keyRight,
+            frames: this.anims.generateFrameNumbers(key, { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+    }
+
+    playAnim(key) {
+        var keyToUse = this.fastPlay ? key + 'Fast' : key;
+        this.player.anims.play(keyToUse, true);
+        this.lastPlayedAnim = key;
+    }
+
+    updateAnim() {
+        this.playAnim(this.lastPlayedAnim);
     }
 
 }
