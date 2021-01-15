@@ -68,7 +68,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('final_win', './assets/sounds/final_win.mp3');
         this.load.audio('background', './assets/sounds/background.mp3');
         this.load.audio('fans', './assets/sounds/baenkli.mp3');
-        this.load.audio('drehkreuz', './assets/sounds/drehkreuz.mp3');
+        this.load.audio('drehkreuz', './assets/sounds/hie.mp3');
 
         // only for developping
         this.load.image('cheatmode_button', './assets/cheatmode_button.png');

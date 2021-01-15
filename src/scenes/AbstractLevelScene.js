@@ -234,6 +234,8 @@ export class AbstractLevelScene extends Phaser.Scene {
         if (this.scene.key == CST.SCENES.LEVEL1) {
             if (!this.drehkreuzSoundPlayed && (this.player.body.position.x > 8300)) {
                 this.drehkreuzSoundPlayed = true;
+                this.sound.get('background').volume = 0;
+                this.drehkreuzSound.on('complete', this.restoreBackgroundSoundLevel, {sound: this.sound});
                 this.drehkreuzSound.play();
             }
         }
