@@ -93,7 +93,25 @@ export class MenuScene extends Phaser.Scene {
                 this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
             });
 
-            this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
+            this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
+            this.soundOnButton.setInteractive();
+
+            this.soundOnButton.on("pointerup", () => {
+                this.game.sound.mute = true;
+                this.updateSoundButtonState();
+            });
+
+            this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
+            this.soundOffButton.setInteractive();
+
+            this.soundOffButton.on("pointerup", () => {
+                this.game.sound.mute = false;
+                this.updateSoundButtonState();
+            });
+
+            this.updateSoundButtonState();
+
+            /* this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
             this.longjumpText.setScrollFactor(0);
 
             var longjumpButton = this.add.image(1130, 30, 'longjump_button');
@@ -156,12 +174,17 @@ export class MenuScene extends Phaser.Scene {
             speed3Button.on("pointerup", () => {
                 this.game.speedY = 530;
                 this.speedText.setText("Speed: " + this.game.speedY);
-            });
+            }); */
         }
     }
 
     update () {
         
+    }
+
+    updateSoundButtonState() {
+        this.soundOnButton.setVisible(!this.game.sound.mute);
+        this.soundOffButton.setVisible(this.game.sound.mute);
     }
 
 }
