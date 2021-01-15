@@ -2,7 +2,7 @@ import { CST } from "../CST.js"
 
 export class AbstractLevelScene extends Phaser.Scene {
 
-    constructor(levelname, nextlevel, nextlevelNumber, bgimage) {
+    constructor(levelname, nextlevel, nextlevelNumber, bgimage, maxTime) {
         super({
             key: levelname
         });
@@ -10,6 +10,7 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.backgroundimage = bgimage;
         this.nextlevel = nextlevel;
         this.nextlevelNumber = nextlevelNumber;
+        this.maxTime = maxTime;
 
         this.levelWidth = 15000;
 
@@ -56,6 +57,11 @@ export class AbstractLevelScene extends Phaser.Scene {
 
         this.fastPlay = false;
         this.lastPlayedAnim = null;
+
+        this.timer = null;
+        this.timeElapsed = 0;
+        this.timeLeft = this.maxTime;
+        this.timeLeftText = this.maxTime.toString();
     }
 
     init(data) {
@@ -81,6 +87,11 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.sound.get('final_win').stop();
         }
         this.restoreBackgroundSoundLevel();
+
+        if (this.timer != null) {
+            this.timer.reset();
+        }
+        this.timeElapsed = 0;
     }
 
     preload() {
@@ -134,9 +145,13 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.add.image(35, 245, 'flag').setScrollFactor(0);
         this.add.image(35, 315, 'ball').setScrollFactor(0);
 
-        this.livesText = this.add.text(1240, 20, this.game.numberOfLives, fontStyle);
+        this.livesText = this.add.text(1210, 20, this.game.numberOfLives, fontStyle);
         this.livesText.setScrollFactor(0);
-        this.add.image(1200, 35, 'heart').setScrollFactor(0);
+        this.add.image(1170, 35, 'heart').setScrollFactor(0);
+
+        this.timeLeftText = this.add.text(1210, 90, this.maxTime, fontStyle);
+        this.timeLeftText.setScrollFactor(0);
+        this.add.image(1170, 105, 'time').setScrollFactor(0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -157,6 +172,13 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.finalwinSound = this.sound.add('final_win');
         this.fanSound = this.sound.add('fans');
         this.drehkreuzSound = this.sound.add('drehkreuz');
+
+        this.timer = this.time.addEvent({
+            delay: 1000, // ms
+            callback: this.oneSecondPassed,
+            callbackScope: this,
+            loop: true
+        });
     }
 
     afterCreate() {
@@ -536,6 +558,15 @@ export class AbstractLevelScene extends Phaser.Scene {
 
     updateAnim() {
         this.playAnim(this.lastPlayedAnim);
+    }
+
+    oneSecondPassed() {
+        this.timeElapsed += 1;
+        this.timeLeft = Math.max(this.maxTime - this.timeElapsed, 0);
+        this.timeLeftText.setText(this.timeLeft);
+        if ((this.maxTime - this.timeElapsed) <= 0) {
+            this.gameIsOver();
+        }
     }
 
 }
