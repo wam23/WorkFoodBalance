@@ -9,11 +9,11 @@
             Allow from all
 	    Options -MultiViews
 	    # Uncomment this if you're on Apache >= 2.4:
-	    #Require all granted
+	    Require all granted
 	</Directory>
 
 	<Directory />
-		Options -Indexes FollowSymLinks
+		Options -Indexes +FollowSymLinks
 		AllowOverride None
 	</Directory>
 	
