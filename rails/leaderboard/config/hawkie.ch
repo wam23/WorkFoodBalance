@@ -3,9 +3,9 @@
 	ServerName www.hawkie.ch
 	ServerAlias hawkie.ch
 
-	DocumentRoot /var/www/hawkie.ch/leaderboard/public/
+	DocumentRoot /var/www/hawkie.ch/WorkFoodBalance/rails/leaderboard/public/
 	
-        <Directory /var/www/hawkie.ch/leaderboard/public>
+        <Directory /var/www/hawkie.ch/WorkFoodBalance/rails/leaderboard/public>
             Allow from all
 	    Options -MultiViews
 	    # Uncomment this if you're on Apache >= 2.4:
