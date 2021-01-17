@@ -1,4 +1,5 @@
 import { CST } from "../CST.js"
+import { LEADER_BOARD_URL } from "../CST.js"
 
 export class MenuScene extends Phaser.Scene {
     

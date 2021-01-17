@@ -1,0 +1,14 @@
+<h1>Leaderboard</h1>
+
+<table class="leaderboard">
+    <tr>
+        <th>Acronym</th>
+        <th>Score</th>
+    </tr>
+    <% @leader_board_entries.each do |leader_board_entry| %>
+    <tr>
+        <td><%= leader_board_entry.acronym %></td>
+        <td><%= leader_board_entry.score %></td>
+    </tr>
+    <% end %>
+</table>

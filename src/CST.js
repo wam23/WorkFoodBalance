@@ -10,4 +10,6 @@ export const CST = {
         ANLEITUNG: "ANLEITUNG",
         IMPRESSUM: "IMPRESSUM"
     }
-}
+};
+
+export const LEADER_BOARD_URL = "http://hawkie.ch:80/";
