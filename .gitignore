@@ -2,3 +2,7 @@ node_modules
 .cache
 dist/*.js.map
 package-lock.json
+.DS_Store
+dist/assets/.DS_Store
+.DS_Store
+dist/.DS_Store
