@@ -9,12 +9,19 @@ export class ScoreScreen extends Phaser.Scene {
         });
 
         this.cheatModeText = "";
+
+        this.userAcronym = "";
+        this.scoreSubmitted = false;
+
+        this.highScores;
     }
 
     init(data) {
         this.nextlevel = data.nextlevel;
         this.nextlevelNumber = data.nextlevelNumber;
         this.score = data.score;
+        this.scoreSubmitted = false;
+        this.getHighScores();
     }
 
     create () {
@@ -48,13 +55,37 @@ export class ScoreScreen extends Phaser.Scene {
             }
             this.scene.start(this.nextlevel);
         });
+
+        this.highScoreText = [];
+        this.highScoreText[0] = this.add.text(100, 30, '0', { fontSize: '20px', fill: '#000' });
+        this.highScoreText[0].setText("");
+        this.highScoreText[1] = this.add.text(100, 90, '0', { fontSize: '20px', fill: '#000' });
+        this.highScoreText[1].setText("");
+        this.highScoreText[2] = this.add.text(100, 150, '0', { fontSize: '20px', fill: '#000' });
+        this.highScoreText[2].setText("");
+
+        this.nameInput = this.add.dom(200, 240).createFromCache("form");
+
+        this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+        this.returnKey.on("down", event => {
+            let name = this.nameInput.getChildByName("name");
+            if(name.value != "") {
+                //console.log("text input: " + name.value);
+                this.userAcronym = name.value;
+                if (!this.scoreSubmitted) {
+                    this.submitScore();
+                    this.scoreSubmitted = true;
+                }
+            }
+        });
     }
 
     submitScore() {
         const url = LEADER_BOARD_URL + 'leader_board_entries';
         var formData = new FormData();
-        formData.append("leader_board_entry[acronym]", "haw");
-        formData.append("leader_board_entry[score]", 2);
+        formData.append("leader_board_entry[acronym]", this.userAcronym);
+        formData.append("leader_board_entry[score]", this.score);
         var request = new XMLHttpRequest();
     
         request.open('POST', url, true);
@@ -82,6 +113,7 @@ export class ScoreScreen extends Phaser.Scene {
     }
 
     getHighScores() {
+        this.highScores = [];
         const url = LEADER_BOARD_URL + 'get_high_scores';
         var request = new XMLHttpRequest();
     
@@ -92,7 +124,11 @@ export class ScoreScreen extends Phaser.Scene {
             if (request.readyState == 4 && request.status == 200) {
                 var jsonResponse = JSON.parse(request.responseText);
                 for(let i = 0; i < jsonResponse.length; i++){
-                    console.log(jsonResponse[i].acronym + " " + jsonResponse[i].score);
+                    //console.log(jsonResponse[i].acronym + " " + jsonResponse[i].score);
+                    this.highScores.push({acronym: jsonResponse[i].acronym, score: jsonResponse[i].score});
+                    if (i < 3) {
+                        this.highScoreText[i].setText("" + (i + 1) + ". " + this.highScores[i].acronym + " - " + this.highScores[i].score);
+                    }
                 }
             }
         }

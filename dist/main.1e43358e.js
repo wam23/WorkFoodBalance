@@ -322,7 +322,8 @@ var LoadScene = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.audio('final_win', './assets/sounds/final_win.mp3');
       this.load.audio('background', './assets/sounds/background.mp3');
       this.load.audio('fans', './assets/sounds/baenkli.mp3');
-      this.load.audio('drehkreuz', './assets/sounds/hie.mp3'); // only for developping
+      this.load.audio('drehkreuz', './assets/sounds/hie.mp3');
+      this.load.html('form', './assets/html/form.html'); // only for developping
 
       this.load.image('cheatmode_button', './assets/cheatmode_button.png');
       this.load.image('gravity1_button', './assets/gravity1_button.png');
@@ -475,6 +476,22 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
         music.play();
       }
 
+      this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
+      this.soundOnButton.setInteractive();
+      this.soundOnButton.on("pointerup", function () {
+        _this.game.sound.mute = true;
+
+        _this.updateSoundButtonState();
+      });
+      this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
+      this.soundOffButton.setInteractive();
+      this.soundOffButton.on("pointerup", function () {
+        _this.game.sound.mute = false;
+
+        _this.updateSoundButtonState();
+      });
+      this.updateSoundButtonState();
+
       if (this.game.developmentMode) {
         var fontStyle = {
           fontSize: '16px',
@@ -495,21 +512,6 @@ var MenuScene = /*#__PURE__*/function (_Phaser$Scene) {
           _this.playButton2.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL2).isAvailable || _this.game.cheatMode);
           _this.playButton3.alpha = 100 * (_this.scene.get(_CST.CST.SCENES.LEVEL3).isAvailable || _this.game.cheatMode);
         });
-        this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
-        this.soundOnButton.setInteractive();
-        this.soundOnButton.on("pointerup", function () {
-          _this.game.sound.mute = true;
-
-          _this.updateSoundButtonState();
-        });
-        this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
-        this.soundOffButton.setInteractive();
-        this.soundOffButton.on("pointerup", function () {
-          _this.game.sound.mute = false;
-
-          _this.updateSoundButtonState();
-        });
-        this.updateSoundButtonState();
         /* this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
         this.longjumpText.setScrollFactor(0);
           var longjumpButton = this.add.image(1130, 30, 'longjump_button');
@@ -621,6 +623,9 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
       key: _CST.CST.SCENES.SCORE
     });
     _this.cheatModeText = "";
+    _this.userAcronym = "";
+    _this.scoreSubmitted = false;
+    _this.highScores;
     return _this;
   }
 
@@ -630,6 +635,8 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
       this.nextlevel = data.nextlevel;
       this.nextlevelNumber = data.nextlevelNumber;
       this.score = data.score;
+      this.scoreSubmitted = false;
+      this.getHighScores();
     }
   }, {
     key: "create",
@@ -676,14 +683,46 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
 
         _this2.scene.start(_this2.nextlevel);
       });
+      this.highScoreText = [];
+      this.highScoreText[0] = this.add.text(100, 30, '0', {
+        fontSize: '20px',
+        fill: '#000'
+      });
+      this.highScoreText[0].setText("");
+      this.highScoreText[1] = this.add.text(100, 90, '0', {
+        fontSize: '20px',
+        fill: '#000'
+      });
+      this.highScoreText[1].setText("");
+      this.highScoreText[2] = this.add.text(100, 150, '0', {
+        fontSize: '20px',
+        fill: '#000'
+      });
+      this.highScoreText[2].setText("");
+      this.nameInput = this.add.dom(200, 240).createFromCache("form");
+      this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+      this.returnKey.on("down", function (event) {
+        var name = _this2.nameInput.getChildByName("name");
+
+        if (name.value != "") {
+          //console.log("text input: " + name.value);
+          _this2.userAcronym = name.value;
+
+          if (!_this2.scoreSubmitted) {
+            _this2.submitScore();
+
+            _this2.scoreSubmitted = true;
+          }
+        }
+      });
     }
   }, {
     key: "submitScore",
     value: function submitScore() {
       var url = _CST.LEADER_BOARD_URL + 'leader_board_entries';
       var formData = new FormData();
-      formData.append("leader_board_entry[acronym]", "haw");
-      formData.append("leader_board_entry[score]", 2);
+      formData.append("leader_board_entry[acronym]", this.userAcronym);
+      formData.append("leader_board_entry[score]", this.score);
       var request = new XMLHttpRequest();
       request.open('POST', url, true);
       request.send(formData);
@@ -710,6 +749,9 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
   }, {
     key: "getHighScores",
     value: function getHighScores() {
+      var _this3 = this;
+
+      this.highScores = [];
       var url = _CST.LEADER_BOARD_URL + 'get_high_scores';
       var request = new XMLHttpRequest();
       request.open('GET', url, true);
@@ -720,7 +762,15 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
           var jsonResponse = JSON.parse(request.responseText);
 
           for (var i = 0; i < jsonResponse.length; i++) {
-            console.log(jsonResponse[i].acronym + " " + jsonResponse[i].score);
+            //console.log(jsonResponse[i].acronym + " " + jsonResponse[i].score);
+            _this3.highScores.push({
+              acronym: jsonResponse[i].acronym,
+              score: jsonResponse[i].score
+            });
+
+            if (i < 3) {
+              _this3.highScoreText[i].setText("" + (i + 1) + ". " + _this3.highScores[i].acronym + " - " + _this3.highScores[i].score);
+            }
           }
         }
       };
@@ -1761,6 +1811,7 @@ var _AnleitungScene = require("./scenes/AnleitungScene.js");
 /** @type {import("../typings/phaser")} */
 var config = {
   type: Phaser.CANVAS,
+  parent: 'parentDiv',
   scale: {
     parent: 'Hackathon - Work Food Balance',
     mode: Phaser.Scale.FIT,
@@ -1776,6 +1827,9 @@ var config = {
       },
       debug: false
     }
+  },
+  dom: {
+    createContainer: true
   },
   scene: [_BootScene.BootScene, _LoadScene.LoadScene, _MenuScene.MenuScene, _ScoreScene.ScoreScreen, _Level1Scene.Level1Scene, _Level2Scene.Level2Scene, _Level3Scene.Level3Scene, _ImpressumScene.ImpressumScene, _AnleitungScene.AnleitungScene]
 };
@@ -1832,7 +1886,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62061" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51397" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

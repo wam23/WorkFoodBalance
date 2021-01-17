@@ -78,6 +78,24 @@ export class MenuScene extends Phaser.Scene {
             music.play();
         }
         
+        this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
+        this.soundOnButton.setInteractive();
+
+        this.soundOnButton.on("pointerup", () => {
+            this.game.sound.mute = true;
+            this.updateSoundButtonState();
+        });
+
+        this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
+        this.soundOffButton.setInteractive();
+
+        this.soundOffButton.on("pointerup", () => {
+            this.game.sound.mute = false;
+            this.updateSoundButtonState();
+        });
+
+        this.updateSoundButtonState();
+
         if (this.game.developmentMode) {
             var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
             this.cheatModeText = this.add.text(1030, 22, this.game.cheatMode ? "1" : "0", fontStyle);
@@ -93,24 +111,6 @@ export class MenuScene extends Phaser.Scene {
                 this.playButton2.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL2).isAvailable || this.game.cheatMode);
                 this.playButton3.alpha = 100 * (this.scene.get(CST.SCENES.LEVEL3).isAvailable || this.game.cheatMode);
             });
-
-            this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
-            this.soundOnButton.setInteractive();
-
-            this.soundOnButton.on("pointerup", () => {
-                this.game.sound.mute = true;
-                this.updateSoundButtonState();
-            });
-
-            this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
-            this.soundOffButton.setInteractive();
-
-            this.soundOffButton.on("pointerup", () => {
-                this.game.sound.mute = false;
-                this.updateSoundButtonState();
-            });
-
-            this.updateSoundButtonState();
 
             /* this.longjumpText = this.add.text(1190, 22, this.game.enableLongJump ? "1" : "0", fontStyle);
             this.longjumpText.setScrollFactor(0);

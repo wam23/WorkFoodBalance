@@ -12,6 +12,7 @@ import {AnleitungScene} from "./scenes/AnleitungScene.js";
 
 let config = {
     type: Phaser.CANVAS,
+    parent: 'parentDiv',
     scale: {
         parent: 'Hackathon - Work Food Balance',
         mode: Phaser.Scale.FIT,
@@ -25,6 +26,9 @@ let config = {
             gravity: { y: 0 },
             debug: false
         }
+    },
+    dom: {
+        createContainer: true
     },
     scene: [
         BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene, ImpressumScene, AnleitungScene
