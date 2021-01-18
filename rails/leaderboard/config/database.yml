@@ -21,5 +21,12 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  database: workfoodbalance
+  pool: 5
+  username: workfoodbalance
+  password: workfoodbalance_pass
+  socket: /var/run/mysqld/mysqld.sock
+  variables:
+    sql_mode: TRADITIONAL

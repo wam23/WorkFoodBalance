@@ -138,7 +138,8 @@ var CST = {
   }
 };
 exports.CST = CST;
-var LEADER_BOARD_URL = "http://hawkie.ch:80/";
+var LEADER_BOARD_URL = "http://hawkie.ch:80/"; //export const LEADER_BOARD_URL = "http://localhost:3000/";
+
 exports.LEADER_BOARD_URL = LEADER_BOARD_URL;
 },{}],"src/scenes/BootScene.js":[function(require,module,exports) {
 "use strict";
@@ -699,30 +700,47 @@ var ScoreScreen = /*#__PURE__*/function (_Phaser$Scene) {
         fill: '#000'
       });
       this.highScoreText[2].setText("");
-      this.nameInput = this.add.dom(200, 240).createFromCache("form");
-      this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-      this.returnKey.on("down", function (event) {
-        var name = _this2.nameInput.getChildByName("name");
 
-        if (name.value != "") {
-          //console.log("text input: " + name.value);
-          _this2.userAcronym = name.value;
+      if (this.game.gameOver) {
+        this.nameInput = this.add.dom(200, 240).createFromCache("form");
+        this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.returnKey.on("down", function (event) {
+          var name = _this2.nameInput.getChildByName("name");
 
-          if (!_this2.scoreSubmitted) {
-            _this2.submitScore();
+          if (name.value != "") {
+            //console.log("text input: " + name.value);
+            _this2.userAcronym = name.value;
 
-            _this2.scoreSubmitted = true;
+            if (!_this2.scoreSubmitted) {
+              _this2.submitScore();
+
+              _this2.scoreSubmitted = true;
+            }
           }
-        }
-      });
+        });
+      }
     }
   }, {
     key: "submitScore",
     value: function submitScore() {
       var url = _CST.LEADER_BOARD_URL + 'leader_board_entries';
-      var formData = new FormData();
+      var formData = new FormData(); //(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
+
       formData.append("leader_board_entry[acronym]", this.userAcronym);
-      formData.append("leader_board_entry[score]", this.score);
+      formData.append("leader_board_entry[coins]", this.game.collectedCoins);
+      formData.append("leader_board_entry[sausages]", this.game.collectedSausages);
+      formData.append("leader_board_entry[flags]", this.game.collectedFlags);
+      var collectedChars = 0;
+
+      for (var index = 0; index < this.game.forever.length; index++) {
+        if (this.game.forever[index].trim().length == 1) {
+          collectedChars++;
+        }
+      }
+
+      formData.append("leader_board_entry[characters]", collectedChars);
+      formData.append("leader_board_entry[remainingtime]", this.game.collectedRemainingTime);
+      formData.append("leader_board_entry[version]", 1);
       var request = new XMLHttpRequest();
       request.open('POST', url, true);
       request.send(formData);
@@ -837,8 +855,6 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     _this.finalImageShown = false;
     _this.escKey;
     _this.player;
-    _this.beers;
-    _this.sausages;
     _this.bombs;
     _this.platforms;
     _this.cursors;
@@ -881,6 +897,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         this.game.collectedCoins = 0;
         this.game.collectedFlags = 0;
         this.game.collectedBalls = 0;
+        this.game.collectedRemainingTime = 0;
       }
 
       this.game.speedX = this.game.SPEED_X;
@@ -937,21 +954,21 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         strokeThickness: 1,
         fontWeight: 'bold'
       };
-      this.collectedBeersScoreText = this.add.text(75, 20, this.game.collectedBeers, fontStyle);
-      this.collectedBeersScoreText.setScrollFactor(0);
+      this.collectedCoinsScoreText = this.add.text(75, 20, this.game.collectedCoins, fontStyle);
+      this.collectedCoinsScoreText.setScrollFactor(0);
       this.collectedSausagesScoreText = this.add.text(75, 90, this.game.collectedSausages, fontStyle);
       this.collectedSausagesScoreText.setScrollFactor(0);
-      this.collectedCoinsScoreText = this.add.text(75, 160, this.game.collectedCoins, fontStyle);
-      this.collectedCoinsScoreText.setScrollFactor(0);
-      this.collectedFlagsScoreText = this.add.text(75, 230, this.game.collectedFlags, fontStyle);
-      this.collectedFlagsScoreText.setScrollFactor(0);
-      this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
-      this.collectedBallsScoreText.setScrollFactor(0);
-      this.add.image(35, 35, 'beer').setScrollFactor(0);
+      this.collectedFlagsScoreText = this.add.text(75, 160, this.game.collectedFlags, fontStyle);
+      this.collectedFlagsScoreText.setScrollFactor(0); //this.collectedBeersScoreText = this.add.text(75, 230, this.game.collectedBeers, fontStyle);
+      //this.collectedBeersScoreText.setScrollFactor(0);
+      //this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
+      //this.collectedBallsScoreText.setScrollFactor(0);
+
       this.add.image(35, 105, 'sausage').setScrollFactor(0);
-      this.add.image(35, 175, 'coin').setScrollFactor(0);
-      this.add.image(35, 245, 'flag').setScrollFactor(0);
-      this.add.image(35, 315, 'ball').setScrollFactor(0);
+      this.add.image(35, 35, 'coin').setScrollFactor(0);
+      this.add.image(35, 175, 'flag').setScrollFactor(0); //this.add.image(35, 245, 'beer').setScrollFactor(0);
+      //this.add.image(35, 315, 'ball').setScrollFactor(0);
+
       this.livesText = this.add.text(1210, 20, this.game.numberOfLives, fontStyle);
       this.livesText.setScrollFactor(0);
       this.add.image(1170, 35, 'heart').setScrollFactor(0);
@@ -1231,21 +1248,21 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
         case 25:
           // Ball
           item.alpha = 0;
-          this.game.collectedBalls++;
-          this.collectedBallsScoreText.setText(this.game.collectedBalls);
-          this.collectBallSound.play();
+          this.game.collectedBalls++; //this.collectedBallsScoreText.setText(this.game.collectedBalls);
+          //this.collectBallSound.play();
+
           break;
 
         case 26:
           // Beer
-          item.alpha = 0;
-          this.game.collectedBeers++;
-          this.collectedBeersScoreText.setText(this.game.collectedBeers);
+          item.alpha = 0; //this.game.collectedBeers++;
+          //this.collectedBeersScoreText.setText(this.game.collectedBeers);
+
           this.collectBeerSound.play();
           break;
 
         case 37:
-          // Fähnli
+          // Flag
           item.alpha = 0;
           this.game.collectedFlags++;
           this.collectedFlagsScoreText.setText(this.game.collectedFlags);
@@ -1253,7 +1270,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
           break;
 
         case 38:
-          // Wurscht
+          // Sausage
           item.alpha = 0;
           this.game.collectedSausages++;
           this.collectedSausagesScoreText.setText(this.game.collectedSausages);
@@ -1362,6 +1379,7 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
     value: function levelEnded() {
       if (!this.levelHasEnded) {
         this.player.body.moves = false;
+        this.game.collectedRemainingTime += this.timeLeft;
         this.player.setTint(0x00ff00); //this.player.anims.play('turn');
 
         this.playAnim('turn');
@@ -1446,12 +1464,14 @@ var AbstractLevelScene = /*#__PURE__*/function (_Phaser$Scene) {
   }, {
     key: "oneSecondPassed",
     value: function oneSecondPassed() {
-      this.timeElapsed += 1;
-      this.timeLeft = Math.max(this.maxTime - this.timeElapsed, 0);
-      this.timeLeftText.setText(this.timeLeft);
+      if (!this.levelHasEnded) {
+        this.timeElapsed += 1;
+        this.timeLeft = Math.max(this.maxTime - this.timeElapsed, 0);
+        this.timeLeftText.setText(this.timeLeft);
 
-      if (this.maxTime - this.timeElapsed <= 0) {
-        this.gameIsOver();
+        if (this.maxTime - this.timeElapsed <= 0) {
+          this.gameIsOver();
+        }
       }
     }
   }]);
@@ -1842,6 +1862,7 @@ game.collectedBeers = 0;
 game.collectedCoins = 0;
 game.collectedFlags = 0;
 game.collectedBalls = 0;
+game.collectedRemainingTime = 0;
 game.cheatMode = false;
 game.fastMode = false;
 game.SPEED_X = 350;
@@ -1886,7 +1907,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51397" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53368" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -12,6 +12,7 @@ class LeaderBoardEntriesController < ApplicationController
     
     def create
         @leader_board_entry = LeaderBoardEntry.new(leader_board_entry_params)
+        @leader_board_entry.score = @leader_board_entry.coins + @leader_board_entry.sausages + @leader_board_entry.flags + (5 * @leader_board_entry.characters)
         @leader_board_entry.save
     end
 
@@ -20,13 +21,13 @@ class LeaderBoardEntriesController < ApplicationController
     end
 
     def getHighScores
-        entries = LeaderBoardEntry.order(:score).last(3)
+        entries = LeaderBoardEntry.order(:score).first(3)
         render json: entries.to_json(only: ["acronym", "score"])
     end
 
     private
         def leader_board_entry_params
-            params.require(:leader_board_entry).permit(:acronym, :score)
+            params.require(:leader_board_entry).permit(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
         end
 
 end

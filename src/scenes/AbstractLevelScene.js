@@ -23,8 +23,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.escKey;
 
         this.player;
-        this.beers;
-        this.sausages;
         this.bombs;
         this.platforms;
         this.cursors;
@@ -74,6 +72,7 @@ export class AbstractLevelScene extends Phaser.Scene {
             this.game.collectedCoins = 0;
             this.game.collectedFlags = 0;
             this.game.collectedBalls = 0;
+            this.game.collectedRemainingTime = 0;
         }
         
         this.game.speedX = this.game.SPEED_X;
@@ -129,21 +128,23 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.createDudeAnimations('dudeFast', 'leftFast', 'turnFast', 'rightFast');
 
         var fontStyle = { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
-        this.collectedBeersScoreText = this.add.text(75, 20, this.game.collectedBeers, fontStyle);
-        this.collectedBeersScoreText.setScrollFactor(0);
+        
+        this.collectedCoinsScoreText = this.add.text(75, 20, this.game.collectedCoins, fontStyle);
+        this.collectedCoinsScoreText.setScrollFactor(0);
         this.collectedSausagesScoreText = this.add.text(75, 90, this.game.collectedSausages, fontStyle);
         this.collectedSausagesScoreText.setScrollFactor(0);
-        this.collectedCoinsScoreText = this.add.text(75, 160, this.game.collectedCoins, fontStyle);
-        this.collectedCoinsScoreText.setScrollFactor(0);
-        this.collectedFlagsScoreText = this.add.text(75, 230, this.game.collectedFlags, fontStyle);
+        this.collectedFlagsScoreText = this.add.text(75, 160, this.game.collectedFlags, fontStyle);
         this.collectedFlagsScoreText.setScrollFactor(0);
-        this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
-        this.collectedBallsScoreText.setScrollFactor(0);
-        this.add.image(35, 35, 'beer').setScrollFactor(0);
+        //this.collectedBeersScoreText = this.add.text(75, 230, this.game.collectedBeers, fontStyle);
+        //this.collectedBeersScoreText.setScrollFactor(0);
+        //this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
+        //this.collectedBallsScoreText.setScrollFactor(0);
+        
         this.add.image(35, 105, 'sausage').setScrollFactor(0);
-        this.add.image(35, 175, 'coin').setScrollFactor(0);
-        this.add.image(35, 245, 'flag').setScrollFactor(0);
-        this.add.image(35, 315, 'ball').setScrollFactor(0);
+        this.add.image(35, 35, 'coin').setScrollFactor(0);
+        this.add.image(35, 175, 'flag').setScrollFactor(0);
+        //this.add.image(35, 245, 'beer').setScrollFactor(0);
+        //this.add.image(35, 315, 'ball').setScrollFactor(0);
 
         this.livesText = this.add.text(1210, 20, this.game.numberOfLives, fontStyle);
         this.livesText.setScrollFactor(0);
@@ -396,22 +397,22 @@ export class AbstractLevelScene extends Phaser.Scene {
             case 25: // Ball
                 item.alpha = 0;
                 this.game.collectedBalls++;
-                this.collectedBallsScoreText.setText(this.game.collectedBalls);
-                this.collectBallSound.play();
+                //this.collectedBallsScoreText.setText(this.game.collectedBalls);
+                //this.collectBallSound.play();
                 break;
             case 26: // Beer
                 item.alpha = 0;
-                this.game.collectedBeers++;
-                this.collectedBeersScoreText.setText(this.game.collectedBeers);
+                //this.game.collectedBeers++;
+                //this.collectedBeersScoreText.setText(this.game.collectedBeers);
                 this.collectBeerSound.play();
                 break;
-            case 37: // Fähnli
+            case 37: // Flag
                 item.alpha = 0;
                 this.game.collectedFlags++;
                 this.collectedFlagsScoreText.setText(this.game.collectedFlags);
                 this.collectFlagSound.play();
                 break;
-            case 38: // Wurscht
+            case 38: // Sausage
                 item.alpha = 0;
                 this.game.collectedSausages++;
                 this.collectedSausagesScoreText.setText(this.game.collectedSausages);
@@ -494,6 +495,7 @@ export class AbstractLevelScene extends Phaser.Scene {
     levelEnded() {
         if (!this.levelHasEnded) {
             this.player.body.moves = false;
+            this.game.collectedRemainingTime += this.timeLeft;
             this.player.setTint(0x00ff00);
             //this.player.anims.play('turn');
             this.playAnim('turn');
@@ -561,11 +563,13 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     oneSecondPassed() {
-        this.timeElapsed += 1;
-        this.timeLeft = Math.max(this.maxTime - this.timeElapsed, 0);
-        this.timeLeftText.setText(this.timeLeft);
-        if ((this.maxTime - this.timeElapsed) <= 0) {
-            this.gameIsOver();
+        if (!this.levelHasEnded) {
+            this.timeElapsed += 1;
+            this.timeLeft = Math.max(this.maxTime - this.timeElapsed, 0);
+            this.timeLeftText.setText(this.timeLeft);
+            if ((this.maxTime - this.timeElapsed) <= 0) {
+                this.gameIsOver();
+            }
         }
     }
 

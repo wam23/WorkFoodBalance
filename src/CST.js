@@ -13,3 +13,4 @@ export const CST = {
 };
 
 export const LEADER_BOARD_URL = "http://hawkie.ch:80/";
+//export const LEADER_BOARD_URL = "http://localhost:3000/";

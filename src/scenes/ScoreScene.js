@@ -64,28 +64,43 @@ export class ScoreScreen extends Phaser.Scene {
         this.highScoreText[2] = this.add.text(100, 150, '0', { fontSize: '20px', fill: '#000' });
         this.highScoreText[2].setText("");
 
-        this.nameInput = this.add.dom(200, 240).createFromCache("form");
+        if (this.game.gameOver) {
+            this.nameInput = this.add.dom(200, 240).createFromCache("form");
 
-        this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-
-        this.returnKey.on("down", event => {
-            let name = this.nameInput.getChildByName("name");
-            if(name.value != "") {
-                //console.log("text input: " + name.value);
-                this.userAcronym = name.value;
-                if (!this.scoreSubmitted) {
-                    this.submitScore();
-                    this.scoreSubmitted = true;
+            this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    
+            this.returnKey.on("down", event => {
+                let name = this.nameInput.getChildByName("name");
+                if(name.value != "") {
+                    //console.log("text input: " + name.value);
+                    this.userAcronym = name.value;
+                    if (!this.scoreSubmitted) {
+                        this.submitScore();
+                        this.scoreSubmitted = true;
+                    }
                 }
-            }
-        });
+            });
+        }
+        
     }
 
     submitScore() {
         const url = LEADER_BOARD_URL + 'leader_board_entries';
         var formData = new FormData();
+        //(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
         formData.append("leader_board_entry[acronym]", this.userAcronym);
-        formData.append("leader_board_entry[score]", this.score);
+        formData.append("leader_board_entry[coins]", this.game.collectedCoins);
+        formData.append("leader_board_entry[sausages]", this.game.collectedSausages);
+        formData.append("leader_board_entry[flags]", this.game.collectedFlags);
+        var collectedChars = 0;
+        for (var index = 0; index < this.game.forever.length; index++) {
+            if (this.game.forever[index].trim().length == 1) {
+                collectedChars++;
+            }
+        }
+        formData.append("leader_board_entry[characters]", collectedChars);
+        formData.append("leader_board_entry[remainingtime]", this.game.collectedRemainingTime);
+        formData.append("leader_board_entry[version]", 1);
         var request = new XMLHttpRequest();
     
         request.open('POST', url, true);

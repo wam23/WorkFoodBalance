@@ -4,11 +4,27 @@
     <tr>
         <th>Acronym</th>
         <th>Score</th>
+        <% if false %>
+        <th>Coins</th>
+        <th>Sausages</th>
+        <th>Flags</th>
+        <th>Characters</th>
+        <th>Remaining Time</th>
+        <th>Version</th>
+        <% end %>
     </tr>
     <% @leader_board_entries.each do |leader_board_entry| %>
     <tr>
         <td><%= leader_board_entry.acronym %></td>
         <td><%= leader_board_entry.score %></td>
+        <% if false %>
+        <td><%= leader_board_entry.coins %></td>
+        <td><%= leader_board_entry.sausages %></td>
+        <td><%= leader_board_entry.flags %></td>
+        <td><%= leader_board_entry.characters %></td>
+        <td><%= leader_board_entry.remainingtime %></td>
+        <td><%= leader_board_entry.version %></td>
+        <% end %>
     </tr>
     <% end %>
 </table>

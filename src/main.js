@@ -43,6 +43,7 @@ game.collectedBeers = 0;
 game.collectedCoins = 0;
 game.collectedFlags = 0;
 game.collectedBalls = 0;
+game.collectedRemainingTime = 0;
 
 game.cheatMode = false;
 game.fastMode = false;
