@@ -77,6 +77,8 @@ export class ScoreScreen extends Phaser.Scene {
                     if (!this.scoreSubmitted) {
                         this.submitScore();
                         this.scoreSubmitted = true;
+                        this.nameInput.setVisible(false);
+                        this.getHighScores();
                     }
                 }
             });
@@ -107,7 +109,7 @@ export class ScoreScreen extends Phaser.Scene {
         request.send(formData);
 
         request.onreadystatechange = (e) => {
-            console.log(request.responseText)
+            //console.log(request.responseText)
         }
     
     }
@@ -122,7 +124,7 @@ export class ScoreScreen extends Phaser.Scene {
         request.onreadystatechange = (e) => {
             if (request.readyState == 4 && request.status == 200) {
                 var jsonResponse = JSON.parse(request.responseText);
-                console.log(jsonResponse.highscore);
+                //console.log(jsonResponse.highscore);
             }
         }
     }
