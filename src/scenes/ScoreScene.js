@@ -21,7 +21,9 @@ export class ScoreScreen extends Phaser.Scene {
         this.nextlevelNumber = data.nextlevelNumber;
         this.score = data.score;
         this.scoreSubmitted = false;
-        this.getHighScores();
+        if (this.nextlevel == CST.SCENES.MENU) {
+            this.getHighScores();
+        }
     }
 
     create () {
