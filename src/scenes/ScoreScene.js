@@ -72,7 +72,7 @@ export class ScoreScreen extends Phaser.Scene {
             this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     
             this.returnKey.on("down", event => {
-                let name = this.nameInput.getChildByName("name");
+                let name = this.nameInput.getChildByName("acronym");
                 if(name.value != "") {
                     //console.log("text input: " + name.value);
                     this.userAcronym = name.value;

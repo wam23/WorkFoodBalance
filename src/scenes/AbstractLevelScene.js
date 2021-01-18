@@ -196,8 +196,22 @@ export class AbstractLevelScene extends Phaser.Scene {
     }
 
     update() {
-        var score = this.game.collectedCoins + this.game.collectedBeers + this.game.collectedSausages + this.game.collectedFlags + this.game.collectedBalls;
-
+        if (this.game.gameOver || this.levelHasEnded) {
+            var collectedChars = 0;
+            for (var index = 0; index < this.game.forever.length; index++) {
+                if (this.game.forever[index].trim().length == 1) {
+                    collectedChars++;
+                }
+            }
+            var score = 0;
+            score += (10 * this.game.collectedCoins);
+            score += (10 * this.game.collectedSausages);
+            score += (10 * this.game.collectedFlags);
+            score += this.game.collectedRemainingTime;
+            if (collectedChars == 7) {
+                score += 200;
+            }
+        }
         if (this.escKey.isDown) {
             this.game.cheatMode = false;
             this.gameIsOver();

@@ -12,7 +12,14 @@ class LeaderBoardEntriesController < ApplicationController
     
     def create
         @leader_board_entry = LeaderBoardEntry.new(leader_board_entry_params)
-        @leader_board_entry.score = @leader_board_entry.coins + @leader_board_entry.sausages + @leader_board_entry.flags + (5 * @leader_board_entry.characters)
+        @leader_board_entry.score = 0
+        @leader_board_entry.score += (10 * @leader_board_entry.coins);
+        @leader_board_entry.score += (10 * @leader_board_entry.sausages);
+        @leader_board_entry.score += (10 * @leader_board_entry.flags);
+        @leader_board_entry.score += @leader_board_entry.remainingtime;
+        if (@leader_board_entry.characters == 7) {
+            @leader_board_entry.score += 200;
+        }
         @leader_board_entry.save
     end
 
