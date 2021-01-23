@@ -14,6 +14,11 @@
         <th>Remaining Time</th>
         <th>Version</th>
         <% end %>
+        <% if logged_in? %>
+            <% if current_user.admin? %>
+            <th>&nbsp</th>
+            <% end %>
+        <% end %>
     </tr>
     <% @leader_board_entries.each.with_index(@rankOffset) do |leader_board_entry, index| %>
     <tr>
@@ -27,6 +32,11 @@
         <td><%= leader_board_entry.characters %></td>
         <td><%= leader_board_entry.remainingtime %></td>
         <td><%= leader_board_entry.version %></td>
+        <% end %>
+        <% if logged_in? %>
+            <% if current_user.admin? %>
+            <td><%= link_to "Löschen", leader_board_entry, method: :delete, data: { confirm: ". wirklich löschen?" } %></td>
+            <% end %>
         <% end %>
     </tr>
     <% end %>

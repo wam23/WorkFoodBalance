@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     get 'users/:id/changePassword'  => 'users#changePassword', as: :changePw
     get 'users/:id/changeAdmin' => 'users#changeAdmin', as: :changeAdmin
 
-    resources :leader_board_entries, only: [:create]
+    resources :leader_board_entries#, only: [:create]
     
     get "/leader_board_entries", to: "leader_board_entries#index"
 

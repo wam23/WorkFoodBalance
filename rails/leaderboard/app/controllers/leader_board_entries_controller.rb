@@ -39,6 +39,12 @@ class LeaderBoardEntriesController < ApplicationController
         render json: entries.to_json(only: ["acronym", "score"])
     end
 
+    def destroy
+        LeaderBoardEntry.find(params[:id]).destroy
+        flash[:success] = "Eintrag gelöscht"
+        redirect_to leader_board_entries_url
+      end
+
     private
         def leader_board_entry_params
             params.require(:leader_board_entry).permit(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
