@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     post   'login'   => 'sessions#create'
     delete 'logout'  => 'sessions#destroy'
 
+    get 'game'       => 'static_pages#game'
     get 'info'       => 'static_pages#info'
     get 'contact'    => 'static_pages#contact'
     get 'signup'     => 'users#new'

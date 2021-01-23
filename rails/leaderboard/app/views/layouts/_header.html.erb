@@ -1,25 +1,26 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-		<%= image_tag("logo.png", alt: "logo", id: "img-logo") %>
-		<%= link_to "YB Game", root_path, id: "logo" %>
+        <%= image_tag("logo.png", alt: "logo", id: "img-logo") %>
+        <%= link_to "YB Jump'n'Run", root_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
       <li class="<%= 'active' if current_page?(leader_board_entries_path) %>" ><%= link_to "Leaderboard", leader_board_entries_path %></li>
+        <li class="<%= 'active' if current_page?(game_path) %>" ><%= link_to "Game", game_path %></li>
         <li class="<%= 'active' if current_page?(info_path) %>" ><%= link_to "Info", info_path %></li>
-		
+
         <% if logged_in? %>
           <li class="dropdown <%= 'active' if current_page?(current_user) || current_page?(edit_user_path(current_user)) || current_page?(changePw_path(current_user)) %>">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               Account <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Profil", current_user %></li>
-              <li><%= link_to "Einstellungen", edit_user_path(current_user) %></li>
-							<li><%= link_to "Passwort ändern", changePw_path(current_user) %></li>
-              <li class="divider"></li>
-              <li>
-                <%= link_to "Log out", logout_path, method: "delete" %>
-              </li>
+                <li><%= link_to "Profil", current_user %></li>
+                <li><%= link_to "Einstellungen", edit_user_path(current_user) %></li>
+                <li><%= link_to "Passwort ändern", changePw_path(current_user) %></li>
+                <li class="divider"></li>
+                <li>
+                    <%= link_to "Log out", logout_path, method: "delete" %>
+                </li>
             </ul>
           </li>
             <% if current_user.admin? %>

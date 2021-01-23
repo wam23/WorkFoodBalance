@@ -6,7 +6,9 @@
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {},
+  "dependencies": {
+    "phaser": "^3.52.0"
+  },
   "devDependencies": {
     "parcel": "^1.12.4",
     "rimraf": "^3.0.2"
