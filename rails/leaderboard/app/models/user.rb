@@ -85,6 +85,21 @@ class User < ActiveRecord::Base
     def name
       self.lastname + " " + self.forename
     end
+
+    def birthdate_formatted
+        if self.birthdate != nil
+          return self.birthdate.strftime("%d.%m.%Y")
+        end
+        return ""
+    end
+      
+    def year
+        if self.birthdate != nil
+            return self.birthdate.strftime("%Y")
+        end
+        return ""
+    end
+    
     
     private
     

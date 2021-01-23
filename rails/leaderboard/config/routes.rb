@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
     get 'users/:id/changeUser' => 'users#changeUser', as: :changeUser
     get 'users/:id/changePassword'  => 'users#changePassword', as: :changePw
+    get 'users/:id/changeAdmin' => 'users#changeAdmin', as: :changeAdmin
 
     resources :leader_board_entries, only: [:create]
     

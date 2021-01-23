@@ -9,20 +9,8 @@
 <%= f.label :forename, "Vorname" %>
 <%= f.text_field :forename, class: 'form-control' %>
 
-<%= f.label :address, "Adresse" %>
-<%= f.text_field :address, class: 'form-control' %>
-
-<%= f.label :location, "PLZ / Ort" %>
-<%= f.text_field :location, class: 'form-control' %>
-
-<%= f.label :phonenumber, "Telefon" %>
-<%= f.text_field :phonenumber, class: 'form-control' %>
-
 <%= f.label :birthdate, "Geburtsdatum" %><br />
 <%= date_select :user, :birthdate, order: [:day, :month, :year], use_month_numbers: true, use_two_digit_numbers: true, start_year: 1930, end_year: Date.today.year, with_css_classes: true %><br />
 
 <%= f.label :email, "E-Mail" %>
 <%= f.text_field :email, class: 'form-control' %>
-
-<%= f.label :gender, "Geschlecht" %>
-<%= select :user, :gender, [['männlich', 'm'], ['weiblich', 'w']] %>
