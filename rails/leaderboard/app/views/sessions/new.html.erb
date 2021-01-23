@@ -1,0 +1,26 @@
+<% provide(:title, "Log in") %>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(:session, url: login_path) do |f| %>
+
+      <%= f.label :loginname %>
+      <%= f.text_field :loginname, class: 'form-control' %>
+
+      <%= f.label :password %>
+      <%= link_to "(Passwort vergessen?)", new_password_reset_path %>
+      <%= f.password_field :password, class: 'form-control' %>
+	    
+			<%= f.label :remember_me, class: "checkbox inline" do %>
+	    <%= f.check_box :remember_me %>
+		  
+	    <span>Eingeloggt bleiben</span>
+	  <% end %>
+
+    <%= f.submit "Log in", class: "btn btn-primary" %>
+    <% end %>
+    
+    <br />
+    <!--p>Noch kein Login? <%= link_to "Dann melde Dich jetzt hier an!", signup_path %></p-->
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<li>
+  
+  <%= link_to user.name, user %>
+  
+  <% if current_user.admin? %>
+    
+    <% if user.admin? %>
+      | <%= link_to "Admin", changeAdmin_url(user, adminValue: false) %>
+    <% else %>
+      | <%= link_to "Kein Admin", changeAdmin_url(user, adminValue: true) %>
+    <% end %>
+    
+    <% if !current_user?(user) %>
+      | <%= link_to "Löschen", user, method: :delete, data: { confirm: user.name + " wirklich löschen?" } %>
+    <% end %>
+    
+    <% if !user.activated %>
+      | (noch nicht aktiviert)
+    <% end %>
+    
+    | <%= link_to "Benutzerwechsel", changeUser_url(user) %>
+    
+  <% end %>
+  
+</li>

@@ -1,0 +1,42 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+		<%= image_tag("logo.png", alt: "logo", id: "img-logo") %>
+		<%= link_to "YB Game", root_path, id: "logo" %>
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+      <li class="<%= 'active' if current_page?(leader_board_entries_path) %>" ><%= link_to "Leaderboard", leader_board_entries_path %></li>
+        <li class="<%= 'active' if current_page?(info_path) %>" ><%= link_to "Info", info_path %></li>
+		
+        <% if logged_in? %>
+          <li class="dropdown <%= 'active' if current_page?(current_user) || current_page?(edit_user_path(current_user)) || current_page?(changePw_path(current_user)) %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Account <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Profil", current_user %></li>
+              <li><%= link_to "Einstellungen", edit_user_path(current_user) %></li>
+							<li><%= link_to "Passwort ändern", changePw_path(current_user) %></li>
+              <li class="divider"></li>
+              <li>
+                <%= link_to "Log out", logout_path, method: "delete" %>
+              </li>
+            </ul>
+          </li>
+            <% if current_user.admin? %>
+          <li class="dropdown <%= 'active' if current_page?(users_path) %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Admin <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Benutzer", users_path %></li>
+            </ul>
+          </li>
+            <% end %>
+        <% else %>
+          <li class="<%= 'active' if current_page?(login_path) %>" ><%= link_to "Log in", login_path %></li>
+        <% end %>
+        <!--li class="<%= 'active' if current_page?(contact_path) %>" ><%= link_to "Kontakt", contact_path %></li-->
+      </ul>
+    </nav>
+  </div>
+</header>

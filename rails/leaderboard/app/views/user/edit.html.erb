@@ -1,0 +1,11 @@
+<% provide(:title, "Profil ändern") %>
+<h1>Profil ändern</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@user, html: { multipart: true }) do |f| %>
+      <%= render 'fields', f: f %>
+      <%= f.submit "Speichern", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

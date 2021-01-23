@@ -57,3 +57,12 @@ gem 'rack-cors'
 gem 'bcrypt'
 
 gem 'mysql2',	'0.5.3'
+
+gem 'will_paginate', '3.3.0'
+gem 'bootstrap-will_paginate', '1.0.0'
+
+gem 'jquery-rails'
+gem 'bootstrap-sass', '3.4.1'
+gem 'twitter-bootstrap-rails'
+
+gem 'coffee-rails', '5.0.0'

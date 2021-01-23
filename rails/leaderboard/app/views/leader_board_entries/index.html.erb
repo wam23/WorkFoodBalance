@@ -1,8 +1,10 @@
-<h1>Leaderboard</h1>
+<% provide(:title, "Leaderboard") %>
+<!--h1>Leaderboard</h1-->
 
 <table class="leaderboard">
     <tr>
-        <th>Acronym</th>
+        <th>Rang</th>
+        <th>Name</th>
         <th>Score</th>
         <% if false %>
         <th>Coins</th>
@@ -13,8 +15,9 @@
         <th>Version</th>
         <% end %>
     </tr>
-    <% @leader_board_entries.each do |leader_board_entry| %>
+    <% @leader_board_entries.each.with_index(@rankOffset) do |leader_board_entry, index| %>
     <tr>
+        <td><%= index %>.</td>
         <td><%= leader_board_entry.acronym %></td>
         <td><%= leader_board_entry.score %></td>
         <% if false %>
@@ -28,3 +31,5 @@
     </tr>
     <% end %>
 </table>
+
+<%= will_paginate %>

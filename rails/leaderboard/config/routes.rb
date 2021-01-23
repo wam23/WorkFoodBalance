@@ -1,17 +1,23 @@
 Rails.application.routes.draw do
-    # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
     root "leader_board_entries#index"
 
-    #get 'password_resets/new'
-    #get 'password_resets/edit'
+    get 'password_resets/new'
+    get 'password_resets/edit'
     
-    #get    'login'   => 'sessions#new'
-    #post   'login'   => 'sessions#create'
-    #delete 'logout'  => 'sessions#destroy'
-    
-    #resources :users
-    #resources :account_activations, only: [:edit]
-    #resources :password_resets,     only: [:new, :create, :edit, :update]
+    get    'login'   => 'sessions#new'
+    post   'login'   => 'sessions#create'
+    delete 'logout'  => 'sessions#destroy'
+
+    get 'info'       => 'static_pages#info'
+    get 'contact'    => 'static_pages#contact'
+    get 'signup'     => 'users#new'
+
+    resources :users
+    resources :account_activations, only: [:edit]
+    resources :password_resets,     only: [:new, :create, :edit, :update]
+
+    get 'users/:id/changeUser' => 'users#changeUser', as: :changeUser
+    get 'users/:id/changePassword'  => 'users#changePassword', as: :changePw
 
     resources :leader_board_entries, only: [:create]
     

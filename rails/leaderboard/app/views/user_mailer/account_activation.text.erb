@@ -1,0 +1,14 @@
+Hallo <%= @user.name %>,
+
+Herzlich Willkommen bei der Anmeldung zum YB Game
+<% if !@user.activated? %>
+Klicke auf den untenstehenden Link zur Bestätigung Deiner Anmeldung:
+<% else %>
+Wir haben Deine Anmeldung erhalten.
+<% end %>
+
+<% if !@user.activated? %>
+<%= edit_account_activation_url(@user.activation_token, loginname: @user.loginname) %>
+<% end %>
+
+YB Forever

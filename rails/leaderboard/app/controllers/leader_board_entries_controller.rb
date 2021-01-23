@@ -3,7 +3,14 @@ class LeaderBoardEntriesController < ApplicationController
     skip_before_action :verify_authenticity_token, only:[:create]
 
     def index
-        @leader_board_entries = LeaderBoardEntry.all
+        @leader_board_entries = LeaderBoardEntry.paginate(page: params[:page])
+
+        if (params.has_key?(:page))
+            pageIndex = params[:page].to_i - 1
+        else
+            pageIndex = 0;
+        end
+        @rankOffset = pageIndex * LeaderBoardEntry.per_page + 1
     end
 
     def show

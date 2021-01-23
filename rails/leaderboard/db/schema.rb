@@ -27,17 +27,22 @@ ActiveRecord::Schema.define(version: 2021_01_18_181805) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "remember_token"
-    t.string "activation_token"
-    t.string "reset_token"
+    t.string "email"
     t.string "loginname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "password_digest"
+    t.string "remember_digest"
+    t.boolean "admin", null: false
+    t.string "activation_digest"
+    t.boolean "activated", default: false
+    t.datetime "activated_at"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.string "forename"
     t.string "lastname"
-    t.string "email"
-    t.string "password"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.boolean "admin"
+    t.datetime "birthdate"
+    t.index ["loginname"], name: "index_users_on_loginname", unique: true
   end
 
 end
