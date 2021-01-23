@@ -6,5 +6,5 @@ package-lock.json
 dist/assets/.DS_Store
 .DS_Store
 dist/.DS_Store
-rails/leaderboard/app/assets/javascripts/main.js
 rails/leaderboard/assets
+rails/leaderboard/app/javascript/packs/main.js
