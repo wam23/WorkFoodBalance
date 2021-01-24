@@ -5,10 +5,15 @@
 </iframe>
 
 <%= image_tag("close.png", :class => "closeButton", :id => "closeButtonId", :onClick => "closeIFrame()") %>
+<%= image_tag("play_button.png", :class => "playButton", :id => "playButtonId", :onClick => "playGame()") %>
 
 <script>
     function closeIFrame(){
-        $('#iframeId').remove();
         document.getElementById("closeButtonId").style.visibility = "hidden";
+        document.getElementById("playButtonId").style.visibility = "visible";
+        $('#iframeId').remove();
+    }
+    function playGame(){
+        location.reload();
     }
 </script>
