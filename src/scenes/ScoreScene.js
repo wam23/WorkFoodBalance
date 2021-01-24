@@ -107,9 +107,12 @@ export class ScoreScreen extends Phaser.Scene {
         formData.append("leader_board_entry[version]", 1);
         var request = new XMLHttpRequest();
     
-        request.open('POST', url, true);
-        request.send(formData);
+        try {
+            request.open('POST', url, true);
+            request.send(formData);
+        } catch (exception) {
 
+        }
         request.onreadystatechange = (e) => {
             //console.log(request.responseText)
         }
