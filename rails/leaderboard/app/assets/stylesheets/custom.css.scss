@@ -443,13 +443,24 @@ div.pagination {
 }
 
 iframe.game {
-    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
-    height: 500px;
-    margin: 0px;
-    padding: 0px;
+    height: 100%;
     border: none;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 999998;
+    background-color: white;
+}
+
+img.closeButton {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 999999;
 }

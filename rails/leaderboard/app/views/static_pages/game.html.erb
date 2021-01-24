@@ -1,3 +1,14 @@
 <% provide(:title, "Game") %>
 
-<iframe class="game" scrolling="no" frameborder="0" src="https://yellow-cliff-03ee11003.azurestaticapps.net/" title="YB Jump'n'Run"></iframe> 
+<iframe id="iframeId" class="game" scrolling="no" frameborder="0" src="https://yellow-cliff-03ee11003.azurestaticapps.net/" title="YB Jump'n'Run">
+    Your browser doesn't support iframes
+</iframe>
+
+<%= image_tag("close.png", :class => "closeButton", :id => "closeButtonId", :onClick => "closeIFrame()") %>
+
+<script>
+    function closeIFrame(){
+        $('#iframeId').remove();
+        document.getElementById("closeButtonId").style.visibility = "hidden";
+    }
+</script>
