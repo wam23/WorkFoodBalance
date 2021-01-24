@@ -127,33 +127,6 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.createDudeAnimations('dude', 'left', 'turn', 'right');
         this.createDudeAnimations('dudeFast', 'leftFast', 'turnFast', 'rightFast');
 
-        var fontStyle = { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
-        
-        this.collectedCoinsScoreText = this.add.text(75, 20, this.game.collectedCoins, fontStyle);
-        this.collectedCoinsScoreText.setScrollFactor(0);
-        this.collectedSausagesScoreText = this.add.text(75, 90, this.game.collectedSausages, fontStyle);
-        this.collectedSausagesScoreText.setScrollFactor(0);
-        this.collectedFlagsScoreText = this.add.text(75, 160, this.game.collectedFlags, fontStyle);
-        this.collectedFlagsScoreText.setScrollFactor(0);
-        //this.collectedBeersScoreText = this.add.text(75, 230, this.game.collectedBeers, fontStyle);
-        //this.collectedBeersScoreText.setScrollFactor(0);
-        //this.collectedBallsScoreText = this.add.text(75, 300, this.game.collectedBalls, fontStyle);
-        //this.collectedBallsScoreText.setScrollFactor(0);
-        
-        this.add.image(35, 105, 'sausage').setScrollFactor(0);
-        this.add.image(35, 35, 'coin').setScrollFactor(0);
-        this.add.image(35, 175, 'flag').setScrollFactor(0);
-        //this.add.image(35, 245, 'beer').setScrollFactor(0);
-        //this.add.image(35, 315, 'ball').setScrollFactor(0);
-
-        this.livesText = this.add.text(1210, 20, this.game.numberOfLives, fontStyle);
-        this.livesText.setScrollFactor(0);
-        this.add.image(1170, 35, 'heart').setScrollFactor(0);
-
-        this.timeLeftText = this.add.text(1210, 90, this.maxTime, fontStyle);
-        this.timeLeftText.setScrollFactor(0);
-        this.add.image(1170, 105, 'time').setScrollFactor(0);
-
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -193,6 +166,27 @@ export class AbstractLevelScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.collectibleLayer, this.collectItem, null, this);
 
         this.physics.add.collider(this.player, this.platforms);
+
+        var fontStyle = { fontSize: '32px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
+        
+        this.collectedCoinsScoreText = this.add.text(75, 20, this.game.collectedCoins, fontStyle);
+        this.collectedCoinsScoreText.setScrollFactor(0);
+        this.collectedSausagesScoreText = this.add.text(75, 90, this.game.collectedSausages, fontStyle);
+        this.collectedSausagesScoreText.setScrollFactor(0);
+        this.collectedFlagsScoreText = this.add.text(75, 160, this.game.collectedFlags, fontStyle);
+        this.collectedFlagsScoreText.setScrollFactor(0);
+        
+        this.add.image(35, 105, 'sausage').setScrollFactor(0);
+        this.add.image(35, 35, 'coin').setScrollFactor(0);
+        this.add.image(35, 175, 'flag').setScrollFactor(0);
+
+        this.livesText = this.add.text(1210, 20, this.game.numberOfLives, fontStyle);
+        this.livesText.setScrollFactor(0);
+        this.add.image(1170, 35, 'heart').setScrollFactor(0);
+
+        this.timeLeftText = this.add.text(1210, 90, this.maxTime, fontStyle);
+        this.timeLeftText.setScrollFactor(0);
+        this.add.image(1170, 105, 'time').setScrollFactor(0);
     }
 
     update() {
