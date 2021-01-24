@@ -19,15 +19,17 @@ class LeaderBoardEntriesController < ApplicationController
     
     def create
         @leader_board_entry = LeaderBoardEntry.new(leader_board_entry_params)
-        @leader_board_entry.score = 0
-        @leader_board_entry.score += (10 * @leader_board_entry.coins)
-        @leader_board_entry.score += (10 * @leader_board_entry.sausages)
-        @leader_board_entry.score += (10 * @leader_board_entry.flags)
-        @leader_board_entry.score += @leader_board_entry.remainingtime
-        if (@leader_board_entry.characters == 7)
-            @leader_board_entry.score += 200
+        if (@leader_board_entry.coins <= LeaderBoardEntry.maxCoins and @leader_board_entry.sausages <= LeaderBoardEntry.maxSausages and @leader_board_entry.flags <= LeaderBoardEntry.maxFlags and @leader_board_entry.remainingtime <= LeaderBoardEntry.maxRemainingtime and @leader_board_entry.characters <= LeaderBoardEntry.maxCharacters)
+            @leader_board_entry.score = 0
+            @leader_board_entry.score += (10 * @leader_board_entry.coins)
+            @leader_board_entry.score += (10 * @leader_board_entry.sausages)
+            @leader_board_entry.score += (10 * @leader_board_entry.flags)
+            @leader_board_entry.score += @leader_board_entry.remainingtime
+            if (@leader_board_entry.characters == 7)
+                @leader_board_entry.score += 200
+            end
+            @leader_board_entry.save
         end
-        @leader_board_entry.save
     end
 
     def getHighScore

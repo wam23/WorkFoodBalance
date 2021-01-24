@@ -1,4 +1,11 @@
 <% provide(:title, 'Benutzer') %>
+
+Coins: <%= LeaderBoardEntry.maxCoins %><br />
+Sausages: <%= LeaderBoardEntry.maxSausages %><br />
+Flags: <%= LeaderBoardEntry.maxFlags %><br />
+Characters: <%= LeaderBoardEntry.maxCharacters %><br />
+Remainingtime: <%= LeaderBoardEntry.maxRemainingtime %>
+
 <h1>Benutzer</h1>
 
 <%= will_paginate %>

@@ -5,7 +5,8 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li class="<%= 'active' if current_page?(leader_board_entries_path) %>" ><%= link_to "Leaderboard", leader_board_entries_path %></li>
-        <li><%= link_to "Game", "https://yellow-cliff-03ee11003.azurestaticapps.net/", :target => "_blank" %></li>
+        <li><%= link_to "Game ext", "https://yellow-cliff-03ee11003.azurestaticapps.net/", :target => "_blank" %></li>
+        <li class="<%= 'active' if current_page?(game_path) %>" ><%= link_to "Game int", game_path %></li>
         <li class="<%= 'active' if current_page?(info_path) %>" ><%= link_to "Info", info_path %></li>
 
         <% if logged_in? %>
