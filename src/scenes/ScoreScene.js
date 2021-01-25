@@ -21,9 +21,9 @@ export class ScoreScreen extends Phaser.Scene {
         this.nextlevelNumber = data.nextlevelNumber;
         this.score = data.score;
         this.scoreSubmitted = false;
-        if (this.nextlevel == CST.SCENES.MENU) {
-            this.getHighScores();
-        }
+        //if (this.nextlevel == CST.SCENES.MENU) {
+        //    this.getHighScores();
+        //}
     }
 
     create () {
@@ -80,7 +80,7 @@ export class ScoreScreen extends Phaser.Scene {
                         this.submitScore();
                         this.scoreSubmitted = true;
                         this.nameInput.setVisible(false);
-                        this.getHighScores();
+                        //this.getHighScores();
                     }
                 }
             });
@@ -131,21 +131,6 @@ export class ScoreScreen extends Phaser.Scene {
             }
         }
 
-    }
-
-    getHighScore() {
-        const url = LEADER_BOARD_URL + 'get_high_score';
-        var request = new XMLHttpRequest();
-    
-        request.open('GET', url, true);
-        request.send();
-
-        request.onreadystatechange = (e) => {
-            if (request.readyState == 4 && request.status == 200) {
-                var jsonResponse = JSON.parse(request.responseText);
-                //console.log(jsonResponse.highscore);
-            }
-        }
     }
 
     getHighScores() {

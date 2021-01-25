@@ -58,14 +58,21 @@ export class MenuScene extends Phaser.Scene {
         });
         this.playButton3.alpha = 0;
 
-        this.anleitungButton = this.add.image(1020, 550, 'anleitung_button');
+        this.highscoreButton = this.add.image(1020, 550, 'highscore_button');
+        this.highscoreButton.setInteractive();
+
+        this.highscoreButton.on("pointerup", () => {
+            this.scene.start(CST.SCENES.HIGHSCORE);
+        });
+
+        this.anleitungButton = this.add.image(942, 634, 'anleitung_button');
         this.anleitungButton.setInteractive();
 
         this.anleitungButton.on("pointerup", () => {
             this.scene.start(CST.SCENES.ANLEITUNG);
         });
 
-        this.impressumButton = this.add.image(1020, 620, 'impressum_button');
+        this.impressumButton = this.add.image(1098, 634, 'impressum_button');
         this.impressumButton.setInteractive();
 
         this.impressumButton.on("pointerup", () => {

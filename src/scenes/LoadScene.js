@@ -39,12 +39,14 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('level3_button', './assets/level3_button.png');
         this.load.image('wolf', './assets/wolf.png');
         this.load.image('geyoungboyst', './assets/geyoungboyst.png');
+        this.load.image('highscore', './assets/highscores.jpg');
 
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');
         this.load.image('game_over', './assets/game_over.png');
         this.load.image('sound_on_button', './assets/sound_on_button.png');
         this.load.image('sound_off_button', './assets/sound_off_button.png');
+        this.load.image('highscore_button', './assets/high_scores.png');
 
         this.load.image('tiles', './assets/tiles_spritesheet.png');
         this.load.tilemapTiledJSON('Level1', './assets/level1.json');

@@ -8,6 +8,7 @@ import {ScoreScreen} from "./scenes/ScoreScene.js";
 import {Level1Scene} from "./scenes/Level1Scene.js";
 import {Level2Scene} from "./scenes/Level2Scene.js";
 import {Level3Scene} from "./scenes/Level3Scene.js";
+import {HighscoreScene} from "./scenes/HighscoreScene.js";
 import {ImpressumScene} from "./scenes/ImpressumScene.js";
 import {AnleitungScene} from "./scenes/AnleitungScene.js";
 
@@ -32,7 +33,7 @@ let config = {
         createContainer: true
     },
     scene: [
-        BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene, ImpressumScene, AnleitungScene
+        BootScene, LoadScene, MenuScene, ScoreScreen, Level1Scene, Level2Scene, Level3Scene, HighscoreScene, ImpressumScene, AnleitungScene
     ]
 };
 
