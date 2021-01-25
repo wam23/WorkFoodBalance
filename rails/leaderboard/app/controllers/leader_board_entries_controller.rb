@@ -35,7 +35,6 @@ class LeaderBoardEntriesController < ApplicationController
         tokenTimeAccepted = false
         if (scoretoken != nil)
             diff = Time.now - scoretoken.created_at
-            logger.info("----------------------------------------------- diff: " + diff.to_s);
             tokenTimeAccepted = (diff <= LeaderBoardEntriesController::MAX_TOKEN_TIME) and scoretoken.isActive
         end
         
@@ -63,7 +62,6 @@ class LeaderBoardEntriesController < ApplicationController
         scoreToken = ScoreToken.new()
         scoreToken.activateToken
         scoreToken.save
-        logger.info("----------------------------------------- getScoreToken: "+scoreToken.token.to_s);
         render json: {token: scoreToken.token}, status: :ok
     end
 
