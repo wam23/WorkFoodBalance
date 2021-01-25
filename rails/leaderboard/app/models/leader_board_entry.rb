@@ -1,4 +1,5 @@
 class LeaderBoardEntry < ApplicationRecord
+    attr_accessor :hash, :token
 
     # TODO: parse json level files...
     @@maxCoins = 44;

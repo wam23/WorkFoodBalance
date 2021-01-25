@@ -35,7 +35,7 @@
         <% end %>
         <% if logged_in? %>
             <% if current_user.admin? %>
-            <td><%= link_to "Löschen", leader_board_entry, method: :delete, data: { confirm: ". wirklich löschen?" } %></td>
+            <td><%= link_to "Löschen", leader_board_entry, method: :delete, data: { confirm: index.to_s + ". wirklich löschen?" } %></td>
             <% end %>
         <% end %>
     </tr>

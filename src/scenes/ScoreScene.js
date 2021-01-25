@@ -89,34 +89,48 @@ export class ScoreScreen extends Phaser.Scene {
     }
 
     submitScore() {
-        const url = LEADER_BOARD_URL + 'leader_board_entries';
-        var formData = new FormData();
-        //(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
-        formData.append("leader_board_entry[acronym]", this.userAcronym);
-        formData.append("leader_board_entry[coins]", this.game.collectedCoins);
-        formData.append("leader_board_entry[sausages]", this.game.collectedSausages);
-        formData.append("leader_board_entry[flags]", this.game.collectedFlags);
-        var collectedChars = 0;
-        for (var index = 0; index < this.game.forever.length; index++) {
-            if (this.game.forever[index].trim().length == 1) {
-                collectedChars++;
+        var url = LEADER_BOARD_URL + 'get_score_token';
+        var request1 = new XMLHttpRequest();
+        
+        request1.open('GET', url, true);
+        request1.send();
+
+        request1.onreadystatechange = (e) => {
+            if (request1.readyState == 4 && request1.status == 200) {
+                var jsonResponse = JSON.parse(request1.responseText);
+                
+                url = LEADER_BOARD_URL + 'leader_board_entries';
+                var formData = new FormData();
+                formData.append("leader_board_entry[score]", this.score);
+                formData.append("leader_board_entry[acronym]", this.userAcronym);
+                formData.append("leader_board_entry[coins]", this.game.collectedCoins);
+                formData.append("leader_board_entry[sausages]", this.game.collectedSausages);
+                formData.append("leader_board_entry[flags]", this.game.collectedFlags);
+                var collectedChars = 0;
+                for (var index = 0; index < this.game.forever.length; index++) {
+                    if (this.game.forever[index].trim().length == 1) {
+                        collectedChars++;
+                    }
+                }
+                formData.append("leader_board_entry[characters]", collectedChars);
+                formData.append("leader_board_entry[remainingtime]", this.game.collectedRemainingTime);
+                formData.append("leader_board_entry[hash]", this.getHash("YB" + this.score + "rocks"));
+                formData.append("leader_board_entry[token]", jsonResponse.token);
+                formData.append("leader_board_entry[version]", 1);
+                var request = new XMLHttpRequest();
+            
+                try {
+                    request.open('POST', url, true);
+                    request.send(formData);
+                } catch (exception) {
+                    // TODO
+                }
+                request.onreadystatechange = (e) => {
+                    //console.log(request.responseText)
+                }
             }
         }
-        formData.append("leader_board_entry[characters]", collectedChars);
-        formData.append("leader_board_entry[remainingtime]", this.game.collectedRemainingTime);
-        formData.append("leader_board_entry[version]", 1);
-        var request = new XMLHttpRequest();
-    
-        try {
-            request.open('POST', url, true);
-            request.send(formData);
-        } catch (exception) {
 
-        }
-        request.onreadystatechange = (e) => {
-            //console.log(request.responseText)
-        }
-    
     }
 
     getHighScore() {
@@ -154,6 +168,19 @@ export class ScoreScreen extends Phaser.Scene {
                 }
             }
         }
+    }
+
+    getHash(scoreString) {
+        var hash = 0;
+        if (scoreString.length == 0) {
+            return hash;
+        }
+        for (var i = 0; i < scoreString.length; i++) {
+            var char = scoreString.charCodeAt(i);
+            hash = ((hash << 2)-hash)+char;
+            hash = hash & hash;
+        }
+        return hash;
     }
 
 }

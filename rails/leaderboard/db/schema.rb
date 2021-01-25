@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_18_181805) do
+ActiveRecord::Schema.define(version: 2021_01_24_195749) do
 
   create_table "leader_board_entries", force: :cascade do |t|
     t.string "acronym"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(version: 2021_01_18_181805) do
     t.integer "remainingtime"
     t.integer "version"
     t.integer "characters"
+  end
+
+  create_table "score_tokens", force: :cascade do |t|
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "isActive"
   end
 
   create_table "users", force: :cascade do |t|

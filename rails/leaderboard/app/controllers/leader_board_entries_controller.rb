@@ -1,4 +1,7 @@
 class LeaderBoardEntriesController < ApplicationController
+    
+    MAX_TOKEN_TIME = 5.0
+    
     protect_from_forgery unless: -> { request.format.json? }
     skip_before_action :verify_authenticity_token, only:[:create]
 
@@ -19,7 +22,24 @@ class LeaderBoardEntriesController < ApplicationController
     
     def create
         @leader_board_entry = LeaderBoardEntry.new(leader_board_entry_params)
-        if (@leader_board_entry.coins <= LeaderBoardEntry.maxCoins and @leader_board_entry.sausages <= LeaderBoardEntry.maxSausages and @leader_board_entry.flags <= LeaderBoardEntry.maxFlags and @leader_board_entry.remainingtime <= LeaderBoardEntry.maxRemainingtime and @leader_board_entry.characters <= LeaderBoardEntry.maxCharacters)
+
+        hash = 0;
+        scoreString = "YB" + @leader_board_entry.score.to_s + "rocks";
+        for i in 1..scoreString.length
+            char = scoreString[i - 1].ord
+            hash = ((hash << 2) - hash) + char
+            hash = hash & hash;
+        end
+
+        scoretoken = ScoreToken.find_by(token: @leader_board_entry.token.to_s)
+        tokenTimeAccepted = false
+        if (scoretoken != nil)
+            diff = Time.now - scoretoken.created_at
+            logger.info("----------------------------------------------- diff: " + diff.to_s);
+            tokenTimeAccepted = (diff <= LeaderBoardEntriesController::MAX_TOKEN_TIME) and scoretoken.isActive
+        end
+        
+        if (tokenTimeAccepted and @leader_board_entry.hash.to_s.eql? hash.to_s and @leader_board_entry.coins <= LeaderBoardEntry.maxCoins and @leader_board_entry.sausages <= LeaderBoardEntry.maxSausages and @leader_board_entry.flags <= LeaderBoardEntry.maxFlags and @leader_board_entry.remainingtime <= LeaderBoardEntry.maxRemainingtime and @leader_board_entry.characters <= LeaderBoardEntry.maxCharacters)
             @leader_board_entry.score = 0
             @leader_board_entry.score += (10 * @leader_board_entry.coins)
             @leader_board_entry.score += (10 * @leader_board_entry.sausages)
@@ -30,6 +50,21 @@ class LeaderBoardEntriesController < ApplicationController
             end
             @leader_board_entry.save
         end
+
+        # clean up
+        if (scoretoken != nil)
+            scoretoken.isActive = false
+            scoretoken.delete
+        end
+        ScoreToken.where("created_at <= ?", Time.zone.now.beginning_of_day).delete_all
+    end
+
+    def getScoreToken
+        scoreToken = ScoreToken.new()
+        scoreToken.activateToken
+        scoreToken.save
+        logger.info("----------------------------------------- getScoreToken: "+scoreToken.token.to_s);
+        render json: {token: scoreToken.token}, status: :ok
     end
 
     def getHighScore
@@ -49,7 +84,7 @@ class LeaderBoardEntriesController < ApplicationController
 
     private
         def leader_board_entry_params
-            params.require(:leader_board_entry).permit(:acronym, :coins, :sausages, :flags, :characters, :remainingtime, :version)
+            params.require(:leader_board_entry).permit(:acronym, :coins, :sausages, :flags, :characters, :score, :remainingtime, :version, :hash, :token)
         end
 
 end
