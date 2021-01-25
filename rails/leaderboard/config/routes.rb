@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     defaults format: :json do
         get "/get_high_score", to: "leader_board_entries#getHighScore"
         get "/get_high_scores", to: "leader_board_entries#getHighScores"
+        get "/get_top_high_scores", to: "leader_board_entries#getTopHighScores"
         get "/get_score_token", to: "leader_board_entries#getScoreToken"
     end
 

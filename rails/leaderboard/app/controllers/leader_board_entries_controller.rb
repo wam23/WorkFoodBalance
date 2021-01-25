@@ -74,6 +74,11 @@ class LeaderBoardEntriesController < ApplicationController
         render json: entries.to_json(only: ["acronym", "score"])
     end
 
+    def getTopHighScores
+        entries = LeaderBoardEntry.order(:score).first(10)
+        render json: entries.to_json(only: ["acronym", "score"])
+    end
+
     def destroy
         LeaderBoardEntry.find(params[:id]).destroy
         flash[:success] = "Eintrag gelöscht"
