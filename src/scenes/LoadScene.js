@@ -78,15 +78,6 @@ export class LoadScene extends Phaser.Scene {
 
         // only for developping
         this.load.image('cheatmode_button', './assets/cheatmode_button.png');
-        this.load.image('gravity1_button', './assets/gravity1_button.png');
-        this.load.image('gravity2_button', './assets/gravity2_button.png');
-        this.load.image('gravity3_button', './assets/gravity3_button.png');
-        this.load.image('gravity4_button', './assets/gravity4_button.png');
-        this.load.image('speed1_button', './assets/speed1_button.png');
-        this.load.image('speed2_button', './assets/speed2_button.png');
-        this.load.image('speed3_button', './assets/speed3_button.png');
-        this.load.image('speed4_button', './assets/speed4_button.png');
-        this.load.image('longjump_button', './assets/longjump_button.png');
         // end only for developping
         
         var loadingBar = this.add.graphics({
