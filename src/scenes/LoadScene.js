@@ -44,8 +44,9 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');
         this.load.image('game_over', './assets/game_over.png');
-        this.load.image('sound_on_button', './assets/sound_on_button.png');
-        this.load.image('sound_off_button', './assets/sound_off_button.png');
+        this.load.image('sound_button', './assets/sound_button.png');
+        this.load.image('sound_on_state', './assets/sound_on_small.png');
+        this.load.image('sound_off_state', './assets/sound_off_small.png');
         this.load.image('highscore_button', './assets/high_scores.png');
 
         this.load.image('tiles', './assets/tiles_spritesheet.png');
@@ -97,7 +98,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.on("progress", (percent) => {
             loadingBar.fillRect(0, 500, this.game.renderer.width * percent, 50);
         });
-
+        
         this.load.on('complete', this.complete, {scene:this.scene});
     }
 

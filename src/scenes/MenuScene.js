@@ -85,23 +85,17 @@ export class MenuScene extends Phaser.Scene {
             music.play();
         }
         
-        this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
-        this.soundOnButton.setInteractive();
+        this.soundOnOffButton = this.add.image(1130, 30, 'sound_button');
+        this.soundOnOffButton.setInteractive();
 
-        this.soundOnButton.on("pointerup", () => {
-            this.game.sound.mute = true;
-            this.updateSoundButtonState();
+        this.soundOnOffButton.on("pointerup", () => {
+            this.game.sound.mute = !this.game.sound.mute;
+            this.updateSoundState();
         });
 
-        this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
-        this.soundOffButton.setInteractive();
-
-        this.soundOffButton.on("pointerup", () => {
-            this.game.sound.mute = false;
-            this.updateSoundButtonState();
-        });
-
-        this.updateSoundButtonState();
+        this.soundOnState = this.add.image(1204, 30, 'sound_on_state');
+        this.soundOffState = this.add.image(1204, 30, 'sound_off_state');
+        this.updateSoundState();
 
         if (this.game.developmentMode) {
             var fontStyle = { fontSize: '16px', fill: '#000', stroke: '#fff', strokeThickness: 1, fontWeight: 'bold' };
@@ -190,9 +184,9 @@ export class MenuScene extends Phaser.Scene {
         
     }
 
-    updateSoundButtonState() {
-        this.soundOnButton.setVisible(!this.game.sound.mute);
-        this.soundOffButton.setVisible(this.game.sound.mute);
+    updateSoundState() {
+        this.soundOnState.setVisible(!this.game.sound.mute);
+        this.soundOffState.setVisible(this.game.sound.mute);
     }
 
 }
