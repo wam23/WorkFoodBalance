@@ -45,9 +45,11 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('play_button', './assets/play_button.png');
         this.load.image('play_icon', './assets/play_icon.png');
         this.load.image('game_over', './assets/game_over.png');
-        this.load.image('sound_on_button', './assets/sound_on_button.png');
-        this.load.image('sound_off_button', './assets/sound_off_button.png');
+        this.load.image('sound_button', './assets/sound_button.png');
+        this.load.image('sound_on_state', './assets/sound_on_small.png');
+        this.load.image('sound_off_state', './assets/sound_off_small.png');
         this.load.image('highscore_button', './assets/high_scores.png');
+        this.load.image('submit_button', './assets/submit_button.png');
 
         this.load.image('tiles', './assets/tiles_spritesheet.png');
         this.load.tilemapTiledJSON('Level1', './assets/level1.json');
@@ -78,15 +80,6 @@ export class LoadScene extends Phaser.Scene {
 
         // only for developping
         this.load.image('cheatmode_button', './assets/cheatmode_button.png');
-        this.load.image('gravity1_button', './assets/gravity1_button.png');
-        this.load.image('gravity2_button', './assets/gravity2_button.png');
-        this.load.image('gravity3_button', './assets/gravity3_button.png');
-        this.load.image('gravity4_button', './assets/gravity4_button.png');
-        this.load.image('speed1_button', './assets/speed1_button.png');
-        this.load.image('speed2_button', './assets/speed2_button.png');
-        this.load.image('speed3_button', './assets/speed3_button.png');
-        this.load.image('speed4_button', './assets/speed4_button.png');
-        this.load.image('longjump_button', './assets/longjump_button.png');
         // end only for developping
         
         var loadingBar = this.add.graphics({
@@ -98,7 +91,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.on("progress", (percent) => {
             loadingBar.fillRect(0, 500, this.game.renderer.width * percent, 50);
         });
-
+        
         this.load.on('complete', this.complete, {scene:this.scene});
     }
 
