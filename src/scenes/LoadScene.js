@@ -48,6 +48,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('sound_on_state', './assets/sound_on_small.png');
         this.load.image('sound_off_state', './assets/sound_off_small.png');
         this.load.image('highscore_button', './assets/high_scores.png');
+        this.load.image('submit_button', './assets/submit_button.png');
 
         this.load.image('tiles', './assets/tiles_spritesheet.png');
         this.load.tilemapTiledJSON('Level1', './assets/level1.json');
