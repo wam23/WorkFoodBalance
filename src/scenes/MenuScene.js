@@ -89,7 +89,8 @@ export class MenuScene extends Phaser.Scene {
         this.soundOnOffButton.setInteractive();
 
         this.soundOnOffButton.on("pointerup", () => {
-            this.game.sound.mute = !this.game.sound.mute;
+            this.game.soundMuted = !this.game.soundMuted;
+            this.game.sound.setMute(this.game.soundMuted);
             this.updateSoundState();
         });
 
@@ -185,8 +186,8 @@ export class MenuScene extends Phaser.Scene {
     }
 
     updateSoundState() {
-        this.soundOnState.setVisible(!this.game.sound.mute);
-        this.soundOffState.setVisible(this.game.sound.mute);
+        this.soundOnState.setVisible(!this.game.soundMuted);
+        this.soundOffState.setVisible(this.game.soundMuted);
     }
 
 }
