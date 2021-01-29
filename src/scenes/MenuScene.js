@@ -83,6 +83,10 @@ export class MenuScene extends Phaser.Scene {
             var music = this.sound.add('background');
             music.loop = true;
             music.play();
+
+            if (this.game.sound.context.state == 'suspended') { // for safari and chrome this is normal, as sound cannot start before a user gesture happened
+                this.game.soundMuted = true;
+            }
         }
         
         this.soundOnOffButton = this.add.image(1130, 30, 'sound_button');
