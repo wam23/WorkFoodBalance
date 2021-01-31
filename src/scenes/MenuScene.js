@@ -85,21 +85,27 @@ export class MenuScene extends Phaser.Scene {
             music.play();
 
             if (this.game.sound.context.state == 'suspended') { // for safari and chrome this is normal, as sound cannot start before a user gesture happened
-                this.game.soundMuted = true;
+                //this.game.soundMuted = true;
             }
         }
         
-        this.soundOnOffButton = this.add.image(1130, 30, 'sound_button');
-        this.soundOnOffButton.setInteractive();
+        this.soundOnButton = this.add.image(1130, 30, 'sound_on_button');
+        this.soundOnButton.setInteractive();
 
-        this.soundOnOffButton.on("pointerup", () => {
+        this.soundOnButton.on("pointerup", () => {
             this.game.soundMuted = !this.game.soundMuted;
             this.game.sound.setMute(this.game.soundMuted);
             this.updateSoundState();
         });
 
-        this.soundOnState = this.add.image(1204, 30, 'sound_on_state');
-        this.soundOffState = this.add.image(1204, 30, 'sound_off_state');
+        this.soundOffButton = this.add.image(1130, 30, 'sound_off_button');
+        this.soundOffButton.setInteractive();
+
+        this.soundOffButton.on("pointerup", () => {
+            this.game.soundMuted = !this.game.soundMuted;
+            this.game.sound.setMute(this.game.soundMuted);
+            this.updateSoundState();
+        });
         this.updateSoundState();
 
         if (this.game.developmentMode) {
@@ -190,8 +196,8 @@ export class MenuScene extends Phaser.Scene {
     }
 
     updateSoundState() {
-        this.soundOnState.setVisible(!this.game.soundMuted);
-        this.soundOffState.setVisible(this.game.soundMuted);
+        this.soundOnButton.setVisible(!this.game.soundMuted);
+        this.soundOffButton.setVisible(this.game.soundMuted);
     }
 
 }
