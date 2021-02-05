@@ -30,7 +30,7 @@ export class ImpressumScene extends Phaser.Scene {
         this.link("https://www.belikegrace.ch/", 450, 500, 105, 90);
         this.link("https://hackathon.bscyb.ch/de", 678, 497, 160, 75);
         this.link("https://azure.microsoft.com/", 941, 494, 230, 50);
-        this.link("mailto:arcade@bscyb.ch", 671, 578, 185, 40);
+        this.link("mailto:marketing@bscyb.ch", 671, 578, 185, 40);
     }
 
     link(url, x, y, width, height) {
